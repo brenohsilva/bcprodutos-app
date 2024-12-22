@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SelectItem } from 'primeng/api';
 import { DataView } from 'primeng/dataview';
+import { Table } from 'primeng/table';
 import { Product } from 'src/app/demo/api/product';
 import { ProductSales } from 'src/app/demo/api/productsSales';
 import { ProductShopping } from 'src/app/demo/api/productsShopping';
@@ -43,6 +44,10 @@ export class StocksComponent implements OnInit {
         totalValue: 0,
     };
 
+    selectedProducts: Product[] = [];
+
+    cols: any[] = [];
+
     constructor(private productService: ProductService) {}
 
     ngOnInit() {
@@ -70,6 +75,14 @@ export class StocksComponent implements OnInit {
             { label: 'Parcelado em 4x', value: 4 },
             { label: 'Parcelado em 5x', value: 5 },
             { label: 'Parcelado em 6x', value: 6 },
+        ];
+
+        this.cols = [
+            { field: 'product', header: 'Product' },
+            { field: 'price', header: 'Price' },
+            { field: 'category', header: 'Category' },
+            { field: 'rating', header: 'Reviews' },
+            { field: 'inventoryStatus', header: 'Status' }
         ];
     }
 
@@ -121,4 +134,8 @@ export class StocksComponent implements OnInit {
         alert(this.productShopping);
         console.log(this.productShopping)
     }
+
+    onGlobalFilter(table: Table, event: Event) {
+            table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
+        }
 }
