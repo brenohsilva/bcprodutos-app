@@ -13,6 +13,7 @@ import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { InputNumberModule } from 'primeng/inputnumber';
+import { TableModule } from 'primeng/table';
 
 @NgModule({
     imports: [
@@ -29,6 +30,7 @@ import { InputNumberModule } from 'primeng/inputnumber';
 		InputNumberModule,
         ButtonModule,
         DialogModule,
+        TableModule,
     ],
     declarations: [StocksComponent],
 })
