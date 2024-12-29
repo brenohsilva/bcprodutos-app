@@ -3,7 +3,7 @@ import { SelectItem } from 'primeng/api';
 import { DataView } from 'primeng/dataview';
 import { Table } from 'primeng/table';
 import { Product } from 'src/app/demo/api/product';
-import { ProductSales } from 'src/app/demo/api/productsSales';
+import { Sales, UniqueSale } from 'src/app/demo/api/productsSales';
 import { ProductShopping } from 'src/app/demo/api/productsShopping';
 import { ProductService } from 'src/app/demo/service/product.service';
 
@@ -21,7 +21,7 @@ export class StocksComponent implements OnInit {
 
     product: Product = {};
 
-    productSalesDialog: boolean = false;
+    salesDialog: boolean = false;
 
     productShoppingDialog: boolean = false;
 
@@ -35,7 +35,7 @@ export class StocksComponent implements OnInit {
 
     coust: any;
 
-    productSales: ProductSales;
+    Sales: UniqueSale;
 
     productShopping: ProductShopping = {
         price: 0,
@@ -104,7 +104,7 @@ export class StocksComponent implements OnInit {
 
     openNewSales(product: any) {
         this.product = product;
-        this.productSalesDialog = true;
+        this.salesDialog = true;
     }
 
     openNewShopping(product: any) {
@@ -113,15 +113,15 @@ export class StocksComponent implements OnInit {
     }
 
     saveSale() {
-        (this.productSales = {
+        (this.Sales = {
             id: this.product.id,
             amount: this.product.quantity,
             paymentMethod: this.paymentMethod,
             coast: this.coust,
             totalValue: this.product.price * this.product.quantity,
         }),
-            alert(this.productSales);
-        console.log(this.productSales);
+            alert(this.Sales);
+        console.log(this.Sales);
     }
 
     saveShopping() {
