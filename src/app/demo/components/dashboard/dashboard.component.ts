@@ -20,6 +20,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     subscription!: Subscription;
 
+    pieData: any;
+
+    pieOptions: any;
+
     constructor(private productService: ProductService, public layoutService: LayoutService) {
         this.subscription = this.layoutService.configUpdate$
         .pipe(debounceTime(25))
@@ -36,6 +40,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
             { label: 'Add New', icon: 'pi pi-fw pi-plus' },
             { label: 'Remove', icon: 'pi pi-fw pi-minus' }
         ];
+
+        
     }
 
     initChart() {
@@ -95,6 +101,36 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 }
             }
         };
+
+        this.pieData = {
+            labels: ['A', 'B', 'C'],
+            datasets: [
+                {
+                    data: [540, 325, 702],
+                    backgroundColor: [
+                        documentStyle.getPropertyValue('--indigo-500'),
+                        documentStyle.getPropertyValue('--purple-500'),
+                        documentStyle.getPropertyValue('--teal-500')
+                    ],
+                    hoverBackgroundColor: [
+                        documentStyle.getPropertyValue('--indigo-400'),
+                        documentStyle.getPropertyValue('--purple-400'),
+                        documentStyle.getPropertyValue('--teal-400')
+                    ]
+                }]
+        };
+
+        this.pieOptions = {
+            plugins: {
+                legend: {
+                    labels: {
+                        usePointStyle: true,
+                        color: textColor
+                    }
+                }
+            }
+        };
+
     }
 
     ngOnDestroy() {
