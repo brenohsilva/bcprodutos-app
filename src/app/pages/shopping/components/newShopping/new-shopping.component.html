@@ -1,0 +1,318 @@
+<div class="card">
+    <h5>Nova compra</h5>
+    <div class="grid">
+        @if (shoppingProducts && shoppingProducts.length !== 0) {
+        <div class="col-12">
+            <p-table
+                #dt
+                [value]="shoppingProducts"
+                [columns]="cols"
+                responsiveLayout="scroll"
+                [rows]="10"
+                selectionMode="multiple"
+                [rowHover]="true"
+                dataKey="id"
+            >
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>Nome</th>
+                        <th>Tipo</th>
+                        <th>Tamanho</th>
+                        <th>Cor</th>
+                        <th>Preço</th>
+                        <th>Quantidade</th>
+                        <th>Valor total</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-product>
+                    <tr>
+                        <td style="width: 14%; min-width: 10rem">
+                            <span class="p-column-title">Name</span>
+                            {{ product.name }}
+                        </td>
+                        <td style="width: 14%; min-width: 10rem">
+                            <span class="p-column-title">Type</span>
+                            {{ product.type }}
+                        </td>
+                        <td style="width: 4%; min-width: 5rem">
+                            <span class="p-column-title">Size</span>
+                            {{ product.size }}
+                        </td>
+
+                        <td style="width: 4%; min-width: 5rem">
+                            <span class="p-column-title">Color</span>
+                            {{ product.color }}
+                        </td>
+                        <td style="width: 14%; min-width: 8rem">
+                            <span class="p-column-title">Preço</span>
+                            {{ product.totalValue / product.amount | currency : "USD" }}
+                        </td>
+                        <td>
+                            <p-inputNumber
+                                style="width: 4%; min-width: 5rem"
+                                mode="decimal"
+                                [showButtons]="true"
+                                [min]="1"
+                                [max]="100"
+                                [(ngModel)]="product.amount"
+                            >
+                            </p-inputNumber>
+                        </td>
+                        <td style="width: 4%; min-width: 7rem">
+                            <span class="p-column-title">Total Value</span>
+                            <p-inputNumber
+                                id="totalValue"
+                                mode="currency"
+                                currency="BRL"
+                                locale="pt-BR"
+                                [(ngModel)]="product.totalValue"
+                            ></p-inputNumber>
+                        </td>
+                        <td>
+                            <button
+                                pButton
+                                pRipple
+                                icon="pi pi-trash"
+                                class="p-button-rounded p-button-warning"
+                                (click)="deleteProduct(product)"
+                            ></button>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+        } @else {
+        <div class="col-12 flex mt-3">
+            <h6>Nenhum produto adicionado</h6>
+        </div>
+        }
+        <div class="col-12 mt-0 pt-0 flex">
+            <button
+                pButton
+                pRipple
+                type="button"
+                label="Adicionar produto"
+                (click)="newProducts()"
+                class="p-button-raised p-button-success"
+            ></button>
+        </div>
+        @if (shoppingProducts && shoppingProducts.length !== 0){
+        <div class="col-12 p-fluid flex justify-content-end mt-3 gap-4">
+            <div
+                class="card col-12 md:col-6 lg:col-6 mr-3 p-4 flex flex-column gap-2"
+            >
+                <label htmlFor="description">Descrição</label>
+                <input
+                    [(ngModel)]="description"
+                    pInputText
+                    id="description"
+                    type="text"
+                />
+            </div>
+            <div class="p-formgrid card grid col-12 md:col-6 lg:col-6">
+                <div class="field col-6">
+                    <label>Método de pagamento</label>
+                    <p-dropdown
+                        [options]="Methods"
+                        [(ngModel)]="selectedMethod"
+                        placeholder="Selecione um método de pagamento"
+                        [showClear]="true"
+                    ></p-dropdown>
+                </div>
+                <div class="field col-6">
+                    <label htmlFor="email2">Frete</label>
+                    <p-inputNumber
+                        id="tax"
+                        [(ngModel)]="tax"
+                        mode="currency"
+                        currency="BRL"
+                        locale="pt-BR"
+                    ></p-inputNumber>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 flex justify-content-end p-fluid mt-2">
+            <div class="p-formgrid grid col-6">
+                <div class="field card col-12 flex flex-column gap-3">
+                    <div class="flex justify-content-between">
+                        <label htmlFor="email2">Frete: </label>
+                        <strong>{{ tax | currency : "BRL" }}</strong>
+                    </div>
+                    <div class="flex justify-content-between">
+                        <label htmlFor="email2" pTooltip="Valor com o frete"
+                            >Total:
+                        </label>
+                        <strong>{{ total | currency : "BRL" }}</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 flex justify-content-end gap-3 p-fluid mt-2">
+            <button
+                pButton
+                pRipple
+                type="button"
+                label="Cancelar"
+                class="p-button-raised p-button-warning col-1"
+            ></button>
+            <button
+                pButton
+                pRipple
+                type="button"
+                label="Registrar compra"
+                (click)="registerShopping()"
+                class="p-button-raised p-button-success col-3"
+            ></button>
+        </div>
+        }
+
+        <p-dialog
+            [(visible)]="openDeleteProductDialog"
+            header="Remover um item"
+            [modal]="true"
+            [style]="{ width: '450px' }"
+        >
+            <div class="flex align-items-center justify-content-center">
+                <i
+                    class="pi pi-exclamation-triangle mr-3"
+                    style="font-size: 2rem"
+                ></i>
+                <span *ngIf="product"
+                    >Você tem certeza que deseja remover o item do carrinho?
+                    <b>{{ product.name }}</b
+                    >?</span
+                >
+            </div>
+            <ng-template pTemplate="footer">
+                <button
+                    pButton
+                    pRipple
+                    icon="pi pi-times"
+                    class="p-button-text"
+                    label="não"
+                    (click)="deleteProductDialog = false"
+                ></button>
+                <button
+                    pButton
+                    pRipple
+                    icon="pi pi-check"
+                    class="p-button-text"
+                    label="sim"
+                    (click)="confirmDelete(product)"
+                ></button>
+            </ng-template>
+        </p-dialog>
+        <p-dialog
+            [(visible)]="openAddNewProductsDialog"
+            header="Adicionar produtos"
+            [modal]="true"
+        >
+            <p-table
+                dt
+                [value]="products"
+                [columns]="cols"
+                responsiveLayout="scroll"
+                [rows]="10"
+                [(selection)]="selectedProducts"
+                selectionMode="multiple"
+                [rowHover]="true"
+                dataKey="id"
+            >
+                <ng-template pTemplate="caption">
+                    <div
+                        class="flex flex-column md:flex-row md:justify-content-between md:align-items-center"
+                    >
+                        <span class="block mt-2 md:mt-0 p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                            <input
+                                pInputText
+                                type="text"
+                                (input)="onGlobalFilter(dt, $event)"
+                                placeholder="Procurar..."
+                                class="w-full sm:w-auto"
+                            />
+                        </span>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="width: 3rem">
+                            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                        </th>
+                        <th pSortableColumn="name">
+                            Nome <p-sortIcon field="name"></p-sortIcon>
+                        </th>
+                        <th>Image</th>
+                        <th pSortableColumn="price">
+                            Preço <p-sortIcon field="price"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="category">
+                            Categoria <p-sortIcon field="category"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="size">
+                            Tamanho <p-sortIcon field="size"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="color">
+                            Cor <p-sortIcon field="color"></p-sortIcon>
+                        </th>
+                        <th></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-product>
+                    <tr>
+                        <td>
+                            <p-tableCheckbox
+                                [value]="product"
+                            ></p-tableCheckbox>
+                        </td>
+                        <td style="width: 14%; min-width: 10rem">
+                            <span class="p-column-title">Nome</span>
+                            {{ product.name }}
+                        </td>
+                        <td style="width: 14%; min-width: 10rem">
+                            <span class="p-column-title">Image</span>
+                            <img
+                                [src]="
+                                    'assets/demo/images/product/' +
+                                    product.image
+                                "
+                                [alt]="product.name"
+                                width="100"
+                                class="shadow-4"
+                            />
+                        </td>
+                        <td style="width: 14%; min-width: 8rem">
+                            <span class="p-column-title">Preço</span>
+                            {{ product.price | currency : "USD" }}
+                        </td>
+                        <td style="width: 14%; min-width: 10rem">
+                            <span class="p-column-title">Tipo</span>
+                            {{ product.type }}
+                        </td>
+                        <td style="width: 14%; min-width: 10rem">
+                            <span class="p-column-title">Tamanho</span>
+                            {{ product.size }}
+                        </td>
+                        <td style="width: 14%; min-width: 10rem">
+                            <span class="p-column-title">Cor</span>
+                            {{ product.color }}
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+            <div class="flex mt-5 gap-2 justify-content-end">
+                <button pButton pRipple class="p-button-warning">
+                    Cancelar
+                </button>
+                <button
+                    pButton
+                    pRipple
+                    class="p-button-success mr-2"
+                    (click)="addNewProducts()"
+                >
+                    Adicionar Produtos
+                </button>
+            </div>
+        </p-dialog>
+    </div>
+</div>
