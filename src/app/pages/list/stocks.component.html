@@ -36,7 +36,7 @@
 
                 <!-- POR LISTA -->
                 <ng-template let-products pTemplate="listItem">
-                    <p-table #dt [value]="products" [columns]="cols" responsiveLayout="scroll" [rows]="10" [globalFilterFields]="['name','country.name','representative.name','status']" selectionMode="multiple" [rowHover]="true" dataKey="id">
+                    <p-table #dt [value]="products" responsiveLayout="scroll" [rows]="10" [globalFilterFields]="['name','country.name','representative.name','status']" selectionMode="multiple" [rowHover]="true" dataKey="id">
                         <ng-template pTemplate="caption">
                             <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
                                 <span class="block mt-2 md:mt-0 p-input-icon-left">
@@ -70,24 +70,24 @@
                                 </td>
                                 <td style="width:14%; min-width:8rem;">
                                     <span class="p-column-title">Price</span>
-                                    {{product.price | currency:'USD'}}
+                                    {{product.price | currency:'BRL'}}
                                 </td>
                                 <td style="width:14%; min-width:10rem;">
                                     <span class="p-column-title">Type</span>
-                                    {{product.category}}
+                                    {{product.type}}
                                 </td>
                                 <td style="width:14%; min-width:10rem;">
                                     <span class="p-column-title">Category</span>
                                     {{product.category}}
                                 </td>
                                 <td style="width:14%; min-width: 10rem;"><span class="p-column-title">Size</span>
-                                    {{product.inventoryStatus}}
+                                    {{product.size}}
                                 </td>
                                 <td style="width:14%; min-width: 10rem;"><span class="p-column-title">Color</span>
-                                    Azul
+                                    {{product.color}}
                                 </td>
                                 <td style="width:14%; min-width: 10rem;"><span class="p-column-title">Quantidade</span>
-                                    <span [class]="'product-badge status-' + (product.inventoryStatus ? product.inventoryStatus.toLowerCase() : '')">{{product.inventoryStatus}}</span>
+                                    <span [class]="'product-badge status-' + (product.inventoryStatus ? product.inventoryStatus.toLowerCase() : '')">{{product.quantity}}</span>
                                 </td>
                             </tr>
                         </ng-template>
@@ -106,20 +106,17 @@
                                 >
                                     <div class="flex align-items-center gap-2">
                                         <span class="font-normal"
-                                            >Tamanho <strong>40</strong></span
+                                            >Tamanho <strong>{{product.size}}</strong></span
                                         >
                                         |
-                                        <span>Preto</span>
-                                        <span
-                                            class="bg-black-alpha-90 p-2 border-round"
-                                        ></span>
+                                        <p-tag value={{product.color}}></p-tag>
                                     </div>
                                     <span
                                         [class]="
                                             'product-badge status-' +
                                             product.inventoryStatus.toLowerCase()
                                         "
-                                        >{{ product.inventoryStatus }}</span
+                                        >{{ product.quantity }}</span
                                     >
                                 </div>
                                 <div
@@ -136,13 +133,13 @@
                                     <div class="text-2xl font-bold">
                                         {{ product.name }}
                                     </div>
-                                    <span>Sem Cadarço</span>
+                                    <span>{{ product.type }}</span>
                                 </div>
                                 <div
                                     class="flex align-items-center justify-content-between pt-3"
                                 >
                                     <span class="text-2xl font-semibold"
-                                        >${{ product.price }}</span
+                                        >{{ product.price | currency: "BRL" }}</span
                                     >
                                     <div class="flex gap-3">
                                         <button
@@ -193,8 +190,7 @@
                 <div class="field col flex flex-column align-content-center">
                     <h6>Cor</h6>
                     <div class="flex gap-2">
-                        <span>Preto</span>
-                        <span class="bg-black-alpha-90 p-2 border-round"></span>
+                        <p-tag value="Preto"></p-tag>
                     </div>
                 </div>
             </div>
@@ -265,7 +261,7 @@
             <div class="formgrid grid">
                 <div class="field col">
                     <h6 for="price">Preço</h6>
-                    <label for="price">R$: {{ product.price }}</label>
+                    <label for="price">{{ product.price | currency: "BRL" }}</label>
                 </div>
                 <div class="field col">
                     <h6 for="quantity">Quantidade vendida</h6>
@@ -279,7 +275,7 @@
             <div class="field flex flex-column">
                 <h5 for="total">Valor Total</h5>
                 <label for="total"
-                    >R$: {{ product.price * product.quantity }}</label
+                    >{{ product.price * product.quantity | currency: "BRL" }}</label
                 >
             </div>
         </ng-template>
@@ -305,7 +301,7 @@
     </p-dialog>
     <!-- Dialog de Compras -->
     <p-dialog
-        [(visible)]="productShoppingDialog"
+        [(visible)]="shoppingDialog"
         [style]="{ width: '450px' }"
         header="Compra de produto"
         [modal]="true"
@@ -325,8 +321,7 @@
                 <div class="field col flex flex-column align-content-center">
                     <h6>Cor</h6>
                     <div class="flex gap-2">
-                        <span>Preto</span>
-                        <span class="bg-black-alpha-90 p-2 border-round"></span>
+                        <p-tag value="Azul"></p-tag>
                     </div>
                 </div>
             </div>

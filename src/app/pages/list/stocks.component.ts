@@ -13,17 +13,14 @@ import { ProductService } from 'src/app/demo/service/product.service';
 export class StocksComponent implements OnInit {
     products: Product[] = [];
 
+    //--- Ordenação ---------------
     sortOptions: SelectItem[] = [];
-
     sortOrder: number = 0;
-
     sortField: string = '';
+   
+    //----------------------------
 
     product: Product = {};
-
-    salesDialog: boolean = false;
-
-    productShoppingDialog: boolean = false;
 
     paymentMethods: any[] = [];
 
@@ -35,6 +32,10 @@ export class StocksComponent implements OnInit {
 
     coust: any;
 
+    salesDialog: boolean = false;
+
+    shoppingDialog: boolean = false;
+
     Sales: UniqueSale;
 
     productShopping: ProductShopping = {
@@ -45,8 +46,6 @@ export class StocksComponent implements OnInit {
     };
 
     selectedProducts: Product[] = [];
-
-    cols: any[] = [];
 
     constructor(private productService: ProductService) {}
 
@@ -77,13 +76,6 @@ export class StocksComponent implements OnInit {
             { label: 'Parcelado em 6x', value: 6 },
         ];
 
-        this.cols = [
-            { field: 'product', header: 'Product' },
-            { field: 'price', header: 'Price' },
-            { field: 'category', header: 'Category' },
-            { field: 'rating', header: 'Reviews' },
-            { field: 'inventoryStatus', header: 'Status' }
-        ];
     }
 
     onSortChange(event: any) {
@@ -109,7 +101,7 @@ export class StocksComponent implements OnInit {
 
     openNewShopping(product: any) {
         this.product = product;
-        this.productShoppingDialog = true;
+        this.shoppingDialog = true;
     }
 
     saveSale() {
