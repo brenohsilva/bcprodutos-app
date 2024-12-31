@@ -36,58 +36,123 @@
 
                 <!-- POR LISTA -->
                 <ng-template let-products pTemplate="listItem">
-                    <p-table #dt [value]="products" responsiveLayout="scroll" [rows]="10" [globalFilterFields]="['name','country.name','representative.name','status']" selectionMode="multiple" [rowHover]="true" dataKey="id">
+                    <p-table
+                        #dt
+                        [value]="products"
+                        responsiveLayout="scroll"
+                        [rows]="10"
+                        [globalFilterFields]="[
+                            'name',
+                            'country.name',
+                            'representative.name',
+                            'status'
+                        ]"
+                        selectionMode="multiple"
+                        [rowHover]="true"
+                        dataKey="id"
+                    >
                         <ng-template pTemplate="caption">
-                            <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-                                <span class="block mt-2 md:mt-0 p-input-icon-left">
+                            <div
+                                class="flex flex-column md:flex-row md:justify-content-between md:align-items-center"
+                            >
+                                <span
+                                    class="block mt-2 md:mt-0 p-input-icon-left"
+                                >
                                     <i class="pi pi-search"></i>
-                                    <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Procurar..."  class="w-full sm:w-auto"/>
+                                    <input
+                                        pInputText
+                                        type="text"
+                                        (input)="onGlobalFilter(dt, $event)"
+                                        placeholder="Procurar..."
+                                        class="w-full sm:w-auto"
+                                    />
                                 </span>
                             </div>
                         </ng-template>
                         <ng-template pTemplate="header">
                             <tr>
-                               
-                                <th pSortableColumn="name">Nome <p-sortIcon field="name"></p-sortIcon></th>
+                                <th pSortableColumn="name">
+                                    Nome <p-sortIcon field="name"></p-sortIcon>
+                                </th>
                                 <th>Imagem</th>
-                                <th pSortableColumn="price">Preço <p-sortIcon field="price"></p-sortIcon></th>
-                                <th pSortableColumn="category">Tipo <p-sortIcon field="type"></p-sortIcon></th>
-                                <th pSortableColumn="category">Categoria <p-sortIcon field="category"></p-sortIcon></th>
-                                <th pSortableColumn="rating">Tamanho <p-sortIcon field="size"></p-sortIcon></th>
-                                <th pSortableColumn="rating">Cor <p-sortIcon field="color"></p-sortIcon></th>
-                                <th pSortableColumn="inventoryStatus">Quantidade <p-sortIcon field="inventoryStatus"></p-sortIcon></th>
+                                <th pSortableColumn="price">
+                                    Preço
+                                    <p-sortIcon field="price"></p-sortIcon>
+                                </th>
+                                <th pSortableColumn="category">
+                                    Tipo <p-sortIcon field="type"></p-sortIcon>
+                                </th>
+                                <th pSortableColumn="category">
+                                    Categoria
+                                    <p-sortIcon field="category"></p-sortIcon>
+                                </th>
+                                <th pSortableColumn="rating">
+                                    Tamanho
+                                    <p-sortIcon field="size"></p-sortIcon>
+                                </th>
+                                <th pSortableColumn="rating">
+                                    Cor <p-sortIcon field="color"></p-sortIcon>
+                                </th>
+                                <th pSortableColumn="inventoryStatus">
+                                    Quantidade
+                                    <p-sortIcon
+                                        field="inventoryStatus"
+                                    ></p-sortIcon>
+                                </th>
                                 <th></th>
                             </tr>
                         </ng-template>
                         <ng-template pTemplate="body" let-product>
                             <tr>
-                                <td style="width:14%; min-width:10rem;">
+                                <td style="width: 14%; min-width: 10rem">
                                     <span class="p-column-title">Name</span>
-                                    {{product.name}}
+                                    {{ product.name }}
                                 </td>
-                                <td style="width:14%; min-width:10rem;"><span class="p-column-title">Image</span>
-                                    <img [src]="'assets/demo/images/product/' + product.image" [alt]="product.name" width="100" class="shadow-4" />
+                                <td style="width: 14%; min-width: 10rem">
+                                    <span class="p-column-title">Image</span>
+                                    <img
+                                        [src]="
+                                            'assets/demo/images/product/' +
+                                            product.image
+                                        "
+                                        [alt]="product.name"
+                                        width="100"
+                                        class="shadow-4"
+                                    />
                                 </td>
-                                <td style="width:14%; min-width:8rem;">
+                                <td style="width: 14%; min-width: 8rem">
                                     <span class="p-column-title">Price</span>
-                                    {{product.price | currency:'BRL'}}
+                                    {{ product.price | currency : "BRL" }}
                                 </td>
-                                <td style="width:14%; min-width:10rem;">
+                                <td style="width: 14%; min-width: 10rem">
                                     <span class="p-column-title">Type</span>
-                                    {{product.type}}
+                                    {{ product.type }}
                                 </td>
-                                <td style="width:14%; min-width:10rem;">
+                                <td style="width: 14%; min-width: 10rem">
                                     <span class="p-column-title">Category</span>
-                                    {{product.category}}
+                                    {{ product.category }}
                                 </td>
-                                <td style="width:14%; min-width: 10rem;"><span class="p-column-title">Size</span>
-                                    {{product.size}}
+                                <td style="width: 14%; min-width: 10rem">
+                                    <span class="p-column-title">Size</span>
+                                    {{ product.size }}
                                 </td>
-                                <td style="width:14%; min-width: 10rem;"><span class="p-column-title">Color</span>
-                                    {{product.color}}
+                                <td style="width: 14%; min-width: 10rem">
+                                    <span class="p-column-title">Color</span>
+                                    {{ product.color }}
                                 </td>
-                                <td style="width:14%; min-width: 10rem;"><span class="p-column-title">Quantidade</span>
-                                    <span [class]="'product-badge status-' + (product.inventoryStatus ? product.inventoryStatus.toLowerCase() : '')">{{product.quantity}}</span>
+                                <td style="width: 14%; min-width: 10rem">
+                                    <span class="p-column-title"
+                                        >Quantidade</span
+                                    >
+                                    <span
+                                        [class]="
+                                            'product-badge status-' +
+                                            (product.inventoryStatus
+                                                ? product.inventoryStatus.toLowerCase()
+                                                : '')
+                                        "
+                                        >{{ product.quantity }}</span
+                                    >
                                 </td>
                             </tr>
                         </ng-template>
@@ -106,10 +171,15 @@
                                 >
                                     <div class="flex align-items-center gap-2">
                                         <span class="font-normal"
-                                            >Tamanho <strong>{{product.size}}</strong></span
+                                            >Tamanho
+                                            <strong>{{
+                                                product.size
+                                            }}</strong></span
                                         >
                                         |
-                                        <p-tag value={{product.color}}></p-tag>
+                                        <p-tag
+                                            value="{{ product.color }}"
+                                        ></p-tag>
                                     </div>
                                     <span
                                         [class]="
@@ -138,9 +208,9 @@
                                 <div
                                     class="flex align-items-center justify-content-between pt-3"
                                 >
-                                    <span class="text-2xl font-semibold"
-                                        >{{ product.price | currency: "BRL" }}</span
-                                    >
+                                    <span class="text-2xl font-semibold">{{
+                                        product.price | currency : "BRL"
+                                    }}</span>
                                     <div class="flex gap-3">
                                         <button
                                             pButton
@@ -185,7 +255,7 @@
             <div class="formgrid grid">
                 <div class="field col">
                     <h6 for="status">Quantidade no estoque</h6>
-                    <label for="status">{{ product.inventoryStatus }}</label>
+                    <label for="status">{{ product.quantity }}</label>
                 </div>
                 <div class="field col flex flex-column align-content-center">
                     <h6>Cor</h6>
@@ -212,7 +282,7 @@
                     <div class="formgrid grid">
                         <div class="bg-blue-100 border-round px-2 py-1">
                             <label class="font-medium" for="category2">{{
-                                product.category
+                                product.type
                             }}</label>
                         </div>
                     </div>
@@ -233,25 +303,35 @@
             <div class="field">
                 <h6 for="status">Metodo de Pagamento</h6>
                 <p-dropdown
-                    [(ngModel)]="paymentMethod"
-                    inputId="inventoryStatus"
+                    [(ngModel)]="sales.paymentMethod"
+                    inputId="paymentMethod"
                     optionValue="label"
                     [options]="paymentMethods"
                     placeholder="Selecione o método de pagamento"
                 >
                     <ng-template pTemplate="selectedItem">
-                        <span *ngIf="product && paymentMethod">{{
-                            paymentMethod
+                        <span *ngIf="product && sales.paymentMethod">{{
+                            sales.paymentMethod
                         }}</span>
                     </ng-template>
                 </p-dropdown>
             </div>
             <hr />
             <div class="field">
+                <h6 for="price">Desconto</h6>
+                <p-inputNumber
+                    id="price"
+                    [(ngModel)]="sales.discount"
+                    mode="currency"
+                    currency="BRL"
+                    locale="pt-BR"
+                ></p-inputNumber>
+            </div>
+            <div class="field">
                 <h6 for="price">Custo da Venda</h6>
                 <p-inputNumber
                     id="price"
-                    [(ngModel)]="coust"
+                    [(ngModel)]="sales.coast"
                     mode="currency"
                     currency="BRL"
                     locale="pt-BR"
@@ -261,22 +341,24 @@
             <div class="formgrid grid">
                 <div class="field col">
                     <h6 for="price">Preço</h6>
-                    <label for="price">{{ product.price | currency: "BRL" }}</label>
+                    <label for="price">{{
+                        product.price | currency : "BRL"
+                    }}</label>
                 </div>
                 <div class="field col">
                     <h6 for="quantity">Quantidade vendida</h6>
                     <p-inputNumber
                         id="quantity"
-                        [(ngModel)]="product.quantity"
+                        [(ngModel)]="salesAmount"
                     ></p-inputNumber>
                 </div>
             </div>
             <hr />
             <div class="field flex flex-column">
-                <h5 for="total">Valor Total</h5>
-                <label for="total"
-                    >{{ product.price * product.quantity | currency: "BRL" }}</label
-                >
+                <h6 for="total">Valor Total</h6>
+                <label for="total">{{
+                    calculateTotalValueOfSales() | currency : "BRL"
+                }}</label>
             </div>
         </ng-template>
 
@@ -287,7 +369,7 @@
                 label="Cancelar"
                 icon="pi pi-times"
                 class="p-button-text"
-                (click)="hideDialog()"
+                (click)="closeNewsales()"
             ></button>
             <button
                 pButton
@@ -316,12 +398,12 @@
             <div class="formgrid grid">
                 <div class="field col">
                     <h6 for="status">Quantidade no estoque</h6>
-                    <label for="status">{{ product.inventoryStatus }}</label>
+                    <label for="status">{{ product.quantity }}</label>
                 </div>
                 <div class="field col flex flex-column align-content-center">
                     <h6>Cor</h6>
                     <div class="flex gap-2">
-                        <p-tag value="Azul"></p-tag>
+                        <p-tag value={{product.color}}></p-tag>
                     </div>
                 </div>
             </div>
@@ -343,7 +425,7 @@
                     <div class="formgrid grid">
                         <div class="bg-blue-100 border-round px-2 py-1">
                             <label class="font-medium" for="category2">{{
-                                product.category
+                                product.type
                             }}</label>
                         </div>
                     </div>
@@ -353,9 +435,9 @@
                     <h6 class="mb-3">Tamanho</h6>
                     <div class="formgrid grid">
                         <div class="bg-blue-100 border-round px-2 py-1 ml-3">
-                            <label class="font-medium" for="category1"
-                                >40</label
-                            >
+                            <label class="font-medium" for="category1">{{
+                                product.size
+                            }}</label>
                         </div>
                     </div>
                 </div>
@@ -364,15 +446,15 @@
             <div class="field">
                 <h6 for="status">Metodo de Pagamento</h6>
                 <p-dropdown
-                    [(ngModel)]="paymentMethod"
+                    [(ngModel)]="shopping.paymentMethod"
                     inputId="inventoryStatus"
                     optionValue="label"
                     [options]="paymentMethods"
                     placeholder="Selecione o método de pagamento"
                 >
                     <ng-template pTemplate="selectedItem">
-                        <span *ngIf="product && paymentMethod">{{
-                            paymentMethod
+                        <span *ngIf="product && shopping.paymentMethod">{{
+                            shopping.paymentMethod
                         }}</span>
                     </ng-template>
                 </p-dropdown>
@@ -381,15 +463,15 @@
             <div class="field">
                 <h6 for="price">Parcelas</h6>
                 <p-dropdown
-                    [(ngModel)]="installment"
+                    [(ngModel)]="shopping.installment"
                     inputId="inventoryStatus"
                     optionValue="label"
                     [options]="installments"
                     placeholder="Selecione o método de pagamento"
                 >
                     <ng-template pTemplate="selectedItem">
-                        <span *ngIf="product && installment">{{
-                            installment
+                        <span *ngIf="product && shopping.installment">{{
+                            shopping.installment
                         }}</span>
                     </ng-template>
                 </p-dropdown>
@@ -398,42 +480,39 @@
             <div class="formgrid grid">
                 <div class="field col">
                     <h6 for="price">Valor Unitário</h6>
-                    <p-inputNumber
-                        id="quantity"
-                        [(ngModel)]="productShopping.price"
-                    ></p-inputNumber>
+                    <label for="price">{{
+                        shopping.totalValue / shoppingProductAmount
+                            | currency : "BRL"
+                    }}</label>
                 </div>
                 <div class="field col">
                     <h6 for="quantity">Quantidade</h6>
                     <p-inputNumber
                         id="quantity"
-                        [(ngModel)]="productShopping.amount"
+                        [(ngModel)]="shoppingProductAmount"
                     ></p-inputNumber>
                 </div>
                 <div class="field col">
-                    <h6 for="quantity">Frete</h6>
+                    <h6 for="tax">Frete</h6>
                     <p-inputNumber
-                        id="quantity"
-                        [(ngModel)]="productShopping.tax"
+                        mode="currency"
+                        currency="BRL"
+                        locale="pt-BR"
+                        id="tax"
+                        [(ngModel)]="shopping.tax"
                     ></p-inputNumber>
                 </div>
             </div>
             <hr />
             <div class="field flex flex-column">
-                <h5 for="total">Valor Total</h5>
-                <label
-                    *ngIf="
-                        productShopping.price &&
-                        productShopping.amount &&
-                        productShopping.tax
-                    "
-                    for="total"
-                    >R$:
-                    {{
-                        (productShopping.price + productShopping.tax) *
-                            productShopping.amount
-                    }}</label
-                >
+                <h6 for="total">Valor Total</h6>
+                <p-inputNumber
+                    mode="currency"
+                    currency="BRL"
+                    locale="pt-BR"
+                    id="totalValue"
+                    [(ngModel)]="shopping.totalValue"
+                ></p-inputNumber>
             </div>
         </ng-template>
 
@@ -444,7 +523,7 @@
                 label="Cancelar"
                 icon="pi pi-times"
                 class="p-button-text"
-                (click)="hideDialog()"
+                (click)="closeNewShopping()"
             ></button>
             <button
                 pButton
