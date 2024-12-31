@@ -15,13 +15,3 @@ export interface Sales {
     salesItens?: SalesItens[]
     
 }
-
-export interface UniqueSale {
-    id?: string;
-    paymentMethod?: string;
-    coast?: number;
-    discount?: number;
-    amount?: number;
-    unitPrice?: number;
-    totalValue: number;
-}

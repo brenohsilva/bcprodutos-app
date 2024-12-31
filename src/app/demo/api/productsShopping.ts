@@ -16,6 +16,7 @@ export interface ShoppingItens {
 export interface Shopping {
     description?: string;
     paymentMethod?: string;
+    installment?: string | number;
     tax?: number;
     totalValue?: number; // será o valor dos produtos + o tax
     shoppingItens?: ShoppingItens[]
