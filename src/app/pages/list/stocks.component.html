@@ -79,24 +79,24 @@
                                     Preço
                                     <p-sortIcon field="price"></p-sortIcon>
                                 </th>
-                                <th pSortableColumn="category">
+                                <th pSortableColumn="type">
                                     Tipo <p-sortIcon field="type"></p-sortIcon>
                                 </th>
                                 <th pSortableColumn="category">
                                     Categoria
                                     <p-sortIcon field="category"></p-sortIcon>
                                 </th>
-                                <th pSortableColumn="rating">
+                                <th pSortableColumn="size">
                                     Tamanho
                                     <p-sortIcon field="size"></p-sortIcon>
                                 </th>
-                                <th pSortableColumn="rating">
-                                    Cor <p-sortIcon field="color"></p-sortIcon>
+                                <th pSortableColumn="color">
+                                    Cor 
                                 </th>
-                                <th pSortableColumn="inventoryStatus">
+                                <th pSortableColumn="quantity">
                                     Quantidade
                                     <p-sortIcon
-                                        field="inventoryStatus"
+                                        field="quantity"
                                     ></p-sortIcon>
                                 </th>
                                 <th></th>
@@ -436,7 +436,7 @@
                 <h6 for="status">Metodo de Pagamento</h6>
                 <p-dropdown
                     [(ngModel)]="shopping.paymentMethod"
-                    inputId="inventoryStatus"
+                    inputId="method"
                     optionValue="label"
                     [options]="paymentMethods"
                     placeholder="Selecione o método de pagamento"
@@ -453,7 +453,7 @@
                 <h6 for="price">Parcelas</h6>
                 <p-dropdown
                     [(ngModel)]="shopping.installment"
-                    inputId="inventoryStatus"
+                    inputId="method"
                     optionValue="label"
                     [options]="installments"
                     placeholder="Selecione o método de pagamento"

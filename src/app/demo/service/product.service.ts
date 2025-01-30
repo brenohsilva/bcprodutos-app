@@ -4,34 +4,46 @@ import { Product } from '../api/product';
 
 @Injectable()
 export class ProductService {
+    constructor(private http: HttpClient) {}
 
-    constructor(private http: HttpClient) { }
+    base_url = 'http://localhost:3000/';
 
     getProductsSmall() {
-        return this.http.get<any>('assets/demo/data/products-small.json')
+        return this.http
+            .get<any>('assets/demo/data/products-small.json')
             .toPromise()
-            .then(res => res.data as Product[])
-            .then(data => data);
+            .then((res) => res.data as Product[])
+            .then((data) => data);
     }
 
+    // getProducts() {
+    //     return this.http.get<any>('assets/demo/data/products.json')
+    //         .toPromise()
+    //         .then(res => res.data as Product[])
+    //         .then(data => data);
+    // }
+
     getProducts() {
-        return this.http.get<any>('assets/demo/data/products.json')
+        return this.http
+            .get<any>(this.base_url + 'products')
             .toPromise()
-            .then(res => res.data as Product[])
-            .then(data => data);
+            .then((res) => res.data as Product[])
+            .then((data) => data);
     }
 
     getProductsMixed() {
-        return this.http.get<any>('assets/demo/data/products-mixed.json')
+        return this.http
+            .get<any>('assets/demo/data/products-mixed.json')
             .toPromise()
-            .then(res => res.data as Product[])
-            .then(data => data);
+            .then((res) => res.data as Product[])
+            .then((data) => data);
     }
 
     getProductsWithOrdersSmall() {
-        return this.http.get<any>('assets/demo/data/products-orders-small.json')
+        return this.http
+            .get<any>('assets/demo/data/products-orders-small.json')
             .toPromise()
-            .then(res => res.data as Product[])
-            .then(data => data);
+            .then((res) => res.data as Product[])
+            .then((data) => data);
     }
 }
