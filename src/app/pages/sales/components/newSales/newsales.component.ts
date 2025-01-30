@@ -16,8 +16,8 @@ export class NewSalesComponent implements OnInit {
             type: "Sem Cadarço",
             size: 40,
             color: 'Preto',
-            price: 65,
-            quantity: 1
+            sales_price: 65,
+            amount: 1
         },
         {
             id: "2",
@@ -25,8 +25,8 @@ export class NewSalesComponent implements OnInit {
             type: "Sem Cadarço",
             size: 41,
             color: 'Marrom',
-            price: 65,
-            quantity: 1
+            sales_price: 65,
+            amount: 1
         },
         {
             id: "3",
@@ -34,8 +34,8 @@ export class NewSalesComponent implements OnInit {
             type: "Com Cadarço",
             size: 42,
             color: 'Preto',
-            price: 65,
-            quantity: 1
+            sales_price: 65,
+            amount: 1
         },
     ];
     product: Product = {};
@@ -76,7 +76,7 @@ export class NewSalesComponent implements OnInit {
 
     get subTotal(): number {
         return this.salesProducts.reduce((sum, product) => {
-            const productTotal = (product.quantity || 1) * product.price;
+            const productTotal = (product.amount || 1) * product.sales_price;
             return sum + productTotal;
         }, 0) - (this.discount || 0);
     }
@@ -111,9 +111,9 @@ export class NewSalesComponent implements OnInit {
     registerSales(){
         const salesItens: SalesItens[] = this.salesProducts.map(product => ({
             productId: product.id,
-            amount: product.quantity,
-            unitPrice: product.price,
-            subTotal: product.quantity * product.price
+            amount: product.amount,
+            unitPrice: product.sales_price,
+            subTotal: product.amount * product.sales_price
         }));
 
         const subTotal = (salesItens.reduce((sum, item) => sum + item.subTotal, 0) - (this.discount || 0));
