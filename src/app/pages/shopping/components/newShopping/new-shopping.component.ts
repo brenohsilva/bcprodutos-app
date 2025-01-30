@@ -17,8 +17,8 @@ export class NewShoppingComponent implements OnInit {
             type: 'Sem Cadarço',
             size: 40,
             color: 'Preto',
-            price: 65,
-            quantity: 1,
+            sales_price: 65,
+            amount: 1,
         },
         {
             id: '2',
@@ -26,8 +26,8 @@ export class NewShoppingComponent implements OnInit {
             type: 'Sem Cadarço',
             size: 41,
             color: 'Marrom',
-            price: 65,
-            quantity: 1,
+            sales_price: 65,
+            amount: 1,
         },
         {
             id: '3',
@@ -35,8 +35,8 @@ export class NewShoppingComponent implements OnInit {
             type: 'Com Cadarço',
             size: 42,
             color: 'Preto',
-            price: 65,
-            quantity: 1,
+            sales_price: 65,
+            amount: 1,
         },
     ];
     product: Product = {};
