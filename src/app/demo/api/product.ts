@@ -6,14 +6,11 @@ export interface Product {
     id?: string;
     code?: string;
     name?: string;
+    image?: string;
+    amount?: number;
     type?: string;
     size?: number;
     color?: string;
-    description?: string;
-    price?: number;
-    quantity?: number;
-    inventoryStatus?: InventoryStatus;
     category?: string;
-    image?: string;
-    rating?: number;
+    sales_price?: number;
 }
