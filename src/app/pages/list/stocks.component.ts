@@ -55,6 +55,36 @@ export class StocksComponent implements OnInit {
         this.initialData()
     }
 
+    initialData(){
+        this.productService
+        .getProducts()
+        .then((data) => (
+            console.log(data),
+            this.products = data));
+
+    this.sortOptions = [
+        { label: 'Maior Preço', value: '!price' },
+        { label: 'Menor Preço', value: 'price' },
+    ];
+
+    this.paymentMethods = [
+        { label: 'Dinheiro', value: 'Dinheiro' },
+        { label: 'Cartão de Credito', value: 'Cartão de Credito' },
+        { label: 'Cartão de Debito', value: 'Cartão de Debito' },
+        { label: 'Pix', value: 'Pix' },
+    ];
+
+    this.installments = [
+        { label: 'A vista', value: 'A vista' },
+        { label: 'Parcelado em 1x', value: 1 },
+        { label: 'Parcelado em 2x', value: 2 },
+        { label: 'Parcelado em 3x', value: 3 },
+        { label: 'Parcelado em 4x', value: 4 },
+        { label: 'Parcelado em 5x', value: 5 },
+        { label: 'Parcelado em 6x', value: 6 },
+    ];
+    }
+
     onSortChange(event: any) {
         const value = event.value;
 
@@ -81,7 +111,7 @@ export class StocksComponent implements OnInit {
     }
 
     calculateTotalValueOfSales(): number {
-        const subTotal = (this.product.price || 0) * (this.salesAmount || 1);
+        const subTotal = (this.product.sales_price || 0) * (this.salesAmount || 1);
         const discount = this.sales.discount || 0;
         const coast = this.sales.coast || 0;
         return subTotal - discount - coast;
@@ -97,7 +127,7 @@ export class StocksComponent implements OnInit {
     }
 
     saveSale() {
-        const subTotal = (this.product.price || 0) * (this.salesAmount || 1);
+        const subTotal = (this.product.sales_price || 0) * (this.salesAmount || 1);
         const discount = this.sales.discount || 0;
         const coast = this.sales.coast || 0;
         const totalValue = subTotal - discount - coast;
@@ -109,7 +139,7 @@ export class StocksComponent implements OnInit {
             salesItens: [
                 {
                     productId: this.product.id,
-                    unitPrice: this.product.price,
+                    unitPrice: this.product.sales_price,
                     amount: this.salesAmount,
                     subTotal,
                 },
@@ -146,31 +176,5 @@ export class StocksComponent implements OnInit {
         );
     }
 
-    initialData(){
-        this.productService
-        .getProducts()
-        .then((data) => (this.products = data));
-
-    this.sortOptions = [
-        { label: 'Maior Preço', value: '!price' },
-        { label: 'Menor Preço', value: 'price' },
-    ];
-
-    this.paymentMethods = [
-        { label: 'Dinheiro', value: 'Dinheiro' },
-        { label: 'Cartão de Credito', value: 'Cartão de Credito' },
-        { label: 'Cartão de Debito', value: 'Cartão de Debito' },
-        { label: 'Pix', value: 'Pix' },
-    ];
-
-    this.installments = [
-        { label: 'A vista', value: 'A vista' },
-        { label: 'Parcelado em 1x', value: 1 },
-        { label: 'Parcelado em 2x', value: 2 },
-        { label: 'Parcelado em 3x', value: 3 },
-        { label: 'Parcelado em 4x', value: 4 },
-        { label: 'Parcelado em 5x', value: 5 },
-        { label: 'Parcelado em 6x', value: 6 },
-    ];
-    }
+    
 }
