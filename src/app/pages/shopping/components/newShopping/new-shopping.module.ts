@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import {NewShoppingComponent } from './new-shopping.component';
+import { NewShoppingComponent } from './new-shopping.component';
 import { NewShoppingRoutingModule } from './new-shopping-routing.module';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { CalendarModule } from 'primeng/calendar';
@@ -19,6 +19,9 @@ import { RippleModule } from 'primeng/ripple';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { TooltipModule } from 'primeng/tooltip';
+import { MessageModule } from 'primeng/message';
+import { MessagesModule } from 'primeng/messages';
+import { ToastModule } from 'primeng/toast';
 
 @NgModule({
     imports: [
@@ -32,8 +35,11 @@ import { TooltipModule } from 'primeng/tooltip';
         DataViewModule,
         ButtonModule,
         RippleModule,
-		DialogModule,
-        TooltipModule
+        DialogModule,
+        TooltipModule,
+        MessagesModule,
+        MessageModule,
+        ToastModule
     ],
     declarations: [NewShoppingComponent],
 })
