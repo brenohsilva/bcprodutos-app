@@ -42,9 +42,9 @@ export class StocksComponent implements OnInit {
     shopping: Shopping = {
         description: 'Compra Única',
         installment: 'A vista',
-        paymentMethod: 'Cartão de Credito',
+        payment_method: 'Cartão de Credito',
         tax: 0,
-        totalValue: 0,
+        total_value: 0,
     };
 
     shoppingProductAmount: number = 1;
@@ -56,11 +56,9 @@ export class StocksComponent implements OnInit {
     }
 
     initialData(){
-        this.productService
-        .getProducts()
-        .then((data) => (
-            console.log(data),
-            this.products = data));
+        this.productService.getProducts().subscribe((data) => {
+            this.products = data.data
+        })
 
     this.sortOptions = [
         { label: 'Maior Preço', value: '!price' },
@@ -154,14 +152,14 @@ export class StocksComponent implements OnInit {
 
         this.shopping = {
             ...this.shopping,
-            totalValue: this.shopping.totalValue + + this.shopping.tax,
-            shoppingItens: [
+            total_value: this.shopping.total_value + + this.shopping.tax,
+            itens: [
                 {
                     productId: this.product.id,
                     amount: this.shoppingProductAmount,
-                    unitPrice:
-                        this.shopping.totalValue / this.shoppingProductAmount,
-                    subTotal: this.shopping.totalValue,
+                    unit_price:
+                        this.shopping.total_value / this.shoppingProductAmount,
+                    subTotal: this.shopping.total_value,
                 },
             ],
         };
