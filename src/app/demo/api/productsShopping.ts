@@ -10,15 +10,15 @@ export interface ProductShopping {
 export interface ShoppingItens {
     productId: number | string;
     amount: number;
-    unitPrice: number; //será o subtotal / amount
+    unit_price: number; //será o subtotal / amount
     subTotal: number
 }
 export interface Shopping {
     description?: string;
-    paymentMethod?: string;
+    payment_method?: string;
     installment?: string | number;
     tax?: number;
-    totalValue?: number; // será o valor dos produtos + o tax
-    shoppingItens?: ShoppingItens[]
+    total_value?: number; // será o valor dos produtos + o tax
+    itens?: ShoppingItens[]
     
 }
