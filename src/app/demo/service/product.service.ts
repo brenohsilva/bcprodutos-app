@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Product } from '../api/product';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class ProductService {
@@ -23,12 +24,9 @@ export class ProductService {
     //         .then(data => data);
     // }
 
-    getProducts() {
-        return this.http
-            .get<any>(this.base_url + 'products')
-            .toPromise()
-            .then((res) => res.data as Product[])
-            .then((data) => data);
+    getProducts(): Observable<any> {
+        return this.http.get<any>(this.base_url + 'products')
+            
     }
 
     getProductsMixed() {
