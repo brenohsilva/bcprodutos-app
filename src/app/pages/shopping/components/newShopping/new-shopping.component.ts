@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Table } from 'primeng/table';
+import { Router } from '@angular/router';
+import { MessageService } from 'primeng/api';
 import { Product } from 'src/app/demo/api/product';
-import { Sales, SalesItens } from 'src/app/demo/api/productsSales';
 import {
     ProductShopping,
     Shopping,
@@ -12,11 +12,14 @@ import { ShoppingService } from 'src/app/demo/service/shopping.service';
 
 @Component({
     templateUrl: './new-shopping.component.html',
+    providers: [MessageService],
 })
 export class NewShoppingComponent implements OnInit {
     constructor(
         private productService: ProductService,
-        private shoppingService: ShoppingService
+        private shoppingService: ShoppingService,
+        private service: MessageService,
+        private router: Router
     ) {}
     products: Product[];
     product: Product = {};
@@ -51,6 +54,24 @@ export class NewShoppingComponent implements OnInit {
             { field: 'size', header: 'Size' },
             { field: 'color', header: 'Color' },
         ];
+    }
+
+    showSuccessViaToast() {
+        this.service.add({
+            key: 'tst',
+            severity: 'success',
+            summary: 'Sucesso!',
+            detail: 'Compra registrada com sucesso!',
+        });
+    }
+
+    showErrorViaToast() {
+        this.service.add({
+            key: 'tst',
+            severity: 'error',
+            summary: 'Ops',
+            detail: 'algo deu errado!',
+        });
     }
 
     get total(): number {
@@ -100,22 +121,26 @@ export class NewShoppingComponent implements OnInit {
 
         this.shoppingData = {
             description: this.description || 'Primeira compra',
-            payment_method: this.selectedMethod.name,
+            payment_method: this.selectedMethod.name || null,
             tax: this.tax,
             total_value,
             itens,
         };
 
-        const response = await this.shoppingService.registerShopping(this.shoppingData)
-        response.subscribe((res)=> {
-            console.log(res)
-            if (res.sucess) {
-                console.log(res.data)
-                alert("Compra registrada com sucesso")
+        this.shoppingService.registerShopping(this.shoppingData).subscribe(
+            (res) => {
+                console.log(res);
+                if (res.success) {
+                    this.showSuccessViaToast();
+                    setTimeout(() => {
+                        this.router.navigate(['/compras']);
+                    }, 2000);
+                }
+            },
+            (error) => {
+                console.error('Erro na requisição:', error);
+                this.showErrorViaToast();
             }
-            else {
-                console.log("Deu errado")
-            }
-        })
+        );
     }
 }

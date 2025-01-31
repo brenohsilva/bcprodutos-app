@@ -4,6 +4,7 @@ export interface ProductShopping {
     price?: number;
     paymentMethod?: string;
     tax?: number;
+    installment?: number;
     totalValue?: number;
 }
 

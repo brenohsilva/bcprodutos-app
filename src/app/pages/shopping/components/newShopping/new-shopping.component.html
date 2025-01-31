@@ -45,7 +45,10 @@
                         </td>
                         <td style="width: 14%; min-width: 8rem">
                             <span class="p-column-title">Preço</span>
-                            {{ product.totalValue / product.amount | currency : "USD" }}
+                            {{
+                                product.totalValue / product.amount
+                                    | currency : "USD"
+                            }}
                         </td>
                         <td>
                             <p-inputNumber
@@ -131,6 +134,7 @@
                 </div>
             </div>
         </div>
+        
         <div class="col-12 flex justify-content-end p-fluid mt-2">
             <div class="p-formgrid grid col-6">
                 <div class="field card col-12 flex flex-column gap-3">
@@ -146,6 +150,7 @@
                     </div>
                 </div>
             </div>
+            
         </div>
         <div class="col-12 flex justify-content-end gap-3 p-fluid mt-2">
             <button
@@ -155,6 +160,7 @@
                 label="Cancelar"
                 class="p-button-raised p-button-warning col-1"
             ></button>
+            <p-toast key="tst"></p-toast>
             <button
                 pButton
                 pRipple
@@ -211,8 +217,9 @@
                 dt
                 [value]="products"
                 [columns]="cols"
+                [paginator]="true"
                 responsiveLayout="scroll"
-                [rows]="10"
+                [rows]="9"
                 [(selection)]="selectedProducts"
                 selectionMode="multiple"
                 [rowHover]="true"
@@ -270,8 +277,7 @@
                             <span class="p-column-title">Image</span>
                             <img
                                 [src]="
-                                    'assets/demo/images/product/' +
-                                    product.image
+                                    'assets/demo/images/product/ss01.jpeg' 
                                 "
                                 [alt]="product.name"
                                 width="100"
