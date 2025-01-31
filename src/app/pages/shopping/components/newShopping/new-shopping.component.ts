@@ -2,43 +2,23 @@ import { Component, OnInit } from '@angular/core';
 import { Table } from 'primeng/table';
 import { Product } from 'src/app/demo/api/product';
 import { Sales, SalesItens } from 'src/app/demo/api/productsSales';
-import { ProductShopping, Shopping, ShoppingItens } from 'src/app/demo/api/productsShopping';
+import {
+    ProductShopping,
+    Shopping,
+    ShoppingItens,
+} from 'src/app/demo/api/productsShopping';
 import { ProductService } from 'src/app/demo/service/product.service';
+import { ShoppingService } from 'src/app/demo/service/shopping.service';
 
 @Component({
     templateUrl: './new-shopping.component.html',
 })
 export class NewShoppingComponent implements OnInit {
-    constructor(private productService: ProductService) {}
-    products: Product[] = [
-        {
-            id: '1',
-            name: 'Sapato Social',
-            type: 'Sem Cadarço',
-            size: 40,
-            color: 'Preto',
-            sales_price: 65,
-            amount: 1,
-        },
-        {
-            id: '2',
-            name: 'Tênis',
-            type: 'Sem Cadarço',
-            size: 41,
-            color: 'Marrom',
-            sales_price: 65,
-            amount: 1,
-        },
-        {
-            id: '3',
-            name: 'Sapato Social',
-            type: 'Com Cadarço',
-            size: 42,
-            color: 'Preto',
-            sales_price: 65,
-            amount: 1,
-        },
-    ];
+    constructor(
+        private productService: ProductService,
+        private shoppingService: ShoppingService
+    ) {}
+    products: Product[];
     product: Product = {};
     selectedProducts: Product[] = [];
     shoppingProducts: ProductShopping[] = [];
@@ -60,9 +40,9 @@ export class NewShoppingComponent implements OnInit {
     openAddNewProductsDialog: boolean = false;
 
     ngOnInit(): void {
-        // this.productService
-        // .getProducts()
-        // .then((data) => (this.products = data));
+        this.productService.getProducts().subscribe((data) => {
+            this.products = data.data;
+        });
 
         this.cols = [
             { field: 'product', header: 'Product' },
@@ -74,13 +54,14 @@ export class NewShoppingComponent implements OnInit {
     }
 
     get total(): number {
-        return this.shoppingProducts.reduce((sum, product) => {
-            const productTotal = product.totalValue;
-            return (sum + productTotal) ; 
-        } , 0) + (this.tax || 0);
+        return (
+            this.shoppingProducts.reduce((sum, product) => {
+                const productTotal = product.totalValue;
+                return sum + productTotal;
+            }, 0) + (this.tax || 0)
+        );
     }
 
-    
     newProducts() {
         this.openAddNewProductsDialog = true;
     }
@@ -106,30 +87,35 @@ export class NewShoppingComponent implements OnInit {
         this.openAddNewProductsDialog = false;
     }
 
-    registerShopping() {
-        const shoppingItens: ShoppingItens[] = this.shoppingProducts.map(
-            (product) => ({
-                productId: product.id,
-                amount: product.amount,
-                unitPrice: product.totalValue / product.amount,
-                subTotal: product.totalValue,
-            })
-        );
+    async registerShopping() {
+        const itens: ShoppingItens[] = this.shoppingProducts.map((product) => ({
+            productId: product.id,
+            amount: product.amount,
+            unit_price: product.totalValue / product.amount,
+            subTotal: product.totalValue,
+        }));
 
-        const subTotal = shoppingItens.reduce(
-            (sum, item) => sum + item.subTotal,
-            0
-        );
-        const totalValue = subTotal + this.tax;
+        const subTotal = itens.reduce((sum, item) => sum + item.subTotal, 0);
+        const total_value = subTotal + this.tax;
 
         this.shoppingData = {
             description: this.description || 'Primeira compra',
-            paymentMethod: this.selectedMethod,
+            payment_method: this.selectedMethod.name,
             tax: this.tax,
-            totalValue,
-            shoppingItens,
+            total_value,
+            itens,
         };
 
-        console.log(this.shoppingData);
+        const response = await this.shoppingService.registerShopping(this.shoppingData)
+        response.subscribe((res)=> {
+            console.log(res)
+            if (res.sucess) {
+                console.log(res.data)
+                alert("Compra registrada com sucesso")
+            }
+            else {
+                console.log("Deu errado")
+            }
+        })
     }
 }
