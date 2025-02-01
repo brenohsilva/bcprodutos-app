@@ -31,8 +31,17 @@ export class NewShoppingComponent implements OnInit {
         { label: 'Cartão de Debito', value: { name: 'Debito' } },
         { label: 'Dinheiro', value: { name: 'Dinheiro' } },
     ];
-
+    installments = [
+        { label: 'A vista', value: 'A vista' },
+        { label: 'Parcelado em 1x', value: 1 },
+        { label: 'Parcelado em 2x', value: 2 },
+        { label: 'Parcelado em 3x', value: 3 },
+        { label: 'Parcelado em 4x', value: 4 },
+        { label: 'Parcelado em 5x', value: 5 },
+        { label: 'Parcelado em 6x', value: 6 },
+    ];
     selectedMethod: any = null;
+    installment: number = 1
     tax: number;
     description: string;
     shoppingData: Shopping;
@@ -41,6 +50,7 @@ export class NewShoppingComponent implements OnInit {
     cols: any[] = [];
     openDeleteProductDialog: boolean = false;
     openAddNewProductsDialog: boolean = false;
+    cancelShoppingDialog: boolean = false;
 
     ngOnInit(): void {
         this.productService.getProducts().subscribe((data) => {
@@ -123,6 +133,7 @@ export class NewShoppingComponent implements OnInit {
             description: this.description || 'Primeira compra',
             payment_method: this.selectedMethod.name || null,
             tax: this.tax,
+            installment: this.installment,
             total_value,
             itens,
         };
@@ -133,7 +144,7 @@ export class NewShoppingComponent implements OnInit {
                 if (res.success) {
                     this.showSuccessViaToast();
                     setTimeout(() => {
-                        this.router.navigate(['/compras']);
+                        this.router.navigate(['uikit/compras']);
                     }, 2000);
                 }
             },
@@ -142,5 +153,14 @@ export class NewShoppingComponent implements OnInit {
                 this.showErrorViaToast();
             }
         );
+    }
+
+    cancelShopping(){
+        this.cancelShoppingDialog = true
+    }
+
+    confirmCancelShopping(){
+        this.cancelShoppingDialog = false
+        this.router.navigate(['uikit/compras']);
     }
 }

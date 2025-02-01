@@ -1,6 +1,6 @@
 <div class="card">
     <h5>Nova compra</h5>
-    <div class="grid">
+    <div class="">
         @if (shoppingProducts && shoppingProducts.length !== 0) {
         <div class="col-12">
             <p-table
@@ -100,9 +100,9 @@
             ></button>
         </div>
         @if (shoppingProducts && shoppingProducts.length !== 0){
-        <div class="col-12 p-fluid flex justify-content-end mt-3 gap-4">
+        <div class="col-12 p-fluid flex mt-3 gap-4">
             <div
-                class="card col-12 md:col-6 lg:col-6 mr-3 p-4 flex flex-column gap-2"
+                class="card col-12 lg:col-6 mr-3 p-4 flex flex-column gap-2"
             >
                 <label htmlFor="description">Descrição</label>
                 <input
@@ -112,7 +112,7 @@
                     type="text"
                 />
             </div>
-            <div class="p-formgrid card grid col-12 md:col-6 lg:col-6">
+            <div class="p-formgrid card grid col-12 lg:col-6">
                 <div class="field col-6">
                     <label>Método de pagamento</label>
                     <p-dropdown
@@ -121,6 +121,17 @@
                         placeholder="Selecione um método de pagamento"
                         [showClear]="true"
                     ></p-dropdown>
+                </div>
+                <div class="field col-6">
+                    <label>Parcelas</label>
+                    <p-dropdown
+                        [(ngModel)]="installment"
+                        inputId="method"
+                        optionValue="value"
+                        [options]="installments"
+                        placeholder="Selecione o método de pagamento"
+                    >
+                    </p-dropdown>
                 </div>
                 <div class="field col-6">
                     <label htmlFor="email2">Frete</label>
@@ -133,8 +144,7 @@
                     ></p-inputNumber>
                 </div>
             </div>
-        </div>
-        
+        </div>    
         <div class="col-12 flex justify-content-end p-fluid mt-2">
             <div class="p-formgrid grid col-6">
                 <div class="field card col-12 flex flex-column gap-3">
@@ -159,6 +169,7 @@
                 type="button"
                 label="Cancelar"
                 class="p-button-raised p-button-warning col-1"
+                (click)="cancelShopping()"
             ></button>
             <p-toast key="tst"></p-toast>
             <button
@@ -312,6 +323,41 @@
                     Adicionar Produtos
                 </button>
             </div>
+        </p-dialog>
+        <p-dialog
+            [(visible)]="cancelShoppingDialog"
+            header="Cancelar compra"
+            [modal]="true"
+            [style]="{ width: '450px' }"
+        >
+            <div class="flex align-items-center justify-content-center">
+                <i
+                    class="pi pi-exclamation-triangle mr-3"
+                    style="font-size: 2rem"
+                ></i>
+                <span *ngIf="product"
+                    >Você tem certeza que deseja cancelar essa compra?
+                    >?</span
+                >
+            </div>
+            <ng-template pTemplate="footer">
+                <button
+                    pButton
+                    pRipple
+                    icon="pi pi-times"
+                    class="p-button-text"
+                    label="não"
+                    (click)="cancelShoppingDialog = false"
+                ></button>
+                <button
+                    pButton
+                    pRipple
+                    icon="pi pi-check"
+                    class="p-button-text"
+                    label="sim"
+                    (click)="confirmDelete(product)"
+                ></button>
+            </ng-template>
         </p-dialog>
     </div>
 </div>
