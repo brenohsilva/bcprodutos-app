@@ -1,9 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
-
+import { forkJoin, catchError, of } from 'rxjs';
 import { Subscription, debounceTime } from 'rxjs';
 import { Product } from 'src/app/demo/api/product';
 import { ProductService } from 'src/app/demo/service/product.service';
+import { SalesService } from 'src/app/demo/service/sales.service';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
 
 @Component({
@@ -20,9 +22,20 @@ export class SalesComponent implements OnInit, OnDestroy {
 
     subscription!: Subscription;
 
+    salesData = {
+        valueSalesOfWeek: 0,
+        valueSalesOfMonth: 0,
+        quantityOfSalesByWeek: 0,
+        quantityOfSalesByMonth: 0,
+        quantityOfProductSoldByWeek: 0,
+        quantityOfProductSoldByMonth: 0,
+    };
+
     constructor(
         private productService: ProductService,
-        public layoutService: LayoutService
+        public layoutService: LayoutService,
+        public salesService: SalesService,
+        private router: Router
     ) {
         this.subscription = this.layoutService.configUpdate$
             .pipe(debounceTime(25))
@@ -32,6 +45,7 @@ export class SalesComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+        this.getSalesData();
         this.initChart();
         this.productService
             .getProductsSmall()
@@ -147,5 +161,27 @@ export class SalesComponent implements OnInit, OnDestroy {
         if (this.subscription) {
             this.subscription.unsubscribe();
         }
+    }
+
+    registerNewSale() {
+        this.router.navigate(['uikit/novasvendas']);
+    }
+
+    getSalesData() {
+        forkJoin({
+            valueSalesOfWeek: this.salesService.getValueSalesByPeriod('week').pipe(catchError(() => of(null))),
+            valueSalesOfMonth: this.salesService.getValueSalesByPeriod('month').pipe(catchError(() => of(null))),
+            quantityOfSalesByWeek: this.salesService.getQuantityOfSalesByPeriod('week').pipe(catchError(() => of(null))),
+            quantityOfSalesByMonth: this.salesService.getQuantityOfSalesByPeriod('month').pipe(catchError(() => of(null))),
+            quantityOfProductSoldByWeek: this.salesService.getQuantityOfProductSoldByPeriod('week').pipe(catchError(() => of(null))),
+            quantityOfProductSoldByMonth: this.salesService.getQuantityOfProductSoldByPeriod('month').pipe(catchError(() => of(null))),
+        }).subscribe((res) => {
+            this.salesData.valueSalesOfWeek = Number(res.valueSalesOfWeek?.data?.liquido || 0);
+            this.salesData.valueSalesOfMonth = Number(res.valueSalesOfMonth?.data?.liquido || 0);
+            this.salesData.quantityOfSalesByWeek = res.quantityOfSalesByWeek?.data || 0;
+            this.salesData.quantityOfSalesByMonth = res.quantityOfSalesByMonth?.data || 0;
+            this.salesData.quantityOfProductSoldByWeek = res.quantityOfProductSoldByWeek?.data || 0;
+            this.salesData.quantityOfProductSoldByMonth = res.quantityOfProductSoldByMonth?.data || 0;
+        });
     }
 }
