@@ -17,9 +17,9 @@
                     <tr>
                         <th>Nome</th>
                         <th>Tipo</th>
-                        <th>Preço</th>
                         <th>Tamanho</th>
                         <th>Cor</th>
+                        <th>Preço</th>
                         <th>Quantidade</th>
                         <th>Valor total</th>
                     </tr>
@@ -34,10 +34,7 @@
                             <span class="p-column-title">Type</span>
                             {{ product.type }}
                         </td>
-                        <td style="width: 4%; min-width: 7rem">
-                            <span class="p-column-title">Price</span>
-                            {{ product.price | currency : "BRL" }}
-                        </td>
+
                         <td style="width: 4%; min-width: 5rem">
                             <span class="p-column-title">Size</span>
                             {{ product.size }}
@@ -46,23 +43,31 @@
                             <span class="p-column-title">Color</span>
                             {{ product.color }}
                         </td>
+                        <td style="width: 4%; min-width: 7rem">
+                            <span class="p-column-title">Price</span>
+                            <p-inputNumber
+                                id="price"
+                                [(ngModel)]="product.sales_price"
+                                mode="currency"
+                                currency="BRL"
+                                locale="pt-BR"
+                            ></p-inputNumber>
+                        </td>
                         <td>
                             <p-inputNumber
+                                id="quantity"
                                 style="width: 4%; min-width: 5rem"
                                 mode="decimal"
                                 [showButtons]="true"
                                 [min]="1"
                                 [max]="100"
-                                [(ngModel)]="product.quantity"
+                                [(ngModel)]="product.amount"
                             >
                             </p-inputNumber>
                         </td>
                         <td style="width: 4%; min-width: 7rem">
                             <span class="p-column-title">Total Value</span>
-                            {{
-                                product.price * product.quantity
-                                    | currency : "BRL"
-                            }}
+                            {{ product.sales_price * product.amount | currency : "BRL" }}
                         </td>
                         <td>
                             <button
@@ -93,81 +98,105 @@
             ></button>
         </div>
         @if (salesProducts && salesProducts.length !== 0){
-            <div class="col-12 p-fluid flex justify-content-end mt-3 gap-4">
-                <div class="card col-12 md:col-6 lg:col-6 mr-3 p-4 flex flex-column gap-2 ">
-                    <label htmlFor="description">Descrição</label>
-					<input  [(ngModel)]="description" pInputText id="description" type="text" />
+        <div class="col-12 p-fluid flex justify-content-end mt-3 gap-4">
+            <div
+                class="card col-12 md:col-6 lg:col-6 mr-3 p-4 flex flex-column gap-2"
+            >
+                <label htmlFor="description">Descrição</label>
+                <input
+                    [(ngModel)]="description"
+                    pInputText
+                    id="description"
+                    type="text"
+                />
+            </div>
+            <div class="p-formgrid card grid col-12 md:col-6 lg:col-6">
+                <div class="field col-6">
+                    <label>Método de pagamento</label>
+                    <p-dropdown
+                        [options]="Methods"
+                        [(ngModel)]="selectedMethod"
+                        placeholder="Selecione um método de pagamento"
+                        [showClear]="true"
+                    ></p-dropdown>
                 </div>
-                <div class="p-formgrid card grid col-12 md:col-6 lg:col-6">
-                    <div class="field col-6">
-                        <label>Método de pagamento</label>
-                        <p-dropdown
-                            [options]="Methods"
-                            [(ngModel)]="selectedMethod"
-                            placeholder="Selecione um método de pagamento"
-                            [showClear]="true"
-                        ></p-dropdown>
-                    </div>
-                    <div class="field col-3">
-                        <label htmlFor="email2">Custo</label>
-                        <p-inputNumber
-                            id="price"
-                            [(ngModel)]="coust"
-                            mode="currency"
-                            currency="BRL"
-                            locale="pt-BR"
-                        ></p-inputNumber>
-                    </div>
-                    <div class="field col-3">
-                        <label htmlFor="email2">Desconto</label>
-                        <p-inputNumber
-                            id="price"
-                            [(ngModel)]="discount"
-                            mode="currency"
-                            currency="BRL"
-                            locale="pt-BR"
-                        ></p-inputNumber>
-                    </div>
+                <div class="field col-6">
+                    <label htmlFor="email2">Adicional</label>
+                    <p-inputNumber
+                        id="additional"
+                        [(ngModel)]="additional"
+                        mode="currency"
+                        currency="BRL"
+                        locale="pt-BR"
+                    ></p-inputNumber>
+                </div>
+                <div class="field col-6">
+                    <label htmlFor="email2">Custo</label>
+                    <p-inputNumber
+                        id="price"
+                        [(ngModel)]="coust"
+                        mode="currency"
+                        currency="BRL"
+                        locale="pt-BR"
+                    ></p-inputNumber>
+                </div>
+                <div class="field col-6">
+                    <label htmlFor="email2">Desconto</label>
+                    <p-inputNumber
+                        id="price"
+                        [(ngModel)]="discount"
+                        mode="currency"
+                        currency="BRL"
+                        locale="pt-BR"
+                    ></p-inputNumber>
                 </div>
             </div>
-            <div class="col-12 flex justify-content-end p-fluid mt-2">
-                <div class="p-formgrid grid col-6">
-                    <div class="field card col-12 flex flex-column gap-3">
-                        <div class="flex justify-content-between">
-                            <label htmlFor="email2">Desconto: </label>
-                            <strong>{{discount | currency : "BRL"}}</strong>
-                        </div>
-                        <div class="flex justify-content-between">
-                            <label htmlFor="email2" pTooltip="Valor com desconto">Sub Total: </label>
-                            <strong>{{subTotal | currency : "BRL" }}</strong>
-                        </div>
+        </div>
+        <div class="col-12 flex justify-content-end p-fluid mt-2">
+            <div class="p-formgrid grid col-6">
+                <div class="field card col-12 flex flex-column gap-3">
+                    <div class="flex justify-content-between">
+                        <label htmlFor="email2">Valor total bruto: </label>
+                        <strong>{{ totalGrossValue | currency : "BRL" }}</strong>
                     </div>
-        
-                    <div class="field card col-12 flex flex-column gap-3">
-                        <div class="flex justify-content-between">
-                            <label htmlFor="email2">Desconto: </label>
-                            <strong>{{discount | currency : "BRL"}}</strong>
-                        </div>
-                        <div class="flex justify-content-between">
-                            <label htmlFor="email2">Custo: </label>
-                            <strong>{{coust | currency : "BRL"}}</strong>
-                        </div>
-                        <div class="flex justify-content-between">
-                            <label htmlFor="email2" pTooltip="Valor com desconto e custo">Total: </label>
-                            <strong>{{total | currency : "BRL" }}</strong>
-                        </div>
+                    <div class="flex justify-content-between">
+                        <label htmlFor="email2" pTooltip="Valor com desconto"
+                            >Valor total líquido:
+                        </label>
+                        <strong>{{ totalNetValue | currency : "BRL" }}</strong>
                     </div>
                 </div>
+
+                <!-- <div class="field card col-12 flex flex-column gap-3">
+                    <div class="flex justify-content-between">
+                        <label htmlFor="email2">Desconto: </label>
+                        <strong>{{ discount | currency : "BRL" }}</strong>
+                    </div>
+                    <div class="flex justify-content-between">
+                        <label htmlFor="email2">Custo: </label>
+                        <strong>{{ coust | currency : "BRL" }}</strong>
+                    </div>
+                    <div class="flex justify-content-between">
+                        <label
+                            htmlFor="email2"
+                            pTooltip="Valor com desconto e custo"
+                            >Total:
+                        </label>
+                        <strong>{{ total | currency : "BRL" }}</strong>
+                    </div>
+                </div> -->
             </div>
-            <div class="col-12 flex justify-content-end gap-3 p-fluid mt-2">
-                <button
+        </div>
+        <div class="col-12 flex justify-content-end gap-3 p-fluid mt-2">
+            <button
                 pButton
                 pRipple
                 type="button"
                 label="Cancelar"
                 class="p-button-raised p-button-warning col-1"
             ></button>
-                <button
+            <p-toast key="tst"></p-toast>
+            <button
                 pButton
                 pRipple
                 type="button"
@@ -175,8 +204,7 @@
                 (click)="registerSales()"
                 class="p-button-raised p-button-success col-3"
             ></button>
-            
-            </div>
+        </div>
         }
 
         <p-dialog
@@ -225,6 +253,7 @@
                 [value]="products"
                 [columns]="cols"
                 responsiveLayout="scroll"
+                paginator="true"
                 [rows]="10"
                 [(selection)]="selectedProducts"
                 selectionMode="multiple"
@@ -285,10 +314,7 @@
                         <td style="width: 14%; min-width: 10rem">
                             <span class="p-column-title">Image</span>
                             <img
-                                [src]="
-                                    'assets/demo/images/product/' +
-                                    product.image
-                                "
+                                [src]="'assets/demo/images/product/ss01.jpeg'"
                                 [alt]="product.name"
                                 width="100"
                                 class="shadow-4"
@@ -296,7 +322,7 @@
                         </td>
                         <td style="width: 14%; min-width: 8rem">
                             <span class="p-column-title">Preço</span>
-                            {{ product.price | currency : "USD" }}
+                            {{ product.sales_price | currency : "USD" }}
                         </td>
                         <td style="width: 14%; min-width: 10rem">
                             <span class="p-column-title">Tipo</span>

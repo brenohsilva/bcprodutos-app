@@ -34,7 +34,7 @@ export class StocksComponent implements OnInit {
 
     sales: Sales = {
         description: 'Venda Única',
-        paymentMethod: 'Pix',
+        payment_method: 'Pix',
         coast: 0,
         discount: 0,
     };
@@ -99,6 +99,26 @@ export class StocksComponent implements OnInit {
         dv.filter((event.target as HTMLInputElement).value);
     }
 
+    getTagClass(color?: string): string {
+        if (color) {
+            switch (color.toLowerCase()) {
+                case 'preto':
+                    return 'tag-preto'
+              case 'azul':
+                return 'tag-azul';
+              case 'marrom':
+                return 'tag-marrom';
+              case 'branco':
+                return 'tag-branco';
+              case 'amarelo':
+                return 'tag-amarelo';
+              default:
+                return 'custom-tag';
+            }
+        }
+        return ''
+      }
+
     openNewSales(product: any) {
         this.product = product;
         this.salesDialog = true;
@@ -134,10 +154,10 @@ export class StocksComponent implements OnInit {
             ...this.sales,
             subTotal,
             totalValue,
-            salesItens: [
+            itens: [
                 {
                     productId: this.product.id,
-                    unitPrice: this.product.sales_price,
+                    unit_price: this.product.sales_price,
                     amount: this.salesAmount,
                     subTotal,
                 },
