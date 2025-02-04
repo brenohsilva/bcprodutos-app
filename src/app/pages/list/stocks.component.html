@@ -111,7 +111,7 @@
                                 <td style="width: 14%; min-width: 10rem">
                                     <span class="p-column-title">Image</span>
                                     <img
-                                        src="assets/demo/images/product/ss01.jpeg"
+                                    [src]="'assets/demo/images/product/' + 'CA01'"
                                         [alt]="product.name"
                                         width="100"
                                         class="shadow-4"
@@ -172,9 +172,11 @@
                                             }}</strong></span
                                         >
                                         |
-                                        <p-tag
-                                            value="{{ product.color }}"
-                                        ></p-tag>
+                                        @if (product.color) {
+                                            <p-tag [styleClass]="getTagClass(product.color)"
+                                                value="{{ product.color }}"
+                                            ></p-tag>
+                                        }
                                     </div>
                                     <span class="font-bold"
                                         >Qtd: {{ product.amount }}</span
@@ -184,7 +186,7 @@
                                     class="flex flex-column align-items-center text-center mb-3"
                                 >
                                     <img
-                                        src="assets/demo/images/product/ss01.jpeg"
+                                    [src]="'assets/demo/images/product/' + product.image + '.jpg'"
                                         [alt]="product.name"
                                         class="w-9 shadow-2 my-3 mx-0"
                                     />

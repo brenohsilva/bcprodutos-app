@@ -12,3 +12,42 @@ $gutter: 1rem; //for primeflex grid system
 @import "assets/demo/styles/flags/flags.css";
 @import "assets/demo/styles/badges.scss";
 @import "assets/demo/styles/code.scss";
+
+:root {
+    // --primary-color: #ff5733;  /* Define uma nova cor para 'primary' */
+    // --primary-color-text: #ffffff; /* Cor do texto */
+    
+    // --info-color: #17a2b8; /* Nova cor para 'info' */
+    // --info-color-text: #ffffff;
+
+  }
+
+  .tag-preto {
+    background-color: black;
+    color: white;
+  }
+
+  .tag-marrom {
+    background-color: brown;
+    color: white;
+  }
+
+  .tag-azul {
+    background-color: blue;
+    color: white;
+  }
+  
+  .tag-branco {
+    background-color: rgb(228, 224, 224);
+    color: black;
+  }
+  
+  .tag-amarelo {
+    background-color: yellow;
+    color: black;
+  }
+  
+  .custom-tag {
+    background-color: gray;
+    color: white;
+  }
