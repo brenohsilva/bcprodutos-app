@@ -101,9 +101,7 @@
         </div>
         @if (shoppingProducts && shoppingProducts.length !== 0){
         <div class="col-12 p-fluid flex mt-3 gap-4">
-            <div
-                class="card col-12 lg:col-6 mr-3 p-4 flex flex-column gap-2"
-            >
+            <div class="card col-12 lg:col-6 mr-3 p-4 flex flex-column gap-2">
                 <label htmlFor="description">Descrição</label>
                 <input
                     [(ngModel)]="description"
@@ -144,7 +142,7 @@
                     ></p-inputNumber>
                 </div>
             </div>
-        </div>    
+        </div>
         <div class="col-12 flex justify-content-end p-fluid mt-2">
             <div class="p-formgrid grid col-6">
                 <div class="field card col-12 flex flex-column gap-3">
@@ -160,7 +158,6 @@
                     </div>
                 </div>
             </div>
-            
         </div>
         <div class="col-12 flex justify-content-end gap-3 p-fluid mt-2">
             <button
@@ -288,7 +285,9 @@
                             <span class="p-column-title">Image</span>
                             <img
                                 [src]="
-                                    'assets/demo/images/product/ss01.jpeg' 
+                                    'assets/demo/images/product/' +
+                                    product.image +
+                                    '.jpg'
                                 "
                                 [alt]="product.name"
                                 width="100"
@@ -336,8 +335,7 @@
                     style="font-size: 2rem"
                 ></i>
                 <span *ngIf="product"
-                    >Você tem certeza que deseja cancelar essa compra?
-                    >?</span
+                    >Você tem certeza que deseja cancelar essa compra? >?</span
                 >
             </div>
             <ng-template pTemplate="footer">

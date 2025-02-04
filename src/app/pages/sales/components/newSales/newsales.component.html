@@ -67,7 +67,10 @@
                         </td>
                         <td style="width: 4%; min-width: 7rem">
                             <span class="p-column-title">Total Value</span>
-                            {{ product.sales_price * product.amount | currency : "BRL" }}
+                            {{
+                                product.sales_price * product.amount
+                                    | currency : "BRL"
+                            }}
                         </td>
                         <td>
                             <button
@@ -157,7 +160,9 @@
                 <div class="field card col-12 flex flex-column gap-3">
                     <div class="flex justify-content-between">
                         <label htmlFor="email2">Valor total bruto: </label>
-                        <strong>{{ totalGrossValue | currency : "BRL" }}</strong>
+                        <strong>{{
+                            totalGrossValue | currency : "BRL"
+                        }}</strong>
                     </div>
                     <div class="flex justify-content-between">
                         <label htmlFor="email2" pTooltip="Valor com desconto"
@@ -314,7 +319,11 @@
                         <td style="width: 14%; min-width: 10rem">
                             <span class="p-column-title">Image</span>
                             <img
-                                [src]="'assets/demo/images/product/ss01.jpeg'"
+                                [src]="
+                                    'assets/demo/images/product/' +
+                                    product.image +
+                                    '.jpg'
+                                "
                                 [alt]="product.name"
                                 width="100"
                                 class="shadow-4"
