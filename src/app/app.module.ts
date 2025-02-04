@@ -12,6 +12,7 @@ import { IconService } from './demo/service/icon.service';
 import { NodeService } from './demo/service/node.service';
 import { PhotoService } from './demo/service/photo.service';
 import { ShoppingService } from './demo/service/shopping.service';
+import { SalesService } from './demo/service/sales.service';
 
 @NgModule({
     declarations: [AppComponent, NotfoundComponent],
@@ -19,7 +20,7 @@ import { ShoppingService } from './demo/service/shopping.service';
     providers: [
         { provide: LocationStrategy, useClass: PathLocationStrategy },
         CountryService, CustomerService, EventService, IconService, NodeService,
-        PhotoService, ProductService, ShoppingService
+        PhotoService, ProductService, ShoppingService, SalesService,
     ],
     bootstrap: [AppComponent],
 })

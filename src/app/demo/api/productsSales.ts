@@ -2,16 +2,19 @@
 export interface SalesItens {
     productId: number | string;
     amount: number;
-    unitPrice: number;
-    subTotal: number
+    unit_price: number;
+    subTotal?: number;
 }
 export interface Sales {
     description?: string;
-    paymentMethod?: string;
+    additional?: number;
+    payment_method?: string;
     coast?: number;
     discount?: number;
-    subTotal?: number; //Valor com desconto mas sem o custo
-    totalValue?: number;
-    salesItens?: SalesItens[]
+    total_gross_value?: number;
+    total_net_value?: number;
+    subTotal?: number;
+    totalValue?:number;
+    itens?: SalesItens[]
     
 }
