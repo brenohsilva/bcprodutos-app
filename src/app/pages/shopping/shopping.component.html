@@ -1,10 +1,18 @@
 <div class="card">
     <h5>Compras</h5>
     <div class="grid">
-        <div class="col-12 lg:col-6 xl:col-6 flex justify-content-center align-items-center">
-            <button pButton pRipple type="button" label="Adicionar uma nova Compra" class="p-button-raised p-button-success"></button>
+        <div
+            class="col-12 lg:col-6 xl:col-6 flex justify-content-center align-items-center"
+        >
+            <button
+                pButton
+                pRipple
+                type="button"
+                label="Adicionar uma nova Compra"
+                class="p-button-raised p-button-success"
+            ></button>
         </div>
-        
+
         <div class="col-12 lg:col-6 xl:col-3">
             <div class="card mb-0">
                 <div class="flex justify-content-between mb-3">
@@ -12,9 +20,12 @@
                         <span class="block text-500 font-medium mb-3"
                             >Compra Semanal (R$)</span
                         >
-                        <div class="text-900 font-medium text-xl">{{
-                            shoppingData.valueShoppingOfWeek | currency : "BRL"
-                        }}</div>
+                        <div class="text-900 font-medium text-xl">
+                            {{
+                                shoppingData.valueShoppingOfWeek
+                                    | currency : "BRL"
+                            }}
+                        </div>
                     </div>
                     <div
                         class="flex align-items-center justify-content-center bg-cyan-100 border-round"
@@ -34,9 +45,12 @@
                         <span class="block text-500 font-medium mb-3"
                             >Compra Mensal (R$)</span
                         >
-                        <div class="text-900 font-medium text-xl">{{
-                            shoppingData.valueShoppingOfMonth | currency : "BRL"
-                        }}</div>
+                        <div class="text-900 font-medium text-xl">
+                            {{
+                                shoppingData.valueShoppingOfMonth
+                                    | currency : "BRL"
+                            }}
+                        </div>
                     </div>
                     <div
                         class="flex align-items-center justify-content-center bg-purple-100 border-round"
@@ -54,16 +68,20 @@
             <div class="card mb-0">
                 <div class="flex justify-content-between mb-3">
                     <div>
-                        <span class="block text-500 font-medium mb-3">Nº Compras Semanais</span>
-                        <div class="text-900 font-medium text-xl">{{
-                            shoppingData.amountShoppingOnWeek
-                        }}</div>
+                        <span class="block text-500 font-medium mb-3"
+                            >Nº Compras Semanais</span
+                        >
+                        <div class="text-900 font-medium text-xl">
+                            {{ shoppingData.amountShoppingOnWeek }}
+                        </div>
                     </div>
                     <div
                         class="flex align-items-center justify-content-center bg-blue-100 border-round"
                         [ngStyle]="{ width: '2.5rem', height: '2.5rem' }"
                     >
-                        <i class="pi pi-shopping-cart text-blue-500 text-xl"></i>
+                        <i
+                            class="pi pi-shopping-cart text-blue-500 text-xl"
+                        ></i>
                     </div>
                 </div>
                 <span class="text-green-500 font-medium">24 new </span>
@@ -74,10 +92,12 @@
             <div class="card mb-0">
                 <div class="flex justify-content-between mb-3">
                     <div>
-                        <span class="block text-500 font-medium mb-3">Nº Compras Mensais</span>
-                        <div class="text-900 font-medium text-xl">{{
-                            shoppingData.amountShoppingOnMonth
-                        }}</div>
+                        <span class="block text-500 font-medium mb-3"
+                            >Nº Compras Mensais</span
+                        >
+                        <div class="text-900 font-medium text-xl">
+                            {{ shoppingData.amountShoppingOnMonth }}
+                        </div>
                     </div>
                     <div
                         class="flex align-items-center justify-content-center bg-orange-100 border-round"
@@ -97,9 +117,9 @@
                         <span class="block text-500 font-medium mb-3"
                             >Nº Produtos Comprados Semanais</span
                         >
-                        <div class="text-900 font-medium text-xl">{{
-                            shoppingData.amountOfProductsPurchasedOnWeek
-                        }}</div>
+                        <div class="text-900 font-medium text-xl">
+                            {{ shoppingData.amountOfProductsPurchasedOnWeek }}
+                        </div>
                     </div>
                     <div
                         class="flex align-items-center justify-content-center bg-cyan-100 border-round"
@@ -119,9 +139,9 @@
                         <span class="block text-500 font-medium mb-3"
                             >Nº Produtos Comprados Mensais</span
                         >
-                        <div class="text-900 font-medium text-xl">{{
-                            shoppingData.amountShoppingOnMonth
-                        }}</div>
+                        <div class="text-900 font-medium text-xl">
+                            {{ shoppingData.amountShoppingOnMonth }}
+                        </div>
                     </div>
                     <div
                         class="flex align-items-center justify-content-center bg-purple-100 border-round"
@@ -134,8 +154,7 @@
                 <span class="text-500">responded</span>
             </div>
         </div>
-    
-    
+
         <div class="col-12 xl:col-7">
             <div class="card">
                 <h5>Compras diarias</h5>
@@ -145,12 +164,11 @@
                     [options]="chartOptions"
                 ></p-chart>
             </div>
-    
         </div>
-    
+
         <div class="col-12 xl:col-5">
             <div class="card">
-                <h5>Compras recentes</h5>
+                <h5>Produtos comprados recentes</h5>
                 <p-table
                     [value]="products"
                     [paginator]="true"
@@ -159,33 +177,82 @@
                 >
                     <ng-template pTemplate="header">
                         <tr>
-                            <th>Image</th>
+                            <th>Imagem</th>
                             <th pSortableColumn="name">
-                                Name <p-sortIcon field="name"></p-sortIcon>
+                                Nome <p-sortIcon field="name"></p-sortIcon>
+                            </th>
+                            <th pSortableColumn="amount">
+                                Qtd <p-sortIcon field="name"></p-sortIcon>
                             </th>
                             <th pSortableColumn="price">
-                                Price <p-sortIcon field="price"></p-sortIcon>
+                                Preço
+                                <p-sortIcon field="price"></p-sortIcon>
                             </th>
-                            <th>View</th>
+                            <th>Total</th>
                         </tr>
                     </ng-template>
                     <ng-template pTemplate="body" let-product>
                         <tr>
                             <td style="width: 15%; min-width: 5rem">
                                 <img
-                                    src="assets/demo/images/product/{{
-                                        product.image
-                                    }}"
+                                    [src]="
+                                        'assets/demo/images/product/' +
+                                        product.image +
+                                        '.jpg'
+                                    "
                                     class="shadow-4"
-                                    alt="{{ product.name }}"
+                                    alt="{{ product.productName }}"
                                     width="50"
                                 />
                             </td>
                             <td style="width: 35%; min-width: 7rem">
-                                {{ product.name }}
+                                {{ product.productName }}
+                            </td>
+                            <td style="width: 35%; min-width: 7rem">
+                                {{ product.amount }}
                             </td>
                             <td style="width: 35%; min-width: 8rem">
-                                {{ product.price | currency : "USD" }}
+                                {{  product.unitPrice | currency : "BRL" }}
+                            </td>
+                            <td style="width: 35%; min-width: 8rem">
+                                {{   product.subTotal | currency : "BRL" }}
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+            <div class="card">
+                <h5>Compras recentes</h5>
+                <p-table
+                    [value]="latestShopping"
+                    [paginator]="true"
+                    [rows]="5"
+                    responsiveLayout="scroll"
+                >
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>Data</th>
+                            <th pSortableColumn="payment">
+                                Pagamento <p-sortIcon field="payment"></p-sortIcon>
+                            </th>
+                            <th pSortableColumn="price">
+                                Total <p-sortIcon field="price"></p-sortIcon>
+                            </th>
+                            <th pSortableColumn="view">
+                                View 
+                            </th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-latestShopping>
+                        <tr>
+                            <td style="width: 35%; min-width: 7rem">
+                                {{formatedDate(latestShopping.shopping_date)  }}
+                            </td>
+                            <td style="width: 35%; min-width: 7rem">
+                                {{ latestShopping.payment_method }}
+                            </td>
+                            <td style="width: 35%; min-width: 8rem">
+                                {{ latestShopping.total_value | currency : "BRL" }}
                             </td>
                             <td style="width: 15%">
                                 <button
@@ -200,172 +267,6 @@
                     </ng-template>
                 </p-table>
             </div>
-            <div class="card">
-                <div class="flex justify-content-between align-items-center mb-5">
-                    <h5>Produtos mais Comprados</h5>
-                    <div>
-                        <button
-                            pButton
-                            type="button"
-                            icon="pi pi-ellipsis-v"
-                            class="p-button-rounded p-button-text p-button-plain"
-                            (click)="menu.toggle($event)"
-                        ></button>
-                        <p-menu #menu [popup]="true" [model]="items"></p-menu>
-                    </div>
-                </div>
-                <ul class="list-none p-0 m-0">
-                    <li
-                        class="flex flex-column md:flex-row md:align-items-center md:justify-content-between mb-4"
-                    >
-                        <div>
-                            <span class="text-900 font-medium mr-2 mb-1 md:mb-0"
-                                >Space T-Shirt</span
-                            >
-                            <div class="mt-1 text-600">Clothing</div>
-                        </div>
-                        <div class="mt-2 md:mt-0 flex align-items-center">
-                            <div
-                                class="surface-300 border-round overflow-hidden w-10rem lg:w-6rem"
-                                [ngStyle]="{ height: '8px' }"
-                            >
-                                <div
-                                    class="bg-orange-500 h-full"
-                                    [ngStyle]="{ width: '50%' }"
-                                ></div>
-                            </div>
-                            <span class="text-orange-500 ml-3 font-medium"
-                                >%50</span
-                            >
-                        </div>
-                    </li>
-                    <li
-                        class="flex flex-column md:flex-row md:align-items-center md:justify-content-between mb-4"
-                    >
-                        <div>
-                            <span class="text-900 font-medium mr-2 mb-1 md:mb-0"
-                                >Portal Sticker</span
-                            >
-                            <div class="mt-1 text-600">Accessories</div>
-                        </div>
-                        <div
-                            class="mt-2 md:mt-0 ml-0 md:ml-8 flex align-items-center"
-                        >
-                            <div
-                                class="surface-300 border-round overflow-hidden w-10rem lg:w-6rem"
-                                [ngStyle]="{ height: '8px' }"
-                            >
-                                <div
-                                    class="bg-cyan-500 h-full"
-                                    [ngStyle]="{ width: '16%' }"
-                                ></div>
-                            </div>
-                            <span class="text-cyan-500 ml-3 font-medium">%16</span>
-                        </div>
-                    </li>
-                    <li
-                        class="flex flex-column md:flex-row md:align-items-center md:justify-content-between mb-4"
-                    >
-                        <div>
-                            <span class="text-900 font-medium mr-2 mb-1 md:mb-0"
-                                >Supernova Sticker</span
-                            >
-                            <div class="mt-1 text-600">Accessories</div>
-                        </div>
-                        <div
-                            class="mt-2 md:mt-0 ml-0 md:ml-8 flex align-items-center"
-                        >
-                            <div
-                                class="surface-300 border-round overflow-hidden w-10rem lg:w-6rem"
-                                [ngStyle]="{ height: '8px' }"
-                            >
-                                <div
-                                    class="bg-pink-500 h-full"
-                                    [ngStyle]="{ width: '67%' }"
-                                ></div>
-                            </div>
-                            <span class="text-pink-500 ml-3 font-medium">%67</span>
-                        </div>
-                    </li>
-                    <li
-                        class="flex flex-column md:flex-row md:align-items-center md:justify-content-between mb-4"
-                    >
-                        <div>
-                            <span class="text-900 font-medium mr-2 mb-1 md:mb-0"
-                                >Wonders Notebook</span
-                            >
-                            <div class="mt-1 text-600">Office</div>
-                        </div>
-                        <div
-                            class="mt-2 md:mt-0 ml-0 md:ml-8 flex align-items-center"
-                        >
-                            <div
-                                class="surface-300 border-round overflow-hidden w-10rem lg:w-6rem"
-                                [ngStyle]="{ height: '8px' }"
-                            >
-                                <div
-                                    class="bg-green-500 h-full"
-                                    [ngStyle]="{ width: '35%' }"
-                                ></div>
-                            </div>
-                            <span class="text-green-500 ml-3 font-medium">%35</span>
-                        </div>
-                    </li>
-                    <li
-                        class="flex flex-column md:flex-row md:align-items-center md:justify-content-between mb-4"
-                    >
-                        <div>
-                            <span class="text-900 font-medium mr-2 mb-1 md:mb-0"
-                                >Mat Black Case</span
-                            >
-                            <div class="mt-1 text-600">Accessories</div>
-                        </div>
-                        <div
-                            class="mt-2 md:mt-0 ml-0 md:ml-8 flex align-items-center"
-                        >
-                            <div
-                                class="surface-300 border-round overflow-hidden w-10rem lg:w-6rem"
-                                [ngStyle]="{ height: '8px' }"
-                            >
-                                <div
-                                    class="bg-purple-500 h-full"
-                                    [ngStyle]="{ width: '75%' }"
-                                ></div>
-                            </div>
-                            <span class="text-purple-500 ml-3 font-medium"
-                                >%75</span
-                            >
-                        </div>
-                    </li>
-                    <li
-                        class="flex flex-column md:flex-row md:align-items-center md:justify-content-between mb-4"
-                    >
-                        <div>
-                            <span class="text-900 font-medium mr-2 mb-1 md:mb-0"
-                                >Robots T-Shirt</span
-                            >
-                            <div class="mt-1 text-600">Clothing</div>
-                        </div>
-                        <div
-                            class="mt-2 md:mt-0 ml-0 md:ml-8 flex align-items-center"
-                        >
-                            <div
-                                class="surface-300 border-round overflow-hidden w-10rem lg:w-6rem"
-                                [ngStyle]="{ height: '8px' }"
-                            >
-                                <div
-                                    class="bg-teal-500 h-full"
-                                    [ngStyle]="{ width: '40%' }"
-                                ></div>
-                            </div>
-                            <span class="text-teal-500 ml-3 font-medium">%40</span>
-                        </div>
-                    </li>
-                </ul>
-            </div>
         </div>
-    
-        
     </div>
 </div>
-    

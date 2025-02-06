@@ -1,14 +1,17 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MenuItem } from 'primeng/api';
+import { DatePipe } from '@angular/common';
 
 import { Subscription, catchError, debounceTime, forkJoin, of } from 'rxjs';
 import { Product } from 'src/app/demo/api/product';
+import { ShoppingResponse } from 'src/app/demo/api/productsShopping';
 import { ProductService } from 'src/app/demo/service/product.service';
 import { ShoppingService } from 'src/app/demo/service/shopping.service';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
 
 @Component({
     templateUrl: './shopping.component.html',
+    providers: [DatePipe]
 })
 export class ShoppingComponent implements OnInit, OnDestroy {
     items!: MenuItem[];
@@ -24,6 +27,8 @@ export class ShoppingComponent implements OnInit, OnDestroy {
         amountOfProductsPurchasedOnMonth: 0,
     };
 
+    latestShopping: ShoppingResponse[]
+
     chartData: any;
 
     chartOptions: any;
@@ -33,7 +38,8 @@ export class ShoppingComponent implements OnInit, OnDestroy {
     constructor(
         private productService: ProductService,
         public layoutService: LayoutService,
-        private shoppingService: ShoppingService
+        private shoppingService: ShoppingService,
+        private datePipe: DatePipe
     ) {
         this.subscription = this.layoutService.configUpdate$
             .pipe(debounceTime(25))
@@ -45,9 +51,8 @@ export class ShoppingComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.getShoppingData();
         this.initChart();
-        this.productService
-            .getProductsSmall()
-            .then((data) => (this.products = data));
+        this.getLastProductPurchased();
+        this.getLatesProducts()
 
         this.items = [
             { label: 'Add New', icon: 'pi pi-fw pi-plus' },
@@ -175,4 +180,25 @@ export class ShoppingComponent implements OnInit, OnDestroy {
             );
         });
     }
+
+    getLastProductPurchased() {
+        this.productService.getLastProductPurchased().subscribe((res) => {
+            if (res.success) {
+                this.products = res.data;
+                console.log(this.products)
+            }
+        });
+    }
+
+    getLatesProducts(){
+        this.shoppingService.getLatestShopping().subscribe((res)=>{
+            if (res.success) {
+                this.latestShopping = res.data
+            }
+        })
+    }
+
+    formatedDate(data: string): string | null {
+        return this.datePipe.transform(data, 'dd-MM-yyyy');
+      }
 }
