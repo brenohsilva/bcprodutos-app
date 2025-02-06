@@ -5,14 +5,14 @@ export interface ProductShopping {
     paymentMethod?: string;
     tax?: number;
     installment?: number;
-    totalValue?: number;
+    total_value?: number;
 }
 
 export interface ShoppingItens {
     productId: number | string;
     amount: number;
     unit_price: number; //será o subtotal / amount
-    subTotal: number
+    sub_total: number
 }
 export interface Shopping {
     description?: string;
@@ -20,6 +20,9 @@ export interface Shopping {
     installment?: string | number;
     tax?: number;
     total_value?: number; // será o valor dos produtos + o tax
-    itens?: ShoppingItens[]
-    
+    itens?: ShoppingItens[] 
+}
+
+export interface ShoppingResponse extends Shopping {
+    shopping_date: Date
 }
