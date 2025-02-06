@@ -179,7 +179,7 @@ export class StocksComponent implements OnInit {
                     amount: this.shoppingProductAmount,
                     unit_price:
                         this.shopping.total_value / this.shoppingProductAmount,
-                    subTotal: this.shopping.total_value,
+                    sub_total: this.shopping.total_value,
                 },
             ],
         };
