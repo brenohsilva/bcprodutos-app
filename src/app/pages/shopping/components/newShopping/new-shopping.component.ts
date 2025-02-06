@@ -87,7 +87,7 @@ export class NewShoppingComponent implements OnInit {
     get total(): number {
         return (
             this.shoppingProducts.reduce((sum, product) => {
-                const productTotal = product.totalValue;
+                const productTotal = product.total_value;
                 return sum + productTotal;
             }, 0) + (this.tax || 0)
         );
@@ -122,11 +122,11 @@ export class NewShoppingComponent implements OnInit {
         const itens: ShoppingItens[] = this.shoppingProducts.map((product) => ({
             productId: product.id,
             amount: product.amount,
-            unit_price: product.totalValue / product.amount,
-            subTotal: product.totalValue,
+            unit_price: product.total_value / product.amount,
+            sub_total: product.total_value,
         }));
 
-        const subTotal = itens.reduce((sum, item) => sum + item.subTotal, 0);
+        const subTotal = itens.reduce((sum, item) => sum + item.sub_total, 0);
         const total_value = subTotal + this.tax;
 
         this.shoppingData = {
