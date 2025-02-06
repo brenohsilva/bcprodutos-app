@@ -23,7 +23,11 @@ export class ProductService {
     }
 
     getLastProductsSold():Observable<any>{
-        return this.http.get<any>(`${this.base_url}products/last-sales`)
+        return this.http.get<any>(`${this.base_url}products/last-sales-products`)
+    }
+
+    getLastProductPurchased(): Observable<any>{
+        return this.http.get<any>(`${this.base_url}products/last-shopping-products`)
     }
 
     getProductsMixed() {
