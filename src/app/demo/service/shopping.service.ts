@@ -30,4 +30,8 @@ export class ShoppingService {
         const params = new HttpParams().set('range', period);
         return this.http.get<any>(`${this.base_url}shopping/amount`, { params });
     }
+
+    getLatestShopping(): Observable<any>{
+        return this.http.get<any>(`${this.base_url}shopping/latest`)
+    }
 }
