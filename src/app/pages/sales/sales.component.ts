@@ -49,9 +49,6 @@ export class SalesComponent implements OnInit, OnDestroy {
         this.getSalesData();
         this.getLastProductsSold()
         this.initChart();
-        // this.productService
-        //     .getProductsSmall()
-        //     .then((data) => (this.products = data));
 
         this.items = [
             { label: 'Add New', icon: 'pi pi-fw pi-plus' },
@@ -74,12 +71,13 @@ export class SalesComponent implements OnInit, OnDestroy {
                 '02/02',
                 '03/02',
                 '04/02',
+                '05/02'
             ],
             datasets: [
                 {
-                    label: 'Vendas diárias',
+                    label: 'Faturamento Diário',
                     data: [
-                        150, 80, 239, 81
+                        150, 80, 239, 81, 0
                     ],
                     fill: false,
                     backgroundColor:
@@ -158,7 +156,7 @@ export class SalesComponent implements OnInit, OnDestroy {
                 res.valueSalesOfWeek?.data?.liquido || 0
             );
             this.salesData.valueSalesOfWeekGross = Number(
-                res.valueSalesOfWeek?.data?.bruto || 0
+                res.valueSalesOfWeek?.data?.bruto || 0  
             );
             this.salesData.valueSalesOfMonth = Number(
                 res.valueSalesOfMonth?.data?.liquido || 0
@@ -178,7 +176,6 @@ export class SalesComponent implements OnInit, OnDestroy {
         this.productService.getLastProductsSold().subscribe((res) => {
            
             if (res.success) {
-                console.log(res.data)
                 this.products = res.data;
             }
         });
