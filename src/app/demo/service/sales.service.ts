@@ -26,5 +26,7 @@ export class SalesService {
         const params = new HttpParams().set('range', period);
         return this.http.get<any>(`${this.base_url}sales/amount`, { params });
     }
+
+    
     
 }
