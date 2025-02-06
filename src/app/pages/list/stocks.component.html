@@ -165,13 +165,15 @@
                                     class="flex flex-wrap gap-2 align-items-center justify-content-between mb-2"
                                 >
                                     <div class="flex align-items-center gap-2">
-                                        <span class="font-normal"
-                                            >Tamanho
-                                            <strong>{{
-                                                product.size
-                                            }}</strong></span
-                                        >
-                                        |
+                                        @if (product.size) {
+                                            <span class="font-normal"
+                                                >Tamanho
+                                                <strong>{{
+                                                    product.size
+                                                }}</strong></span
+                                            >
+                                            |
+                                        }
                                         @if (product.color) {
                                             <p-tag [styleClass]="getTagClass(product.color)"
                                                 value="{{ product.color }}"
@@ -196,12 +198,12 @@
                                     <span>{{ product.type }}</span>
                                 </div>
                                 <div
-                                    class="flex align-items-center justify-content-between pt-3"
+                                    class="flex align-items-center justify-content-center pt-3"
                                 >
                                     <span class="text-2xl font-semibold">{{
                                         product.sales_price | currency : "BRL"
                                     }}</span>
-                                    <div class="flex gap-3">
+                                    <!-- <div class="flex gap-3">
                                         
                                         <button
                                             pButton
@@ -211,15 +213,15 @@
                                             class="p-button-success"
                                             (click)="openNewSales(product)"
                                         ></button>
-                                        <!-- <button
+                                        <button
                                             pButton
                                             pRipple
                                             type="button"
                                             icon="pi pi-shopping-cart"
                                             class="p-button-warning"
                                             (click)="openNewShopping(product)"
-                                        ></button> -->
-                                    </div>
+                                        ></button>
+                                    </div> -->
                                 </div>
                             </div>
                         </div>
