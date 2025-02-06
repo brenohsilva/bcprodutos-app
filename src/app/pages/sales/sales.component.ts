@@ -23,7 +23,8 @@ export class SalesComponent implements OnInit, OnDestroy {
     subscription!: Subscription;
 
     salesData = {
-        valueSalesOfWeek: 0,
+        valueSalesOfWeekNet: 0,
+        valueSalesOfWeekGross: 0,
         valueSalesOfMonth: 0,
         quantityOfSalesByWeek: 0,
         quantityOfSalesByMonth: 0,
@@ -46,10 +47,11 @@ export class SalesComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.getSalesData();
+        this.getLastProductsSold()
         this.initChart();
-        this.productService
-            .getProductsSmall()
-            .then((data) => (this.products = data));
+        // this.productService
+        //     .getProductsSmall()
+        //     .then((data) => (this.products = data));
 
         this.items = [
             { label: 'Add New', icon: 'pi pi-fw pi-plus' },
@@ -68,61 +70,25 @@ export class SalesComponent implements OnInit, OnDestroy {
 
         this.chartData = {
             labels: [
-                'January',
-                'February',
-                'March',
-                'April',
-                'May',
-                'June',
-                'July',
-                'January',
-                'February',
-                'March',
-                'April',
-                'May',
-                'June',
-                'July',
-                'January',
-                'February',
-                'March',
-                'April',
-                'May',
-                'June',
-                'July',
-                'January',
-                'February',
-                'March',
-                'April',
-                'May',
-                'June',
-                'July',
+                '01/02',
+                '02/02',
+                '03/02',
+                '04/02',
             ],
             datasets: [
                 {
-                    label: 'First Dataset',
+                    label: 'Vendas diárias',
                     data: [
-                        65, 59, 80, 81, 56, 55, 40, 65, 59, 80, 81, 56, 55, 40,
-                        65, 59, 80, 81, 56, 55, 40, 65, 59, 80, 81, 56, 55, 40,
+                        150, 80, 239, 81
                     ],
                     fill: false,
                     backgroundColor:
                         documentStyle.getPropertyValue('--bluegray-700'),
                     borderColor:
                         documentStyle.getPropertyValue('--bluegray-700'),
-                    tension: 0.4,
+                    tension: 0,
                 },
-                {
-                    label: 'Second Dataset',
-                    data: [
-                        28, 48, 40, 19, 86, 27, 90, 65, 59, 80, 81, 56, 55, 40,
-                        65, 59, 80, 81, 56, 55, 40, 65, 59, 80, 81, 56, 55, 40,
-                    ],
-                    fill: false,
-                    backgroundColor:
-                        documentStyle.getPropertyValue('--green-600'),
-                    borderColor: documentStyle.getPropertyValue('--green-600'),
-                    tension: 0.4,
-                },
+                
             ],
         };
 
@@ -169,19 +135,52 @@ export class SalesComponent implements OnInit, OnDestroy {
 
     getSalesData() {
         forkJoin({
-            valueSalesOfWeek: this.salesService.getValueSalesByPeriod('week').pipe(catchError(() => of(null))),
-            valueSalesOfMonth: this.salesService.getValueSalesByPeriod('month').pipe(catchError(() => of(null))),
-            quantityOfSalesByWeek: this.salesService.getQuantityOfSalesByPeriod('week').pipe(catchError(() => of(null))),
-            quantityOfSalesByMonth: this.salesService.getQuantityOfSalesByPeriod('month').pipe(catchError(() => of(null))),
-            quantityOfProductSoldByWeek: this.salesService.getQuantityOfProductSoldByPeriod('week').pipe(catchError(() => of(null))),
-            quantityOfProductSoldByMonth: this.salesService.getQuantityOfProductSoldByPeriod('month').pipe(catchError(() => of(null))),
+            valueSalesOfWeek: this.salesService
+                .getValueSalesByPeriod('week')
+                .pipe(catchError(() => of(null))),
+            valueSalesOfMonth: this.salesService
+                .getValueSalesByPeriod('month')
+                .pipe(catchError(() => of(null))),
+            quantityOfSalesByWeek: this.salesService
+                .getQuantityOfSalesByPeriod('week')
+                .pipe(catchError(() => of(null))),
+            quantityOfSalesByMonth: this.salesService
+                .getQuantityOfSalesByPeriod('month')
+                .pipe(catchError(() => of(null))),
+            quantityOfProductSoldByWeek: this.salesService
+                .getQuantityOfProductSoldByPeriod('week')
+                .pipe(catchError(() => of(null))),
+            quantityOfProductSoldByMonth: this.salesService
+                .getQuantityOfProductSoldByPeriod('month')
+                .pipe(catchError(() => of(null))),
         }).subscribe((res) => {
-            this.salesData.valueSalesOfWeek = Number(res.valueSalesOfWeek?.data?.liquido || 0);
-            this.salesData.valueSalesOfMonth = Number(res.valueSalesOfMonth?.data?.liquido || 0);
-            this.salesData.quantityOfSalesByWeek = res.quantityOfSalesByWeek?.data || 0;
-            this.salesData.quantityOfSalesByMonth = res.quantityOfSalesByMonth?.data || 0;
-            this.salesData.quantityOfProductSoldByWeek = res.quantityOfProductSoldByWeek?.data || 0;
-            this.salesData.quantityOfProductSoldByMonth = res.quantityOfProductSoldByMonth?.data || 0;
+            this.salesData.valueSalesOfWeekNet = Number(
+                res.valueSalesOfWeek?.data?.liquido || 0
+            );
+            this.salesData.valueSalesOfWeekGross = Number(
+                res.valueSalesOfWeek?.data?.bruto || 0
+            );
+            this.salesData.valueSalesOfMonth = Number(
+                res.valueSalesOfMonth?.data?.liquido || 0
+            );
+            this.salesData.quantityOfSalesByWeek =
+                res.quantityOfSalesByWeek?.data || 0;
+            this.salesData.quantityOfSalesByMonth =
+                res.quantityOfSalesByMonth?.data || 0;
+            this.salesData.quantityOfProductSoldByWeek =
+                res.quantityOfProductSoldByWeek?.data || 0;
+            this.salesData.quantityOfProductSoldByMonth =
+                res.quantityOfProductSoldByMonth?.data || 0;
+        });
+    }
+
+    getLastProductsSold() {
+        this.productService.getLastProductsSold().subscribe((res) => {
+           
+            if (res.success) {
+                console.log(res.data)
+                this.products = res.data;
+            }
         });
     }
 }
