@@ -1,19 +1,28 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 
-import { Subscription, debounceTime } from 'rxjs';
+import { Subscription, catchError, debounceTime, forkJoin, of } from 'rxjs';
 import { Product } from 'src/app/demo/api/product';
 import { ProductService } from 'src/app/demo/service/product.service';
+import { ShoppingService } from 'src/app/demo/service/shopping.service';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
 
 @Component({
     templateUrl: './shopping.component.html',
 })
 export class ShoppingComponent implements OnInit, OnDestroy {
-
     items!: MenuItem[];
 
     products!: Product[];
+
+    shoppingData = {
+        valueShoppingOfWeek: 0,
+        valueShoppingOfMonth: 0,
+        amountShoppingOnWeek: 0,
+        amountShoppingOnMonth: 0,
+        amountOfProductsPurchasedOnWeek: 0,
+        amountOfProductsPurchasedOnMonth: 0,
+    };
 
     chartData: any;
 
@@ -21,80 +30,101 @@ export class ShoppingComponent implements OnInit, OnDestroy {
 
     subscription!: Subscription;
 
-    constructor(private productService: ProductService, public layoutService: LayoutService) {
+    constructor(
+        private productService: ProductService,
+        public layoutService: LayoutService,
+        private shoppingService: ShoppingService
+    ) {
         this.subscription = this.layoutService.configUpdate$
-        .pipe(debounceTime(25))
-        .subscribe((config) => {
-            this.initChart();
-        });
+            .pipe(debounceTime(25))
+            .subscribe((config) => {
+                this.initChart();
+            });
     }
 
     ngOnInit() {
+        this.getShoppingData();
         this.initChart();
-        this.productService.getProductsSmall().then(data => this.products = data);
+        this.productService
+            .getProductsSmall()
+            .then((data) => (this.products = data));
 
         this.items = [
             { label: 'Add New', icon: 'pi pi-fw pi-plus' },
-            { label: 'Remove', icon: 'pi pi-fw pi-minus' }
+            { label: 'Remove', icon: 'pi pi-fw pi-minus' },
         ];
     }
 
     initChart() {
         const documentStyle = getComputedStyle(document.documentElement);
         const textColor = documentStyle.getPropertyValue('--text-color');
-        const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
-        const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
+        const textColorSecondary = documentStyle.getPropertyValue(
+            '--text-color-secondary'
+        );
+        const surfaceBorder =
+            documentStyle.getPropertyValue('--surface-border');
 
         this.chartData = {
-            labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+            labels: [
+                'January',
+                'February',
+                'March',
+                'April',
+                'May',
+                'June',
+                'July',
+            ],
             datasets: [
                 {
                     label: 'First Dataset',
                     data: [65, 59, 80, 81, 56, 55, 40],
                     fill: false,
-                    backgroundColor: documentStyle.getPropertyValue('--bluegray-700'),
-                    borderColor: documentStyle.getPropertyValue('--bluegray-700'),
-                    tension: .4
+                    backgroundColor:
+                        documentStyle.getPropertyValue('--bluegray-700'),
+                    borderColor:
+                        documentStyle.getPropertyValue('--bluegray-700'),
+                    tension: 0.4,
                 },
                 {
                     label: 'Second Dataset',
                     data: [28, 48, 40, 19, 86, 27, 90],
                     fill: false,
-                    backgroundColor: documentStyle.getPropertyValue('--green-600'),
+                    backgroundColor:
+                        documentStyle.getPropertyValue('--green-600'),
                     borderColor: documentStyle.getPropertyValue('--green-600'),
-                    tension: .4
-                }
-            ]
+                    tension: 0.4,
+                },
+            ],
         };
 
         this.chartOptions = {
             plugins: {
                 legend: {
                     labels: {
-                        color: textColor
-                    }
-                }
+                        color: textColor,
+                    },
+                },
             },
             scales: {
                 x: {
                     ticks: {
-                        color: textColorSecondary
+                        color: textColorSecondary,
                     },
                     grid: {
                         color: surfaceBorder,
-                        drawBorder: false
-                    }
+                        drawBorder: false,
+                    },
                 },
                 y: {
                     ticks: {
-                        color: textColorSecondary
+                        color: textColorSecondary,
                     },
                     grid: {
                         color: surfaceBorder,
-                        drawBorder: false
-                    }
-                }
-            }
+                        drawBorder: false,
+                    },
+                },
+            },
         };
     }
 
@@ -102,5 +132,47 @@ export class ShoppingComponent implements OnInit, OnDestroy {
         if (this.subscription) {
             this.subscription.unsubscribe();
         }
+    }
+
+    getShoppingData() {
+        forkJoin({
+            valueShoppingOfWeek: this.shoppingService
+                .getValueShoppingByPeriod('week')
+                .pipe(catchError(() => of(null))),
+            valueShoppingOfMonth: this.shoppingService
+                .getValueShoppingByPeriod('month')
+                .pipe(catchError(() => of(null))),
+            amountShoppingOnWeek: this.shoppingService
+                .getQuantityOfShoppingByPeriod('week')
+                .pipe(catchError(() => of(null))),
+            amountShoppingOnMonth: this.shoppingService
+                .getQuantityOfShoppingByPeriod('month')
+                .pipe(catchError(() => of(null))),
+            amountOfProductsPurchasedOnWeek: this.shoppingService
+                .getQuantityOfProductPurchasedByPeriod('week')
+                .pipe(catchError(() => of(null))),
+            amountOfProductsPurchasedOnMonth: this.shoppingService
+                .getQuantityOfProductPurchasedByPeriod('month')
+                .pipe(catchError(() => of(null))),
+        }).subscribe((res) => {
+            this.shoppingData.valueShoppingOfWeek = Number(
+                res.valueShoppingOfWeek.data || 0
+            );
+            this.shoppingData.valueShoppingOfMonth = Number(
+                res.valueShoppingOfMonth.data || 0
+            );
+            this.shoppingData.amountShoppingOnWeek = Number(
+                res.amountShoppingOnWeek.data || 0
+            );
+            this.shoppingData.amountShoppingOnMonth = Number(
+                res.amountShoppingOnMonth.data || 0
+            );
+            this.shoppingData.amountOfProductsPurchasedOnWeek = Number(
+                res.amountOfProductsPurchasedOnWeek.data || 0
+            );
+            this.shoppingData.amountOfProductsPurchasedOnMonth = Number(
+                res.amountOfProductsPurchasedOnMonth.data || 0
+            );
+        });
     }
 }
