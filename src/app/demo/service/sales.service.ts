@@ -27,6 +27,10 @@ export class SalesService {
         return this.http.get<any>(`${this.base_url}sales/amount`, { params });
     }
 
+    getlatestSales(): Observable<any>{
+        return this.http.get<any>(`${this.base_url}sales/last-sales`);
+    }
+
     
     
 }
