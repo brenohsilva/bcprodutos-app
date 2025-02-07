@@ -9,7 +9,6 @@ export class ShoppingService {
     private readonly base_url = 'http://localhost:3000/';
 
     registerShopping(body: any): Observable<any> {
-        console.log(body);
         return this.http.post<any>(`${this.base_url}shopping`, body);
     }
 

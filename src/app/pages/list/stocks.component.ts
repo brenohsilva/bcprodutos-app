@@ -144,29 +144,6 @@ export class StocksComponent implements OnInit {
         this.shoppingDialog = false;
     }
 
-    saveSale() {
-        const subTotal = (this.product.sales_price || 0) * (this.salesAmount || 1);
-        const discount = this.sales.discount || 0;
-        const coast = this.sales.coast || 0;
-        const totalValue = subTotal - discount - coast;
-    
-        this.sales = {
-            ...this.sales,
-            subTotal,
-            totalValue,
-            itens: [
-                {
-                    productId: this.product.id,
-                    unit_price: this.product.sales_price,
-                    amount: this.salesAmount,
-                    subTotal,
-                },
-            ],
-        };
-    
-        console.log(this.sales);
-    }
-    
 
     saveShopping() {
 
