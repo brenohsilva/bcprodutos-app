@@ -3,7 +3,7 @@ export interface SalesItens {
     productId: number | string;
     amount: number;
     unit_price: number;
-    subTotal?: number;
+    sub_total?: number;
 }
 export interface Sales {
     description?: string;
@@ -13,8 +13,15 @@ export interface Sales {
     discount?: number;
     total_gross_value?: number;
     total_net_value?: number;
-    subTotal?: number;
-    totalValue?:number;
     itens?: SalesItens[]
-    
+}
+
+export interface SalesItensResponse extends SalesItens {
+    type?: string;
+    size?: string;
+    color?: string;
+}
+
+export interface SalesResponse extends Sales {
+    products: SalesItensResponse[]
 }

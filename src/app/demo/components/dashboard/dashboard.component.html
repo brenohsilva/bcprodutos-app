@@ -6,9 +6,11 @@
                 <div class="flex justify-content-between mb-3">
                     <div>
                         <span class="block text-500 font-medium mb-3"
-                            >Produtos em Estoque</span
+                            >Valor aproximado do estoque (R$)</span
                         >
-                        <div class="text-900 font-medium text-xl">152</div>
+                        <div class="text-900 font-medium text-xl">{{
+                            dashboardData.estimatedStockValue | currency : "BRL"
+                        }}</div>
                     </div>
                     <div
                         class="flex align-items-center justify-content-center bg-blue-100 border-round"
@@ -28,29 +30,11 @@
                 <div class="flex justify-content-between mb-3">
                     <div>
                         <span class="block text-500 font-medium mb-3"
-                            >Lucro mensal</span
-                        >
-                        <div class="text-900 font-medium text-xl">$2.100</div>
-                    </div>
-                    <div
-                        class="flex align-items-center justify-content-center bg-orange-100 border-round"
-                        [ngStyle]="{ width: '2.5rem', height: '2.5rem' }"
-                    >
-                        <i class="pi pi-map-marker text-orange-500 text-xl"></i>
-                    </div>
-                </div>
-                <span class="text-green-500 font-medium">%52+ </span>
-                <span class="text-500">since last week</span>
-            </div>
-        </div>
-        <div class="col-12 lg:col-6 xl:col-3">
-            <div class="card mb-0">
-                <div class="flex justify-content-between mb-3">
-                    <div>
-                        <span class="block text-500 font-medium mb-3"
                             >Vendas Mensais</span
                         >
-                        <div class="text-900 font-medium text-xl">28441</div>
+                        <div class="text-900 font-medium text-xl">{{
+                            dashboardData.montlySales| currency : "BRL"
+                        }}</div>
                     </div>
                     <div
                         class="flex align-items-center justify-content-center bg-cyan-100 border-round"
@@ -71,7 +55,9 @@
                             >Compras mensais</span
                         >
                         <div class="text-900 font-medium text-xl">
-                            152 Unread
+                            {{
+                                dashboardData.montlyShopping| currency : "BRL"
+                            }}
                         </div>
                     </div>
                     <div
@@ -85,45 +71,99 @@
                 <span class="text-500">responded</span>
             </div>
         </div>
-
-        <div class="col-12 xl:col-6">
+        <div class="col-12 lg:col-6 xl:col-3">
+            <div class="card mb-0">
+                <div class="flex justify-content-between mb-3">
+                    <div>
+                        <span class="block text-500 font-medium mb-3"
+                            >Balanço mensal</span
+                        >
+                        <div class="text-900 font-medium text-xl">{{
+                            dashboardData.monthlyBalance| currency : "BRL"
+                        }}</div>
+                    </div>
+                    <div
+                        class="flex align-items-center justify-content-center bg-orange-100 border-round"
+                        [ngStyle]="{ width: '2.5rem', height: '2.5rem' }"
+                    >
+                        <i class="pi pi-map-marker text-orange-500 text-xl"></i>
+                    </div>
+                </div>
+                <span class="text-green-500 font-medium">%52+ </span>
+                <span class="text-500">no mesmo periodo</span>
+            </div>
+        </div>
+        <div class="col-12 lg:col-6 xl:col-3">
+            <div class="card mb-0">
+                <div class="flex justify-content-between mb-3">
+                    <div>
+                        <span class="block text-500 font-medium mb-3"
+                            >Total produtos em estoque</span
+                        >
+                        <div class="text-900 font-medium text-xl">
+                            {{
+                                dashboardData.totalStockProducts
+                            }}
+                        </div>
+                    </div>
+                    <div
+                        class="flex align-items-center justify-content-center bg-purple-100 border-round"
+                        [ngStyle]="{ width: '2.5rem', height: '2.5rem' }"
+                    >
+                        <i class="pi pi-comment text-purple-500 text-xl"></i>
+                    </div>
+                </div>
+                <span class="text-green-500 font-medium">85 </span>
+                <span class="text-500">responded</span>
+            </div>
+            <div class="mt-4">
+                <div class="card flex flex-column align-items-center">
+                    <h5 class="text-left w-full">Produtos em Estoque</h5>
+                    <p-chart
+                        type="pie"
+                        [data]="pieData"
+                        [options]="pieOptions"
+                    ></p-chart>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 xl:col-9">
             <div class="card">
                 <h5>Vendas Recentes</h5>
                 <p-table
-                    [value]="products"
+                    [value]="latestSales"
                     [paginator]="true"
                     [rows]="5"
                     responsiveLayout="scroll"
                 >
                     <ng-template pTemplate="header">
                         <tr>
-                            <th>Image</th>
-                            <th pSortableColumn="name">
-                                Name <p-sortIcon field="name"></p-sortIcon>
+                            <th>Data</th>
+                            <th pSortableColumn="method">
+                                Pagamento
                             </th>
-                            <th pSortableColumn="price">
-                                Price <p-sortIcon field="price"></p-sortIcon>
+                            <th pSortableColumn="gross_price">
+                                Valor Bruto 
+                            </th>
+                            <th pSortableColumn="net_price">
+                                Valor Liquido 
                             </th>
                             <th>View</th>
                         </tr>
                     </ng-template>
-                    <ng-template pTemplate="body" let-product>
+                    <ng-template pTemplate="body" let-latestSales>
                         <tr>
-                            <td style="width: 15%; min-width: 5rem">
-                                <img
-                                    src="assets/demo/images/product/{{
-                                        product.image
-                                    }}"
-                                    class="shadow-4"
-                                    alt="{{ product.name }}"
-                                    width="50"
-                                />
+                            <td style="width: 20%; min-width: 7rem">
+                                {{ formatedDate(latestSales.sales_date)  }}
                             </td>
-                            <td style="width: 35%; min-width: 7rem">
-                                {{ product.name }}
+                            <td style="width: 20%; min-width: 7rem">
+                                {{ latestSales.payment_method }}
                             </td>
-                            <td style="width: 35%; min-width: 8rem">
-                                {{ product.price | currency : "USD" }}
+                            <td style="width: 20%; min-width: 8rem">
+                                {{ latestSales.total_gross_value | currency : "BRL" }}
+                            </td>
+                            <td style="width: 20%; min-width: 8rem">
+                                {{ latestSales.total_net_value | currency : "BRL" }}
                             </td>
                             <td style="width: 15%">
                                 <button
@@ -140,7 +180,7 @@
             </div>
         </div>
 
-        <div class="col-12 xl:col-6">
+        <!-- <div class="col-12 xl:col-6">
             <div class="card">
                 <h5>Vendas vs Estoque</h5>
                 <p-chart
@@ -149,34 +189,6 @@
                     [options]="chartOptions"
                 ></p-chart>
             </div>
-        </div>
-        <div class="col-12 flex justify-content-center gap-4">
-            <div class="">
-                <div class="card flex flex-column align-items-center">
-                    <h5 class="text-left w-full">Pie Chart</h5>
-                    <p-chart type="pie" [data]="pieData" [options]="pieOptions"></p-chart>
-                </div>
-            </div>
-            <div class="">
-                <div class="card flex flex-column align-items-center">
-                    <h5 class="text-left w-full">Pie Chart</h5>
-                    <p-chart type="pie" [data]="pieData" [options]="pieOptions"></p-chart>
-                </div>
-            </div>
-        </div>
-        <div class="col-12 flex justify-content-center gap-4">
-            <div class="">
-                <div class="card flex flex-column align-items-center">
-                    <h5 class="text-left w-full">Pie Chart</h5>
-                    <p-chart type="pie" [data]="pieData" [options]="pieOptions"></p-chart>
-                </div>
-            </div>
-            <div class="">
-                <div class="card flex flex-column align-items-center">
-                    <h5 class="text-left w-full">Pie Chart</h5>
-                    <p-chart type="pie" [data]="pieData" [options]="pieOptions"></p-chart>
-                </div>
-            </div>
-        </div>
+        </div> -->
     </div>
 </div>

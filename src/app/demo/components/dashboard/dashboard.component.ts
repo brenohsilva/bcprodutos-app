@@ -2,17 +2,29 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { Product } from '../../api/product';
 import { ProductService } from '../../service/product.service';
-import { Subscription, debounceTime } from 'rxjs';
+import { Subscription, catchError, debounceTime, forkJoin, of } from 'rxjs';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
+import { DashboardService } from '../../service/dashboard.service';
+import { SalesResponse } from '../../api/productsSales';
+import { SalesService } from '../../service/sales.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
     templateUrl: './dashboard.component.html',
+    providers: [DatePipe]
 })
 export class DashboardComponent implements OnInit, OnDestroy {
-
-    items!: MenuItem[];
-
     products!: Product[];
+
+    dashboardData = {
+        estimatedStockValue: 0,
+        montlySales: 0,
+        montlyShopping: 0,
+        monthlyBalance: 0,
+        totalStockProducts: 0,
+    };
+
+    latestSales: SalesResponse[]
 
     chartData: any;
 
@@ -24,113 +36,108 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     pieOptions: any;
 
-    constructor(private productService: ProductService, public layoutService: LayoutService) {
+    constructor(
+        private productService: ProductService,
+        public layoutService: LayoutService,
+        private dashboardService: DashboardService,
+        private salesService: SalesService,
+        private datePipe: DatePipe
+    ) {
         this.subscription = this.layoutService.configUpdate$
-        .pipe(debounceTime(25))
-        .subscribe((config) => {
-            this.initChart();
-        });
+            .pipe(debounceTime(25))
+            .subscribe((config) => {
+                this.initChart();
+            });
     }
 
     ngOnInit() {
+        this.getDashboardData();
         this.initChart();
-        this.productService.getProductsSmall().then(data => this.products = data);
-
-        this.items = [
-            { label: 'Add New', icon: 'pi pi-fw pi-plus' },
-            { label: 'Remove', icon: 'pi pi-fw pi-minus' }
-        ];
-
-        
+        this.getLatestSales()
     }
 
     initChart() {
         const documentStyle = getComputedStyle(document.documentElement);
         const textColor = documentStyle.getPropertyValue('--text-color');
-        const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
-        const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
+        const textColorSecondary = documentStyle.getPropertyValue(
+            '--text-color-secondary'
+        );
+        const surfaceBorder =
+            documentStyle.getPropertyValue('--surface-border');
 
-        this.chartData = {
-            labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-            datasets: [
-                {
-                    label: 'First Dataset',
-                    data: [65, 59, 80, 81, 56, 55, 40],
-                    fill: false,
-                    backgroundColor: documentStyle.getPropertyValue('--bluegray-700'),
-                    borderColor: documentStyle.getPropertyValue('--bluegray-700'),
-                    tension: .4
-                },
-                {
-                    label: 'Second Dataset',
-                    data: [28, 48, 40, 19, 86, 27, 90],
-                    fill: false,
-                    backgroundColor: documentStyle.getPropertyValue('--green-600'),
-                    borderColor: documentStyle.getPropertyValue('--green-600'),
-                    tension: .4
+        this.dashboardService
+            .getIndividualProductStockQuantity()
+            .subscribe((res) => {
+                if (res.success) {
+                    const labels = Object.keys(res.data);
+                    const values = Object.values(res.data);
+                    this.pieData = {
+                        labels: labels,
+                        datasets: [
+                            {
+                                data: values,
+                                backgroundColor: [
+                                    documentStyle.getPropertyValue(
+                                        '--bluegray-500'
+                                    ),
+                                    documentStyle.getPropertyValue(
+                                        '--green-600'
+                                    ),
+                                    documentStyle.getPropertyValue(
+                                        '--orange-500'
+                                    ),
+                                    documentStyle.getPropertyValue(
+                                        '--pink-500'
+                                    ),
+                                    documentStyle.getPropertyValue(
+                                        '--purple-500'
+                                    ),
+                                    documentStyle.getPropertyValue(
+                                        '--cyan-500'
+                                    ),
+                                    documentStyle.getPropertyValue(
+                                        '--yellow-500'
+                                    ),
+                                ],
+                                hoverBackgroundColor: [
+                                    documentStyle.getPropertyValue(
+                                        '--bluegray-400'
+                                    ),
+                                    documentStyle.getPropertyValue(
+                                        '--green-400'
+                                    ),
+                                    documentStyle.getPropertyValue(
+                                        '--orange-300'
+                                    ),
+                                    documentStyle.getPropertyValue(
+                                        '--pink-300'
+                                    ),
+                                    documentStyle.getPropertyValue(
+                                        '--purple-300'
+                                    ),
+                                    documentStyle.getPropertyValue(
+                                        '--cyan-300'
+                                    ),
+                                    documentStyle.getPropertyValue(
+                                        '--yellow-300'
+                                    ),
+                                ],
+                            },
+                        ],
+                    };
+
+                    this.pieOptions = {
+                        plugins: {
+                            legend: {
+                                labels: {
+                                    usePointStyle: true,
+                                    color: textColor,
+                                },
+                            },
+                        },
+                    };
                 }
-            ]
-        };
-
-        this.chartOptions = {
-            plugins: {
-                legend: {
-                    labels: {
-                        color: textColor
-                    }
-                }
-            },
-            scales: {
-                x: {
-                    ticks: {
-                        color: textColorSecondary
-                    },
-                    grid: {
-                        color: surfaceBorder,
-                        drawBorder: false
-                    }
-                },
-                y: {
-                    ticks: {
-                        color: textColorSecondary
-                    },
-                    grid: {
-                        color: surfaceBorder,
-                        drawBorder: false
-                    }
-                }
-            }
-        };
-
-        this.pieData = {
-            labels: ['A', 'B', 'C'],
-            datasets: [
-                {
-                    data: [540, 325, 702],
-                    backgroundColor: [
-                        documentStyle.getPropertyValue('--indigo-500'),
-                        documentStyle.getPropertyValue('--purple-500'),
-                        documentStyle.getPropertyValue('--teal-500')
-                    ],
-                    hoverBackgroundColor: [
-                        documentStyle.getPropertyValue('--indigo-400'),
-                        documentStyle.getPropertyValue('--purple-400'),
-                        documentStyle.getPropertyValue('--teal-400')
-                    ]
-                }]
-        };
-
-        this.pieOptions = {
-            plugins: {
-                legend: {
-                    labels: {
-                        usePointStyle: true,
-                        color: textColor
-                    }
-                }
-            }
-        };
-
+            });
     }
 
     ngOnDestroy() {
@@ -138,4 +145,41 @@ export class DashboardComponent implements OnInit, OnDestroy {
             this.subscription.unsubscribe();
         }
     }
+
+    getDashboardData() {
+        forkJoin({
+            estimatedStockValue: this.dashboardService
+                .getStockRevenue()
+                .pipe(catchError(() => of(null))),
+            monthlyTotalBalance: this.dashboardService
+                .getMontlyBalance()
+                .pipe(catchError(() => of(null))),
+            totalStockProducts: this.dashboardService
+                .getProductsStockQuantity()
+                .pipe(catchError(() => of(null))),
+        }).subscribe((res) => {
+            (this.dashboardData.estimatedStockValue =
+                res.estimatedStockValue?.revenue_amount || 0),
+                (this.dashboardData.monthlyBalance =
+                    res.monthlyTotalBalance?.data?.profit || 0),
+                (this.dashboardData.montlySales =
+                    res.monthlyTotalBalance?.data?.sales_value || 0),
+                (this.dashboardData.montlyShopping =
+                    res.monthlyTotalBalance?.data?.shopping_value || 0),
+                (this.dashboardData.totalStockProducts =
+                    res.totalStockProducts?.total_stock || 0);
+        });
+    }
+
+    getLatestSales(){
+        this.salesService.getlatestSales().subscribe((res)=> {
+            if (res.success) {
+                this.latestSales = res.data
+            }
+        })
+    }
+
+    formatedDate(data: string): string | null {
+        return this.datePipe.transform(data, 'dd-MM-yyyy');
+      }
 }
