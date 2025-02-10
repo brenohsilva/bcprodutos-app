@@ -25,7 +25,8 @@ export class SalesComponent implements OnInit, OnDestroy {
     salesData = {
         valueSalesOfWeekNet: 0,
         valueSalesOfWeekGross: 0,
-        valueSalesOfMonth: 0,
+        valueSalesOfMonthNet: 0,
+        valueSalesOfMonthGross: 0,
         quantityOfSalesByWeek: 0,
         quantityOfSalesByMonth: 0,
         quantityOfProductSoldByWeek: 0,
@@ -158,9 +159,10 @@ export class SalesComponent implements OnInit, OnDestroy {
             this.salesData.valueSalesOfWeekGross = Number(
                 res.valueSalesOfWeek?.data?.bruto || 0  
             );
-            this.salesData.valueSalesOfMonth = Number(
+            this.salesData.valueSalesOfMonthNet = Number(
                 res.valueSalesOfMonth?.data?.liquido || 0
             );
+            this.salesData.valueSalesOfMonthGross = Number(res.valueSalesOfMonth.data.bruto || 0)
             this.salesData.quantityOfSalesByWeek =
                 res.quantityOfSalesByWeek?.data || 0;
             this.salesData.quantityOfSalesByMonth =
