@@ -129,7 +129,7 @@ export class SalesComponent implements OnInit, OnDestroy {
     }
 
     registerNewSale() {
-        this.router.navigate(['uikit/novasvendas']);
+        this.router.navigate(['info/registrar-venda']);
     }
 
     getSalesData() {

@@ -29,49 +29,17 @@ export class AppMenuComponent implements OnInit {
                     {
                         label: 'Estoque',
                         icon: 'pi pi-fw pi-list',
-                        routerLink: ['/uikit/estoque'],
+                        routerLink: ['/info/estoque'],
                     },
                     {
                         label: 'Vendas',
                         icon: 'pi pi-fw pi-list',
-                        routerLink: ['/uikit/vendas'],
+                        routerLink: ['/info/vendas'],
                     },
                     {
                         label: 'Compras',
                         icon: 'pi pi-fw pi-list',
-                        routerLink: ['/uikit/compras'],
-                    },
-                ],
-            },
-            {
-                label: 'Pages',
-                icon: 'pi pi-fw pi-briefcase',
-                items: [
-                    {
-                        label: 'Landing',
-                        icon: 'pi pi-fw pi-globe',
-                        routerLink: ['/landing'],
-                    },
-                    {
-                        label: 'Auth',
-                        icon: 'pi pi-fw pi-user',
-                        items: [
-                            {
-                                label: 'Login',
-                                icon: 'pi pi-fw pi-sign-in',
-                                routerLink: ['/auth/login'],
-                            },
-                            {
-                                label: 'Error',
-                                icon: 'pi pi-fw pi-times-circle',
-                                routerLink: ['/auth/error'],
-                            },
-                            {
-                                label: 'Access Denied',
-                                icon: 'pi pi-fw pi-lock',
-                                routerLink: ['/auth/access'],
-                            },
-                        ],
+                        routerLink: ['/info/compras'],
                     },
                 ],
             },
@@ -137,6 +105,33 @@ export class AppMenuComponent implements OnInit {
                                         icon: 'pi pi-fw pi-bookmark',
                                     },
                                 ],
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
+                label: 'Pages',
+                icon: 'pi pi-fw pi-briefcase',
+                items: [
+                    {
+                        label: 'Auth',
+                        icon: 'pi pi-fw pi-user',
+                        items: [
+                            {
+                                label: 'Login',
+                                icon: 'pi pi-fw pi-sign-in',
+                                routerLink: ['/auth/login'],
+                            },
+                            {
+                                label: 'Error',
+                                icon: 'pi pi-fw pi-times-circle',
+                                routerLink: ['/auth/error'],
+                            },
+                            {
+                                label: 'Access Denied',
+                                icon: 'pi pi-fw pi-lock',
+                                routerLink: ['/auth/access'],
                             },
                         ],
                     },

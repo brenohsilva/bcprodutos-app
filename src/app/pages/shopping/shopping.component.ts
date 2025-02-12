@@ -8,10 +8,11 @@ import { ShoppingResponse } from 'src/app/demo/api/productsShopping';
 import { ProductService } from 'src/app/demo/service/product.service';
 import { ShoppingService } from 'src/app/demo/service/shopping.service';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
+import { Router } from '@angular/router';
 
 @Component({
     templateUrl: './shopping.component.html',
-    providers: [DatePipe]
+    providers: [DatePipe],
 })
 export class ShoppingComponent implements OnInit, OnDestroy {
     items!: MenuItem[];
@@ -27,7 +28,7 @@ export class ShoppingComponent implements OnInit, OnDestroy {
         amountOfProductsPurchasedOnMonth: 0,
     };
 
-    latestShopping: ShoppingResponse[]
+    latestShopping: ShoppingResponse[];
 
     chartData: any;
 
@@ -39,7 +40,8 @@ export class ShoppingComponent implements OnInit, OnDestroy {
         private productService: ProductService,
         public layoutService: LayoutService,
         private shoppingService: ShoppingService,
-        private datePipe: DatePipe
+        private datePipe: DatePipe,
+        private router: Router
     ) {
         this.subscription = this.layoutService.configUpdate$
             .pipe(debounceTime(25))
@@ -52,7 +54,7 @@ export class ShoppingComponent implements OnInit, OnDestroy {
         this.getShoppingData();
         this.initChart();
         this.getLastProductPurchased();
-        this.getLatesProducts()
+        this.getLatesProducts();
 
         this.items = [
             { label: 'Add New', icon: 'pi pi-fw pi-plus' },
@@ -185,20 +187,24 @@ export class ShoppingComponent implements OnInit, OnDestroy {
         this.productService.getLastProductPurchased().subscribe((res) => {
             if (res.success) {
                 this.products = res.data;
-                console.log(this.products)
+                console.log(this.products);
             }
         });
     }
 
-    getLatesProducts(){
-        this.shoppingService.getLatestShopping().subscribe((res)=>{
+    getLatesProducts() {
+        this.shoppingService.getLatestShopping().subscribe((res) => {
             if (res.success) {
-                this.latestShopping = res.data
+                this.latestShopping = res.data;
             }
-        })
+        });
     }
 
     formatedDate(data: string): string | null {
         return this.datePipe.transform(data, 'dd-MM-yyyy');
-      }
+    }
+
+    registerNewShopping() {
+        this.router.navigate(['info/registrar-compra']);
+    }
 }
