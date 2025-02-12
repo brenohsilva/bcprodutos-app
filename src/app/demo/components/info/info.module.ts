@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { UIkitRoutingModule } from './uikit-routing.module';
+import { InfoRoutingModule } from './info-routing.module';
 
 @NgModule({
 	imports: [
 		CommonModule,
-		UIkitRoutingModule
+		InfoRoutingModule
 	]
 })
-export class UIkitModule { }
+export class InfoModule { }
