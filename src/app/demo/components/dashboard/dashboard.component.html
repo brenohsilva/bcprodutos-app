@@ -6,7 +6,7 @@
                 <div class="flex justify-content-between mb-3">
                     <div>
                         <span class="block text-500 font-medium mb-3"
-                            >Valor aproximado do estoque (R$)</span
+                            >Lucro mensal (R$)</span
                         >
                         <div class="text-900 font-medium text-xl">{{
                             dashboardData.estimatedStockValue | currency : "BRL"
@@ -93,28 +93,52 @@
                 <span class="text-500">no mesmo periodo</span>
             </div>
         </div>
-        <div class="col-12 lg:col-6 xl:col-3">
-            <div class="card mb-0">
-                <div class="flex justify-content-between mb-3">
-                    <div>
-                        <span class="block text-500 font-medium mb-3"
-                            >Total produtos em estoque</span
+        <div class="col-12 lg:col-6 xl:col-6">
+            <div class="flex gap-4">
+                <div class="card mb-0 col">
+                    <div class="flex justify-content-between mb-3">
+                        <div>
+                            <span class="block text-500 font-medium mb-3"
+                                >Valor Aproximado do estoque (R$)</span
+                            >
+                            <div class="text-900 font-medium text-xl">
+                                {{
+                                    dashboardData.estimatedStockValue | currency : "BRL"
+                                }}
+                            </div>
+                        </div>
+                        <div
+                            class="flex align-items-center justify-content-center bg-purple-100 border-round"
+                            [ngStyle]="{ width: '2.5rem', height: '2.5rem' }"
                         >
-                        <div class="text-900 font-medium text-xl">
-                            {{
-                                dashboardData.totalStockProducts
-                            }}
+                            <i class="pi pi-comment text-purple-500 text-xl"></i>
                         </div>
                     </div>
-                    <div
-                        class="flex align-items-center justify-content-center bg-purple-100 border-round"
-                        [ngStyle]="{ width: '2.5rem', height: '2.5rem' }"
-                    >
-                        <i class="pi pi-comment text-purple-500 text-xl"></i>
-                    </div>
+                    <span class="text-green-500 font-medium">85 </span>
+                    <span class="text-500">responded</span>
                 </div>
-                <span class="text-green-500 font-medium">85 </span>
-                <span class="text-500">responded</span>
+                <div class="card mb-0 col-6">
+                    <div class="flex justify-content-between mb-3">
+                        <div>
+                            <span class="block text-500 font-medium mb-3"
+                                >Total produtos em estoque</span
+                            >
+                            <div class="text-900 font-medium text-xl">
+                                {{
+                                    dashboardData.totalStockProducts
+                                }}
+                            </div>
+                        </div>
+                        <div
+                            class="flex align-items-center justify-content-center bg-purple-100 border-round"
+                            [ngStyle]="{ width: '2.5rem', height: '2.5rem' }"
+                        >
+                            <i class="pi pi-comment text-purple-500 text-xl"></i>
+                        </div>
+                    </div>
+                    <span class="text-green-500 font-medium">85 </span>
+                    <span class="text-500">responded</span>
+                </div>
             </div>
             <div class="mt-4">
                 <div class="card flex flex-column align-items-center">
@@ -127,7 +151,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-12 xl:col-9">
+        <div class="col-12 xl:col-6">
             <div class="card">
                 <h5>Vendas Recentes</h5>
                 <p-table
