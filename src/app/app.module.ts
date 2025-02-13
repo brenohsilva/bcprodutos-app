@@ -12,6 +12,7 @@ import { ProductService } from './demo/service/product.service';
 import { ShoppingService } from './demo/service/shopping.service';
 import { SalesService } from './demo/service/sales.service';
 import { DashboardService } from './demo/service/dashboard.service';
+import { AuthService } from './demo/service/auth.service';
 
 @NgModule({
     declarations: [AppComponent, NotfoundComponent],
@@ -20,6 +21,7 @@ import { DashboardService } from './demo/service/dashboard.service';
         { provide: LocationStrategy, useClass: PathLocationStrategy },
         ProductService,
         ShoppingService,
+        AuthService,
         SalesService,
         DashboardService,
     ],
