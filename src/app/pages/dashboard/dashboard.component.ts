@@ -1,12 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MenuItem } from 'primeng/api';
-import { Product } from '../../api/product';
-import { ProductService } from '../../service/product.service';
+import { Product } from '../../demo/api/product';
+import { ProductService } from '../../demo/service/product.service';
 import { Subscription, catchError, debounceTime, forkJoin, of } from 'rxjs';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
-import { DashboardService } from '../../service/dashboard.service';
-import { SalesResponse } from '../../api/productsSales';
-import { SalesService } from '../../service/sales.service';
+import { DashboardService } from '../../demo/service/dashboard.service';
+import { SalesResponse } from '../../demo/api/productsSales';
+import { SalesService } from '../../demo/service/sales.service';
 import { DatePipe } from '@angular/common';
 
 @Component({
