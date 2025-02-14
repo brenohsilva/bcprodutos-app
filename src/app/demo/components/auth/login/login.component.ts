@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthService } from 'src/app/demo/service/auth.service';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
 
@@ -24,7 +25,8 @@ export class LoginComponent {
 
     constructor(
         public layoutService: LayoutService,
-        private authService: AuthService
+        private authService: AuthService,
+        private router: Router
     ) {}
 
     login() {
@@ -32,7 +34,7 @@ export class LoginComponent {
             .login(this.username, this.password)
             .subscribe((response) => {
                 localStorage.setItem('token', response.token);
-            console.log(response.token)
+                this.router.navigate(['/']);
             });
     }
 }
