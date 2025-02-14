@@ -13,12 +13,19 @@ import { ShoppingService } from './demo/service/shopping.service';
 import { SalesService } from './demo/service/sales.service';
 import { DashboardService } from './demo/service/dashboard.service';
 import { AuthService } from './demo/service/auth.service';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
 
 @NgModule({
     declarations: [AppComponent, NotfoundComponent],
     imports: [AppRoutingModule, AppLayoutModule],
     providers: [
         { provide: LocationStrategy, useClass: PathLocationStrategy },
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: AuthInterceptor,
+            multi: true,
+        },
         ProductService,
         ShoppingService,
         AuthService,
