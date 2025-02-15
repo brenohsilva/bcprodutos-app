@@ -18,7 +18,11 @@ export class DashboardService {
     }
 
     getMontlyBalance() : Observable<any>{
-        return this.http.get<any>(`${this.base_url}overview/profit`)
+        return this.http.get<any>(`${this.base_url}overview/balance`)
+    }
+
+    getMontlyProfit() : Observable<any>{
+        return this.http.get<any>(`${this.base_url}overview/profits`)
     }
 
     getStockRevenue(): Observable<any> {
