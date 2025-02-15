@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { MessageService } from 'primeng/api';
 import { AuthService } from 'src/app/demo/service/auth.service';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
 
 @Component({
+    providers: [MessageService],
     selector: 'app-login',
     templateUrl: './login.component.html',
     styles: [
@@ -26,15 +28,30 @@ export class LoginComponent {
     constructor(
         public layoutService: LayoutService,
         private authService: AuthService,
-        private router: Router
+        private router: Router,
+        private messageService: MessageService
     ) {}
 
     login() {
+        
         this.authService
             .login(this.username, this.password)
             .subscribe((response) => {
                 localStorage.setItem('token', response.token);
                 this.router.navigate(['/']);
-            });
+            }, (error: any) => {
+                console.error('Erro ao fazer login:', error);
+                this.show()
+            }
+        );
+    }
+
+    show() {
+        this.messageService.add({
+            severity: 'error',
+            summary: 'Algo deu erro',
+            detail: 'Login ou senha invalidos',
+            life: 3000,
+        });
     }
 }
