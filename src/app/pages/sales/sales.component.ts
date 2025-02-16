@@ -1,20 +1,25 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { forkJoin, catchError, of } from 'rxjs';
 import { Subscription, debounceTime } from 'rxjs';
 import { Product } from 'src/app/demo/api/product';
+import { SalesResponse } from 'src/app/demo/api/productsSales';
 import { ProductService } from 'src/app/demo/service/product.service';
 import { SalesService } from 'src/app/demo/service/sales.service';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
 
 @Component({
     templateUrl: './sales.component.html',
+    providers: [DatePipe],
 })
 export class SalesComponent implements OnInit, OnDestroy {
     items!: MenuItem[];
 
     products!: Product[];
+
+    latestSales: SalesResponse[];
 
     chartData: any;
 
@@ -37,7 +42,8 @@ export class SalesComponent implements OnInit, OnDestroy {
         private productService: ProductService,
         public layoutService: LayoutService,
         public salesService: SalesService,
-        private router: Router
+        private router: Router,
+        private datePipe: DatePipe
     ) {
         this.subscription = this.layoutService.configUpdate$
             .pipe(debounceTime(25))
@@ -49,12 +55,9 @@ export class SalesComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.getSalesData();
         this.getLastProductsSold()
+        this.getLatestSales();
         this.initChart();
 
-        this.items = [
-            { label: 'Add New', icon: 'pi pi-fw pi-plus' },
-            { label: 'Remove', icon: 'pi pi-fw pi-minus' },
-        ];
     }
 
     initChart() {
@@ -108,6 +111,7 @@ export class SalesComponent implements OnInit, OnDestroy {
                         color: surfaceBorder,
                         drawBorder: false,
                     },
+                    
                 },
                 y: {
                     ticks: {
@@ -174,6 +178,15 @@ export class SalesComponent implements OnInit, OnDestroy {
         });
     }
 
+    getLatestSales() {
+        this.salesService.getlatestSales().subscribe((res) => {
+            if (res.success) {
+                this.latestSales = res.data;
+                console.log(res.data)
+            }
+        });
+    }
+
     getLastProductsSold() {
         this.productService.getLastProductsSold().subscribe((res) => {
            
@@ -181,5 +194,9 @@ export class SalesComponent implements OnInit, OnDestroy {
                 this.products = res.data;
             }
         });
+    }
+
+    formatedDate(data: string): string | null {
+        return this.datePipe.transform(data, 'dd-MM-yyyy');
     }
 }
