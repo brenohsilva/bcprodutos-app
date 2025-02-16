@@ -37,8 +37,17 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     pieOptions: any;
 
+    //chart
+    view: [number, number] = [700, 400]; // Tamanho do gráfico
+    // Dados para o Pie Chart
+    single: any[] = []
+    // Opções do gráfico
+    showLabels: boolean = true;
+    showLegend: boolean = true;
+    gradient: boolean = true;
+    colorScheme = 'natural';
+
     constructor(
-        private productService: ProductService,
         public layoutService: LayoutService,
         private dashboardService: DashboardService,
         private salesService: SalesService,
@@ -127,19 +136,5 @@ export class DashboardComponent implements OnInit, OnDestroy {
     formatedDate(data: string): string | null {
         return this.datePipe.transform(data, 'dd-MM-yyyy');
     }
-
-    //chart
-
-    //chart
-
-    view: [number, number] = [700, 400]; // Tamanho do gráfico
-
-    // Dados para o Pie Chart
-    single: any[] = []
-
-    // Opções do gráfico
-    showLabels: boolean = true;
-    showLegend: boolean = true;
-    gradient: boolean = true;
-    colorScheme = 'natural';
+    
 }
