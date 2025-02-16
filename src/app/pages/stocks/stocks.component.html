@@ -14,7 +14,7 @@
             >
                 <ng-template pTemplate="header">
                     <div
-                        class="flex flex-column md:flex-row md:justify-content-between gap-2 "
+                        class="flex flex-column md:flex-row md:justify-content-between gap-2"
                     >
                         <p-dropdown
                             [options]="sortOptions"
@@ -90,14 +90,10 @@
                                     Tamanho
                                     <p-sortIcon field="size"></p-sortIcon>
                                 </th>
-                                <th pSortableColumn="color">
-                                    Cor 
-                                </th>
+                                <th pSortableColumn="color">Cor</th>
                                 <th pSortableColumn="quantity">
                                     Quantidade
-                                    <p-sortIcon
-                                        field="quantity"
-                                    ></p-sortIcon>
+                                    <p-sortIcon field="quantity"></p-sortIcon>
                                 </th>
                                 <th></th>
                             </tr>
@@ -111,10 +107,13 @@
                                 <td style="width: 14%; min-width: 10rem">
                                     <span class="p-column-title">Image</span>
                                     <img
-                                    [src]="'assets/demo/images/product/' + 'CA01'"
+                                        [src]="
+                                            'assets/demo/images/product/' +
+                                            product.image +
+                                            '.jpg'
+                                        "
                                         [alt]="product.name"
-                                        width="100"
-                                        class="shadow-4"
+                                        class="w-9 shadow-2 my-3 mx-0"
                                     />
                                 </td>
                                 <td style="width: 14%; min-width: 8rem">
@@ -160,36 +159,40 @@
                             class="col-12 md:col-4"
                             *ngFor="let product of products"
                         >
-                            <div class="card m-3 border border-blue-200 ">
+                            <div class="card m-3 border border-blue-200">
                                 <div
                                     class="flex flex-wrap gap-2 align-items-center justify-content-between mb-2"
                                 >
                                     <div class="flex align-items-center gap-2">
                                         @if (product.size) {
-                                            <span class="font-normal"
-                                                >Tamanho
-                                                <strong>{{
-                                                    product.size
-                                                }}</strong></span
-                                            >
-                                            |
-                                        }
-                                        @if (product.color) {
-                                            <p-tag [styleClass]="getTagClass(product.color)"
-                                                value="{{ product.color }}"
-                                            ></p-tag>
+                                        <span class="font-normal"
+                                            >Tamanho
+                                            <strong>{{
+                                                product.size
+                                            }}</strong></span
+                                        >
+                                        | } @if (product.color) {
+                                        <p-tag
+                                            [styleClass]="
+                                                getTagClass(product.color)
+                                            "
+                                            value="{{ product.color }}"
+                                        ></p-tag>
                                         }
                                     </div>
                                     <span class="font-semibold">{{
                                         product.sales_price | currency : "BRL"
                                     }}</span>
-                                    
                                 </div>
                                 <div
                                     class="flex flex-column align-items-center text-center mb-3"
                                 >
                                     <img
-                                    [src]="'assets/demo/images/product/' + product.image + '.jpg'"
+                                        [src]="
+                                            'assets/demo/images/product/' +
+                                            product.image +
+                                            '.jpg'
+                                        "
                                         [alt]="product.name"
                                         class="w-9 shadow-2 my-3 mx-0"
                                     />
@@ -199,30 +202,15 @@
                                     <span>{{ product.type }}</span>
                                 </div>
                                 <div
-                                    class="flex align-items-center justify-content-center pt-3"
+                                    class="flex flex-column align-items-center justify-content-center pt-3 gap-2"
                                 >
-                                <span class="font-bold"
-                                >Qtd: {{ product.amount }}</span
-                            >
-                                    <!-- <div class="flex gap-3">
-                                        
-                                        <button
-                                            pButton
-                                            pRipple
-                                            type="button"
-                                            icon="pi pi-shopping-cart"
-                                            class="p-button-success"
-                                            (click)="openNewSales(product)"
-                                        ></button>
-                                        <button
-                                            pButton
-                                            pRipple
-                                            type="button"
-                                            icon="pi pi-shopping-cart"
-                                            class="p-button-warning"
-                                            (click)="openNewShopping(product)"
-                                        ></button>
-                                    </div> -->
+                                    <p-tag
+                                        [severity]="product.amount > 3 ? 'success' : 'danger'"
+                                        [value]="product.amount > 3 ? 'EM ESTOQUE' : 'ACABANDO'"
+                                    />
+                                    <span class="font-bold text-xl"
+                                        >Qtd: {{ product.amount }}
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -231,5 +219,4 @@
             </p-dataView>
         </div>
     </div>
-
 </div>

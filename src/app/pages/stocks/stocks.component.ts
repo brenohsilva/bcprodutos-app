@@ -4,7 +4,7 @@ import { DataView } from 'primeng/dataview';
 import { Table } from 'primeng/table';
 import { Product } from 'src/app/demo/api/product';
 import { Sales } from 'src/app/demo/api/productsSales';
-import { ProductShopping, Shopping } from 'src/app/demo/api/productsShopping';
+import {Shopping } from 'src/app/demo/api/productsShopping';
 import { ProductService } from 'src/app/demo/service/product.service';
 
 @Component({
@@ -52,35 +52,35 @@ export class StocksComponent implements OnInit {
     constructor(private productService: ProductService) {}
 
     ngOnInit() {
-        this.initialData()
+        this.initialData();
     }
 
-    initialData(){
+    initialData() {
         this.productService.getProducts().subscribe((data) => {
-            this.products = data.data
-        })
+            this.products = data.data;
+        });
 
-    this.sortOptions = [
-        { label: 'Maior Preço', value: '!price' },
-        { label: 'Menor Preço', value: 'price' },
-    ];
+        this.sortOptions = [
+            { label: 'Maior Preço', value: '!price' },
+            { label: 'Menor Preço', value: 'price' },
+        ];
 
-    this.paymentMethods = [
-        { label: 'Dinheiro', value: 'Dinheiro' },
-        { label: 'Cartão de Credito', value: 'Cartão de Credito' },
-        { label: 'Cartão de Debito', value: 'Cartão de Debito' },
-        { label: 'Pix', value: 'Pix' },
-    ];
+        this.paymentMethods = [
+            { label: 'Dinheiro', value: 'Dinheiro' },
+            { label: 'Cartão de Credito', value: 'Cartão de Credito' },
+            { label: 'Cartão de Debito', value: 'Cartão de Debito' },
+            { label: 'Pix', value: 'Pix' },
+        ];
 
-    this.installments = [
-        { label: 'A vista', value: 'A vista' },
-        { label: 'Parcelado em 1x', value: 1 },
-        { label: 'Parcelado em 2x', value: 2 },
-        { label: 'Parcelado em 3x', value: 3 },
-        { label: 'Parcelado em 4x', value: 4 },
-        { label: 'Parcelado em 5x', value: 5 },
-        { label: 'Parcelado em 6x', value: 6 },
-    ];
+        this.installments = [
+            { label: 'A vista', value: 'A vista' },
+            { label: 'Parcelado em 1x', value: 1 },
+            { label: 'Parcelado em 2x', value: 2 },
+            { label: 'Parcelado em 3x', value: 3 },
+            { label: 'Parcelado em 4x', value: 4 },
+            { label: 'Parcelado em 5x', value: 5 },
+            { label: 'Parcelado em 6x', value: 6 },
+        ];
     }
 
     onSortChange(event: any) {
@@ -103,33 +103,34 @@ export class StocksComponent implements OnInit {
         if (color) {
             switch (color.toLowerCase()) {
                 case 'preto':
-                    return 'tag-preto'
-              case 'azul':
-                return 'tag-azul';
-              case 'marrom':
-                return 'tag-marrom';
-              case 'branco':
-                return 'tag-branco';
-              case 'amarelo':
-                return 'tag-amarelo';
-              default:
-                return 'custom-tag';
+                    return 'tag-preto';
+                case 'azul':
+                    return 'tag-azul';
+                case 'marrom':
+                    return 'tag-marrom';
+                case 'branco':
+                    return 'tag-branco';
+                case 'amarelo':
+                    return 'tag-amarelo';
+                default:
+                    return 'custom-tag';
             }
         }
-        return ''
-      }
+        return '';
+    }
 
     openNewSales(product: any) {
         this.product = product;
         this.salesDialog = true;
     }
 
-    closeNewsales(){
+    closeNewsales() {
         this.salesDialog = false;
     }
 
     calculateTotalValueOfSales(): number {
-        const subTotal = (this.product.sales_price || 0) * (this.salesAmount || 1);
+        const subTotal =
+            (this.product.sales_price || 0) * (this.salesAmount || 1);
         const discount = this.sales.discount || 0;
         const coast = this.sales.coast || 0;
         return subTotal - discount - coast;
@@ -140,16 +141,14 @@ export class StocksComponent implements OnInit {
         this.shoppingDialog = true;
     }
 
-    closeNewShopping(){
+    closeNewShopping() {
         this.shoppingDialog = false;
     }
 
-
     saveShopping() {
-
         this.shopping = {
             ...this.shopping,
-            total_value: this.shopping.total_value + + this.shopping.tax,
+            total_value: this.shopping.total_value + +this.shopping.tax,
             itens: [
                 {
                     productId: this.product.id,
@@ -171,5 +170,4 @@ export class StocksComponent implements OnInit {
         );
     }
 
-    
 }

@@ -70,73 +70,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
             .getIndividualProductStockQuantity()
             .subscribe((res) => {
                 if (res.success) {
-                    const labels = Object.keys(res.data);
-                    const values = Object.values(res.data);
-                    this.pieData = {
-                        labels: labels,
-                        datasets: [
-                            {
-                                data: values,
-                                backgroundColor: [
-                                    documentStyle.getPropertyValue(
-                                        '--bluegray-500'
-                                    ),
-                                    documentStyle.getPropertyValue(
-                                        '--green-600'
-                                    ),
-                                    documentStyle.getPropertyValue(
-                                        '--orange-500'
-                                    ),
-                                    documentStyle.getPropertyValue(
-                                        '--pink-500'
-                                    ),
-                                    documentStyle.getPropertyValue(
-                                        '--purple-500'
-                                    ),
-                                    documentStyle.getPropertyValue(
-                                        '--cyan-500'
-                                    ),
-                                    documentStyle.getPropertyValue(
-                                        '--yellow-500'
-                                    ),
-                                ],
-                                hoverBackgroundColor: [
-                                    documentStyle.getPropertyValue(
-                                        '--bluegray-400'
-                                    ),
-                                    documentStyle.getPropertyValue(
-                                        '--green-400'
-                                    ),
-                                    documentStyle.getPropertyValue(
-                                        '--orange-300'
-                                    ),
-                                    documentStyle.getPropertyValue(
-                                        '--pink-300'
-                                    ),
-                                    documentStyle.getPropertyValue(
-                                        '--purple-300'
-                                    ),
-                                    documentStyle.getPropertyValue(
-                                        '--cyan-300'
-                                    ),
-                                    documentStyle.getPropertyValue(
-                                        '--yellow-300'
-                                    ),
-                                ],
-                            },
-                        ],
-                    };
-
-                    this.pieOptions = {
-                        plugins: {
-                            legend: {
-                                labels: {
-                                    usePointStyle: true,
-                                    color: textColor,
-                                },
-                            },
-                        },
-                    };
+                    this.single = Object.entries(res.data).map(
+                        ([key, value]) => ({
+                            name: key,
+                            value: value,
+                        })
+                    );
                 }
             });
     }
@@ -158,13 +97,16 @@ export class DashboardComponent implements OnInit, OnDestroy {
             totalStockProducts: this.dashboardService
                 .getProductsStockQuantity()
                 .pipe(catchError(() => of(null))),
-            monthlyProfit: this.dashboardService.getMontlyProfit().pipe(catchError(() => of(null))),
+            monthlyProfit: this.dashboardService
+                .getMontlyProfit()
+                .pipe(catchError(() => of(null))),
         }).subscribe((res) => {
             (this.dashboardData.estimatedStockValue =
                 res.estimatedStockValue?.revenue_amount || 0),
                 (this.dashboardData.monthlyBalance =
                     res.monthlyTotalBalance?.data?.balance || 0),
-                    (this.dashboardData.monthlyProfit = res.monthlyProfit.data || 0),
+                (this.dashboardData.monthlyProfit =
+                    res.monthlyProfit.data || 0),
                 (this.dashboardData.montlySales =
                     res.monthlyTotalBalance?.data?.sales_value || 0),
                 (this.dashboardData.montlyShopping =
@@ -185,4 +127,19 @@ export class DashboardComponent implements OnInit, OnDestroy {
     formatedDate(data: string): string | null {
         return this.datePipe.transform(data, 'dd-MM-yyyy');
     }
+
+    //chart
+
+    //chart
+
+    view: [number, number] = [700, 400]; // Tamanho do gráfico
+
+    // Dados para o Pie Chart
+    single: any[] = []
+
+    // Opções do gráfico
+    showLabels: boolean = true;
+    showLegend: boolean = true;
+    gradient: boolean = true;
+    colorScheme = 'natural';
 }
