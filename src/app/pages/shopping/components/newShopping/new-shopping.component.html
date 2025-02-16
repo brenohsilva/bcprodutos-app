@@ -46,7 +46,7 @@
                         <td style="width: 14%; min-width: 8rem">
                             <span class="p-column-title">Preço</span>
                             {{
-                                product.totalValue / product.amount
+                                product.total_value / product.amount
                                     | currency : "USD"
                             }}
                         </td>
@@ -62,13 +62,13 @@
                             </p-inputNumber>
                         </td>
                         <td style="width: 4%; min-width: 7rem">
-                            <span class="p-column-title">Total Value</span>
+                            <span class="p-column-title">Valor Total</span>
                             <p-inputNumber
                                 id="totalValue"
                                 mode="currency"
                                 currency="BRL"
                                 locale="pt-BR"
-                                [(ngModel)]="product.totalValue"
+                                [(ngModel)]="product.total_value"
                             ></p-inputNumber>
                         </td>
                         <td>

@@ -87,6 +87,7 @@ export class NewShoppingComponent implements OnInit {
     get total(): number {
         return (
             this.shoppingProducts.reduce((sum, product) => {
+                console.log(product)
                 const productTotal = product.total_value;
                 return sum + productTotal;
             }, 0) + (this.tax || 0)
@@ -144,7 +145,7 @@ export class NewShoppingComponent implements OnInit {
                 if (res.success) {
                     this.showSuccessViaToast();
                     setTimeout(() => {
-                        this.router.navigate(['uikit/compras']);
+                        this.router.navigate(['info/compras']);
                     }, 2000);
                 }
             },
