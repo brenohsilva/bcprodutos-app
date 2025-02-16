@@ -1,6 +1,6 @@
 <div class="grid">
     <div class="col-12">
-        <div class="card">
+        <div class="card border border-blue-200">
             <h5>Estoque</h5>
             <p-dataView
                 #dv
@@ -14,7 +14,7 @@
             >
                 <ng-template pTemplate="header">
                     <div
-                        class="flex flex-column md:flex-row md:justify-content-between gap-2"
+                        class="flex flex-column md:flex-row md:justify-content-between gap-2 "
                     >
                         <p-dropdown
                             [options]="sortOptions"
@@ -160,7 +160,7 @@
                             class="col-12 md:col-4"
                             *ngFor="let product of products"
                         >
-                            <div class="card m-3 border-1 surface-border">
+                            <div class="card m-3 border border-blue-200 ">
                                 <div
                                     class="flex flex-wrap gap-2 align-items-center justify-content-between mb-2"
                                 >
@@ -180,9 +180,10 @@
                                             ></p-tag>
                                         }
                                     </div>
-                                    <span class="font-bold"
-                                        >Qtd: {{ product.amount }}</span
-                                    >
+                                    <span class="font-semibold">{{
+                                        product.sales_price | currency : "BRL"
+                                    }}</span>
+                                    
                                 </div>
                                 <div
                                     class="flex flex-column align-items-center text-center mb-3"
@@ -200,9 +201,9 @@
                                 <div
                                     class="flex align-items-center justify-content-center pt-3"
                                 >
-                                    <span class="text-2xl font-semibold">{{
-                                        product.sales_price | currency : "BRL"
-                                    }}</span>
+                                <span class="font-bold"
+                                >Qtd: {{ product.amount }}</span
+                            >
                                     <!-- <div class="flex gap-3">
                                         
                                         <button
@@ -231,301 +232,4 @@
         </div>
     </div>
 
-    <!-- Dialog de Vendas -->
-    <p-dialog
-        [(visible)]="salesDialog"
-        [style]="{ width: '450px' }"
-        header="Venda de produto"
-        [modal]="true"
-        class="p-fluid"
-    >
-        <ng-template pTemplate="content">
-            <div class="field flex flex-column">
-                <h6 for="name">Nome do Produto</h6>
-                <label>{{ product.name }}</label>
-            </div>
-            <hr />
-            <div class="formgrid grid">
-                <div class="field col">
-                    <h6 for="status">Quantidade no estoque</h6>
-                    <label for="status">{{ product.amount }}</label>
-                </div>
-                <div class="field col flex flex-column align-content-center">
-                    <h6>Cor</h6>
-                    <div class="flex gap-2">
-                        <p-tag value="Preto"></p-tag>
-                    </div>
-                </div>
-            </div>
-            <hr />
-            <div class="formgrid grid">
-                <div class="field col">
-                    <h6 class="mb-3">Categoria</h6>
-                    <div class="formgrid grid">
-                        <div class="bg-blue-100 border-round py-1 px-2 ml-3">
-                            <label class="font-medium" for="category1">{{
-                                product.category
-                            }}</label>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="field col">
-                    <h6 class="mb-3">Tipo</h6>
-                    <div class="formgrid grid">
-                        <div class="bg-blue-100 border-round px-2 py-1">
-                            <label class="font-medium" for="category2">{{
-                                product.type
-                            }}</label>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="field col">
-                    <h6 class="mb-3">Tamanho</h6>
-                    <div class="formgrid grid">
-                        <div class="bg-blue-100 border-round px-2 py-1 ml-3">
-                            <label class="font-medium" for="category1"
-                                >40</label
-                            >
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <hr />
-            <div class="field">
-                <h6 for="status">Metodo de Pagamento</h6>
-                <p-dropdown
-                    [(ngModel)]="sales.paymentMethod"
-                    inputId="paymentMethod"
-                    optionValue="label"
-                    [options]="paymentMethods"
-                    placeholder="Selecione o método de pagamento"
-                >
-                    <ng-template pTemplate="selectedItem">
-                        <span *ngIf="product && sales.paymentMethod">{{
-                            sales.paymentMethod
-                        }}</span>
-                    </ng-template>
-                </p-dropdown>
-            </div>
-            <hr />
-            <div class="field">
-                <h6 for="price">Desconto</h6>
-                <p-inputNumber
-                    id="price"
-                    [(ngModel)]="sales.discount"
-                    mode="currency"
-                    currency="BRL"
-                    locale="pt-BR"
-                ></p-inputNumber>
-            </div>
-            <div class="field">
-                <h6 for="price">Custo da Venda</h6>
-                <p-inputNumber
-                    id="price"
-                    [(ngModel)]="sales.coast"
-                    mode="currency"
-                    currency="BRL"
-                    locale="pt-BR"
-                ></p-inputNumber>
-            </div>
-            <hr />
-            <div class="formgrid grid">
-                <div class="field col">
-                    <h6 for="price">Preço</h6>
-                    <label for="price">{{
-                        product.price | currency : "BRL"
-                    }}</label>
-                </div>
-                <div class="field col">
-                    <h6 for="amount">Quantidade vendida</h6>
-                    <p-inputNumber
-                        id="amount"
-                        [(ngModel)]="salesAmount"
-                    ></p-inputNumber>
-                </div>
-            </div>
-            <hr />
-            <div class="field flex flex-column">
-                <h6 for="total">Valor Total</h6>
-                <label for="total">{{
-                    calculateTotalValueOfSales() | currency : "BRL"
-                }}</label>
-            </div>
-        </ng-template>
-
-        <ng-template pTemplate="footer">
-            <button
-                pButton
-                pRipple
-                label="Cancelar"
-                icon="pi pi-times"
-                class="p-button-text"
-                (click)="closeNewsales()"
-            ></button>
-            <button
-                pButton
-                pRipple
-                label="Cadastrar venda"
-                icon="pi pi-check"
-                class="p-button-text"
-                (click)="saveSale()"
-            ></button>
-        </ng-template>
-    </p-dialog>
-    <!-- Dialog de Compras -->
-    <p-dialog
-        [(visible)]="shoppingDialog"
-        [style]="{ width: '450px' }"
-        header="Compra de produto"
-        [modal]="true"
-        class="p-fluid"
-    >
-        <ng-template pTemplate="content">
-            <div class="field flex flex-column">
-                <h6 for="name">Nome do Produto</h6>
-                <label>{{ product.name }}</label>
-            </div>
-            <hr />
-            <div class="formgrid grid">
-                <div class="field col">
-                    <h6 for="status">Quantidade no estoque</h6>
-                    <label for="status">{{ product.amount }}</label>
-                </div>
-                <div class="field col flex flex-column align-content-center">
-                    <h6>Cor</h6>
-                    <div class="flex gap-2">
-                        <p-tag value="{{ product.color }}"></p-tag>
-                    </div>
-                </div>
-            </div>
-            <hr />
-            <div class="formgrid grid">
-                <div class="field col">
-                    <h6 class="mb-3">Categoria</h6>
-                    <div class="formgrid grid">
-                        <div class="bg-blue-100 border-round py-1 px-2 ml-3">
-                            <label class="font-medium" for="category1">{{
-                                product.category
-                            }}</label>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="field col">
-                    <h6 class="mb-3">Tipo</h6>
-                    <div class="formgrid grid">
-                        <div class="bg-blue-100 border-round px-2 py-1">
-                            <label class="font-medium" for="category2">{{
-                                product.type
-                            }}</label>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="field col">
-                    <h6 class="mb-3">Tamanho</h6>
-                    <div class="formgrid grid">
-                        <div class="bg-blue-100 border-round px-2 py-1 ml-3">
-                            <label class="font-medium" for="category1">{{
-                                product.size
-                            }}</label>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <hr />
-            <div class="field">
-                <h6 for="status">Metodo de Pagamento</h6>
-                <p-dropdown
-                    [(ngModel)]="shopping.paymentMethod"
-                    inputId="method"
-                    optionValue="label"
-                    [options]="paymentMethods"
-                    placeholder="Selecione o método de pagamento"
-                >
-                    <ng-template pTemplate="selectedItem">
-                        <span *ngIf="product && shopping.paymentMethod">{{
-                            shopping.paymentMethod
-                        }}</span>
-                    </ng-template>
-                </p-dropdown>
-            </div>
-            <hr />
-            <div class="field">
-                <h6 for="price">Parcelas</h6>
-                <p-dropdown
-                    [(ngModel)]="shopping.installment"
-                    inputId="method"
-                    optionValue="label"
-                    [options]="installments"
-                    placeholder="Selecione o método de pagamento"
-                >
-                    <ng-template pTemplate="selectedItem">
-                        <span *ngIf="product && shopping.installment">{{
-                            shopping.installment
-                        }}</span>
-                    </ng-template>
-                </p-dropdown>
-            </div>
-            <hr />
-            <div class="formgrid grid">
-                <div class="field col">
-                    <h6 for="price">Valor Unitário</h6>
-                    <label for="price">{{
-                        shopping.totalValue / shoppingProductAmount
-                            | currency : "BRL"
-                    }}</label>
-                </div>
-                <div class="field col">
-                    <h6 for="amount">Quantidade</h6>
-                    <p-inputNumber
-                        id="amount"
-                        [(ngModel)]="shoppingProductAmount"
-                    ></p-inputNumber>
-                </div>
-                <div class="field col">
-                    <h6 for="tax">Frete</h6>
-                    <p-inputNumber
-                        mode="currency"
-                        currency="BRL"
-                        locale="pt-BR"
-                        id="tax"
-                        [(ngModel)]="shopping.tax"
-                    ></p-inputNumber>
-                </div>
-            </div>
-            <hr />
-            <div class="field flex flex-column">
-                <h6 for="total">Valor Total</h6>
-                <p-inputNumber
-                    mode="currency"
-                    currency="BRL"
-                    locale="pt-BR"
-                    id="totalValue"
-                    [(ngModel)]="shopping.totalValue"
-                ></p-inputNumber>
-            </div>
-        </ng-template>
-
-        <ng-template pTemplate="footer">
-            <button
-                pButton
-                pRipple
-                label="Cancelar"
-                icon="pi pi-times"
-                class="p-button-text"
-                (click)="closeNewShopping()"
-            ></button>
-            <button
-                pButton
-                pRipple
-                label="Cadastrar compra"
-                icon="pi pi-check"
-                class="p-button-text"
-                (click)="saveShopping()"
-            ></button>
-        </ng-template>
-    </p-dialog>
 </div>

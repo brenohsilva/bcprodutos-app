@@ -1,54 +1,58 @@
-<div class="card">
+<div class="card border border-blue-200">
     <h5>Visão Geral</h5>
     <div class="grid">
         <div class="col-12 lg:col-6 xl:col-3">
-            <div class="card mb-0">
+            <div class="card mb-0 border border-blue-200">
                 <div class="flex justify-content-between mb-3">
                     <div>
                         <span class="block text-500 font-medium mb-3"
                             >Lucro mensal (R$)</span
                         >
-                        <div class="text-900 font-medium text-xl">{{
-                            dashboardData.monthlyProfit | currency : "BRL"
-                        }}</div>
+                        <div class="text-900 font-medium text-xl">
+                            {{ dashboardData.monthlyProfit | currency : "BRL" }}
+                        </div>
                     </div>
                     <div
-                        class="flex align-items-center justify-content-center bg-blue-100 border-round"
+                        class="flex justify-content-center"
                         [ngStyle]="{ width: '2.5rem', height: '2.5rem' }"
                     >
-                        <i
-                            class="pi pi-shopping-cart text-blue-500 text-xl"
-                        ></i>
+                        <img
+                            src="../../../assets/demo/images/icons/payments.svg"
+                            alt="shopping"
+                        />
                     </div>
                 </div>
-                <span class="text-green-500 font-medium">24 new </span>
-                <span class="text-500">since last visit</span>
+                <span class="text-red-500 font-medium">-24,00 </span>
+                <span class="text-500">no mesmo periodo</span>
             </div>
         </div>
         <div class="col-12 lg:col-6 xl:col-3">
-            <div class="card mb-0">
+            <div class="card mb-0 border border-blue-200">
                 <div class="flex justify-content-between mb-3">
                     <div>
                         <span class="block text-500 font-medium mb-3"
                             >Vendas Mensais</span
                         >
-                        <div class="text-900 font-medium text-xl">{{
-                            dashboardData.montlySales| currency : "BRL"
-                        }}</div>
+                        <div class="text-900 font-medium text-xl">
+                            {{ dashboardData.montlySales | currency : "BRL" }}
+                        </div>
                     </div>
                     <div
-                        class="flex align-items-center justify-content-center bg-cyan-100 border-round"
+                        class="flex justify-content-center"
                         [ngStyle]="{ width: '2.5rem', height: '2.5rem' }"
                     >
-                        <i class="pi pi-inbox text-cyan-500 text-xl"></i>
+                        <img
+                            src="../../../assets/demo/images/icons/point_of_sale.svg"
+                            alt="sales"
+                        />
                     </div>
                 </div>
-                <span class="text-green-500 font-medium">520 </span>
-                <span class="text-500">newly registered</span>
+                <span class="text-green-500 font-medium">+520,00 </span>
+                <span class="text-500">no mesmo periodo</span>
             </div>
         </div>
         <div class="col-12 lg:col-6 xl:col-3">
-            <div class="card mb-0">
+            <div class="card mb-0 border border-blue-200">
                 <div class="flex justify-content-between mb-3">
                     <div>
                         <span class="block text-500 font-medium mb-3"
@@ -56,37 +60,45 @@
                         >
                         <div class="text-900 font-medium text-xl">
                             {{
-                                dashboardData.montlyShopping| currency : "BRL"
+                                dashboardData.montlyShopping | currency : "BRL"
                             }}
                         </div>
                     </div>
                     <div
-                        class="flex align-items-center justify-content-center bg-purple-100 border-round"
+                        class="flex justify-content-center"
                         [ngStyle]="{ width: '2.5rem', height: '2.5rem' }"
                     >
-                        <i class="pi pi-comment text-purple-500 text-xl"></i>
+                        <img
+                            src="../../../assets/demo/images/icons/shopping_cart.svg"
+                            alt="shopping"
+                        />
                     </div>
                 </div>
-                <span class="text-green-500 font-medium">85 </span>
-                <span class="text-500">responded</span>
+                <span class="text-red-500 font-medium">-789,00 </span>
+                <span class="text-500">no mesmo periodo</span>
             </div>
         </div>
         <div class="col-12 lg:col-6 xl:col-3">
-            <div class="card mb-0">
+            <div class="card mb-0 border border-blue-200">
                 <div class="flex justify-content-between mb-3">
                     <div>
                         <span class="block text-500 font-medium mb-3"
                             >Balanço mensal</span
                         >
-                        <div class="text-900 font-medium text-xl">{{
-                            dashboardData.monthlyBalance| currency : "BRL"
-                        }}</div>
+                        <div class="text-900 font-medium text-xl">
+                            {{
+                                dashboardData.monthlyBalance | currency : "BRL"
+                            }}
+                        </div>
                     </div>
                     <div
-                        class="flex align-items-center justify-content-center bg-orange-100 border-round"
+                        class="flex justify-content-center"
                         [ngStyle]="{ width: '2.5rem', height: '2.5rem' }"
                     >
-                        <i class="pi pi-map-marker text-orange-500 text-xl"></i>
+                        <img
+                            src="../../../assets/demo/images/icons/balance.svg"
+                            alt="shopping"
+                        />
                     </div>
                 </div>
                 <span class="text-green-500 font-medium">%52+ </span>
@@ -95,7 +107,7 @@
         </div>
         <div class="col-12 lg:col-6 xl:col-6">
             <div class="flex gap-4">
-                <div class="card mb-0 col">
+                <div class="card mb-0 col border border-blue-200">
                     <div class="flex justify-content-between mb-3">
                         <div>
                             <span class="block text-500 font-medium mb-3"
@@ -103,45 +115,49 @@
                             >
                             <div class="text-900 font-medium text-xl">
                                 {{
-                                    dashboardData.estimatedStockValue | currency : "BRL"
+                                    dashboardData.estimatedStockValue
+                                        | currency : "BRL"
                                 }}
                             </div>
                         </div>
                         <div
-                            class="flex align-items-center justify-content-center bg-purple-100 border-round"
-                            [ngStyle]="{ width: '2.5rem', height: '2.5rem' }"
-                        >
-                            <i class="pi pi-comment text-purple-500 text-xl"></i>
-                        </div>
+                        class="flex justify-content-center"
+                        [ngStyle]="{ width: '2.5rem', height: '2.5rem' }"
+                    >
+                        <img
+                            src="../../../assets/demo/images/icons/inventory.svg"
+                            alt="shopping"
+                        />
                     </div>
-                    <span class="text-green-500 font-medium">85 </span>
-                    <span class="text-500">responded</span>
+                    </div>
                 </div>
-                <div class="card mb-0 col-6">
+                <div class="card mb-0 col-6 border border-blue-200">
                     <div class="flex justify-content-between mb-3">
                         <div>
                             <span class="block text-500 font-medium mb-3"
                                 >Total produtos em estoque</span
                             >
                             <div class="text-900 font-medium text-xl">
-                                {{
-                                    dashboardData.totalStockProducts
-                                }}
+                                {{ dashboardData.totalStockProducts }}
                             </div>
                         </div>
                         <div
-                            class="flex align-items-center justify-content-center bg-purple-100 border-round"
-                            [ngStyle]="{ width: '2.5rem', height: '2.5rem' }"
-                        >
-                            <i class="pi pi-comment text-purple-500 text-xl"></i>
-                        </div>
+                        class="flex justify-content-center"
+                        [ngStyle]="{ width: '2.5rem', height: '2.5rem' }"
+                    >
+                        <img
+                            src="../../../assets/demo/images/icons/inventory_stock.svg"
+                            alt="shopping"
+                        />
                     </div>
-                    <span class="text-green-500 font-medium">85 </span>
-                    <span class="text-500">responded</span>
+                    </div>
+                    
                 </div>
             </div>
             <div class="mt-4">
-                <div class="card flex flex-column align-items-center">
+                <div
+                    class="card flex flex-column align-items-center border border-blue-200"
+                >
                     <h5 class="text-left w-full">Produtos em Estoque</h5>
                     <p-chart
                         type="pie"
@@ -152,7 +168,7 @@
             </div>
         </div>
         <div class="col-12 xl:col-6">
-            <div class="card">
+            <div class="card border border-blue-200">
                 <h5>Vendas Recentes</h5>
                 <p-table
                     [value]="latestSales"
@@ -163,31 +179,31 @@
                     <ng-template pTemplate="header">
                         <tr>
                             <th>Data</th>
-                            <th pSortableColumn="method">
-                                Pagamento
-                            </th>
-                            <th pSortableColumn="gross_price">
-                                Valor Bruto 
-                            </th>
-                            <th pSortableColumn="net_price">
-                                Valor Liquido 
-                            </th>
+                            <th pSortableColumn="method">Pagamento</th>
+                            <th pSortableColumn="gross_price">Valor Bruto</th>
+                            <th pSortableColumn="net_price">Valor Liquido</th>
                             <th>View</th>
                         </tr>
                     </ng-template>
                     <ng-template pTemplate="body" let-latestSales>
                         <tr>
                             <td style="width: 20%; min-width: 7rem">
-                                {{ formatedDate(latestSales.sales_date)  }}
+                                {{ formatedDate(latestSales.sales_date) }}
                             </td>
                             <td style="width: 20%; min-width: 7rem">
                                 {{ latestSales.payment_method }}
                             </td>
                             <td style="width: 20%; min-width: 8rem">
-                                {{ latestSales.total_gross_value | currency : "BRL" }}
+                                {{
+                                    latestSales.total_gross_value
+                                        | currency : "BRL"
+                                }}
                             </td>
                             <td style="width: 20%; min-width: 8rem">
-                                {{ latestSales.total_net_value | currency : "BRL" }}
+                                {{
+                                    latestSales.total_net_value
+                                        | currency : "BRL"
+                                }}
                             </td>
                             <td style="width: 15%">
                                 <button
