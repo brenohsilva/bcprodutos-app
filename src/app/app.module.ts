@@ -15,10 +15,17 @@ import { DashboardService } from './demo/service/dashboard.service';
 import { AuthService } from './demo/service/auth.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
     declarations: [AppComponent, NotfoundComponent],
-    imports: [AppRoutingModule, AppLayoutModule],
+    imports: [
+        AppRoutingModule,
+        AppLayoutModule,
+        BrowserAnimationsModule,
+        NgxChartsModule,
+    ],
     providers: [
         { provide: LocationStrategy, useClass: PathLocationStrategy },
         {

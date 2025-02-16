@@ -121,14 +121,14 @@
                             </div>
                         </div>
                         <div
-                        class="flex justify-content-center"
-                        [ngStyle]="{ width: '2.5rem', height: '2.5rem' }"
-                    >
-                        <img
-                            src="../../../assets/demo/images/icons/inventory.svg"
-                            alt="shopping"
-                        />
-                    </div>
+                            class="flex justify-content-center"
+                            [ngStyle]="{ width: '2.5rem', height: '2.5rem' }"
+                        >
+                            <img
+                                src="../../../assets/demo/images/icons/inventory.svg"
+                                alt="shopping"
+                            />
+                        </div>
                     </div>
                 </div>
                 <div class="card mb-0 col-6 border border-blue-200">
@@ -142,16 +142,15 @@
                             </div>
                         </div>
                         <div
-                        class="flex justify-content-center"
-                        [ngStyle]="{ width: '2.5rem', height: '2.5rem' }"
-                    >
-                        <img
-                            src="../../../assets/demo/images/icons/inventory_stock.svg"
-                            alt="shopping"
-                        />
+                            class="flex justify-content-center"
+                            [ngStyle]="{ width: '2.5rem', height: '2.5rem' }"
+                        >
+                            <img
+                                src="../../../assets/demo/images/icons/inventory_stock.svg"
+                                alt="shopping"
+                            />
+                        </div>
                     </div>
-                    </div>
-                    
                 </div>
             </div>
             <div class="mt-4">
@@ -159,11 +158,17 @@
                     class="card flex flex-column align-items-center border border-blue-200"
                 >
                     <h5 class="text-left w-full">Produtos em Estoque</h5>
-                    <p-chart
-                        type="pie"
-                        [data]="pieData"
-                        [options]="pieOptions"
-                    ></p-chart>
+                    <ngx-charts-pie-chart
+                        [view]="view"
+                        [scheme]="colorScheme"
+                        [results]="single"
+                        [labels]="showLabels"
+                        [doughnut]="false"
+                        [gradient]="gradient"
+                        [explodeSlices]="false"
+                        [animations]="true"
+                    >
+                    </ngx-charts-pie-chart>
                 </div>
             </div>
         </div>
