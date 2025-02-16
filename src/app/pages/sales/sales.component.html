@@ -15,7 +15,7 @@
         </div>
 
         <div class="col-12 lg:col-6 xl:col-3">
-            <div class="card mb-0">
+            <div class="card mb-0 border border-blue-200">
                 <div class="flex justify-content-between mb-3">
                     <div>
                         <span class="block text-500 font-medium mb-3"
@@ -46,7 +46,7 @@
             </div>
         </div>
         <div class="col-12 lg:col-6 xl:col-3">
-            <div class="card mb-0">
+            <div class="card mb-0 border border-blue-200">
                 <div class="flex justify-content-between mb-3">
                     <div>
                         <span class="block text-500 font-medium mb-3"
@@ -77,7 +77,7 @@
         </div>
         <hr />
         <div class="col-12 lg:col-6 xl:col-3">
-            <div class="card mb-0">
+            <div class="card mb-0 border border-blue-200">
                 <div class="flex justify-content-between mb-3">
                     <div>
                         <span class="block text-500 font-medium mb-3"
@@ -102,7 +102,7 @@
             </div>
         </div>
         <div class="col-12 lg:col-6 xl:col-3">
-            <div class="card mb-0">
+            <div class="card mb-0 border border-blue-200">
                 <div class="flex justify-content-between mb-3">
                     <div>
                         <span class="block text-500 font-medium mb-3"
@@ -127,7 +127,7 @@
             </div>
         </div>
         <div class="col-12 lg:col-6 xl:col-3">
-            <div class="card mb-0">
+            <div class="card mb-0 border border-blue-200">
                 <div class="flex justify-content-between mb-3">
                     <div>
                         <span class="block text-500 font-medium mb-3"
@@ -152,7 +152,7 @@
             </div>
         </div>
         <div class="col-12 lg:col-6 xl:col-3">
-            <div class="card mb-0">
+            <div class="card mb-0 border border-blue-200">
                 <div class="flex justify-content-between mb-3">
                     <div>
                         <span class="block text-500 font-medium mb-3"
@@ -176,20 +176,8 @@
                 <span class="text-500">responded</span>
             </div>
         </div>
-
-        <div class="col-12 xl:col-7">
-            <div class="card">
-                <h5>Vendas diarias</h5>
-                <p-chart
-                    type="line"
-                    [data]="chartData"
-                    [options]="chartOptions"
-                ></p-chart>
-            </div>
-        </div>
-
-        <div class="col-12 xl:col-5">
-            <div class="card">
+        <div class="col-12 flex gap-4">
+            <div class="card col border border-blue-200">
                 <h5>Produtos recentes vendidos</h5>
                 <p-table
                     [value]="products"
@@ -237,179 +225,71 @@
                     </ng-template>
                 </p-table>
             </div>
-            <div class="card">
-                <div
-                    class="flex justify-content-between align-items-center mb-5"
+            <div class="card col border border-blue-200">
+                <h5>Vendas recentes</h5>
+                <p-table
+                    [value]="latestSales"
+                    [paginator]="true"
+                    [rows]="5"
+                    responsiveLayout="scroll"
                 >
-                    <h5>Produtos mais vendidos</h5>
-                    <div>
-                        <button
-                            pButton
-                            type="button"
-                            icon="pi pi-ellipsis-v"
-                            class="p-button-rounded p-button-text p-button-plain"
-                            (click)="menu.toggle($event)"
-                        ></button>
-                        <p-menu #menu [popup]="true" [model]="items"></p-menu>
-                    </div>
-                </div>
-                <ul class="list-none p-0 m-0">
-                    <li
-                        class="flex flex-column md:flex-row md:align-items-center md:justify-content-between mb-4"
-                    >
-                        <div>
-                            <span class="text-900 font-medium mr-2 mb-1 md:mb-0"
-                                >Space T-Shirt</span
-                            >
-                            <div class="mt-1 text-600">Clothing</div>
-                        </div>
-                        <div class="mt-2 md:mt-0 flex align-items-center">
-                            <div
-                                class="surface-300 border-round overflow-hidden w-10rem lg:w-6rem"
-                                [ngStyle]="{ height: '8px' }"
-                            >
-                                <div
-                                    class="bg-orange-500 h-full"
-                                    [ngStyle]="{ width: '50%' }"
-                                ></div>
-                            </div>
-                            <span class="text-orange-500 ml-3 font-medium"
-                                >%50</span
-                            >
-                        </div>
-                    </li>
-                    <li
-                        class="flex flex-column md:flex-row md:align-items-center md:justify-content-between mb-4"
-                    >
-                        <div>
-                            <span class="text-900 font-medium mr-2 mb-1 md:mb-0"
-                                >Portal Sticker</span
-                            >
-                            <div class="mt-1 text-600">Accessories</div>
-                        </div>
-                        <div
-                            class="mt-2 md:mt-0 ml-0 md:ml-8 flex align-items-center"
-                        >
-                            <div
-                                class="surface-300 border-round overflow-hidden w-10rem lg:w-6rem"
-                                [ngStyle]="{ height: '8px' }"
-                            >
-                                <div
-                                    class="bg-cyan-500 h-full"
-                                    [ngStyle]="{ width: '16%' }"
-                                ></div>
-                            </div>
-                            <span class="text-cyan-500 ml-3 font-medium"
-                                >%16</span
-                            >
-                        </div>
-                    </li>
-                    <li
-                        class="flex flex-column md:flex-row md:align-items-center md:justify-content-between mb-4"
-                    >
-                        <div>
-                            <span class="text-900 font-medium mr-2 mb-1 md:mb-0"
-                                >Supernova Sticker</span
-                            >
-                            <div class="mt-1 text-600">Accessories</div>
-                        </div>
-                        <div
-                            class="mt-2 md:mt-0 ml-0 md:ml-8 flex align-items-center"
-                        >
-                            <div
-                                class="surface-300 border-round overflow-hidden w-10rem lg:w-6rem"
-                                [ngStyle]="{ height: '8px' }"
-                            >
-                                <div
-                                    class="bg-pink-500 h-full"
-                                    [ngStyle]="{ width: '67%' }"
-                                ></div>
-                            </div>
-                            <span class="text-pink-500 ml-3 font-medium"
-                                >%67</span
-                            >
-                        </div>
-                    </li>
-                    <li
-                        class="flex flex-column md:flex-row md:align-items-center md:justify-content-between mb-4"
-                    >
-                        <div>
-                            <span class="text-900 font-medium mr-2 mb-1 md:mb-0"
-                                >Wonders Notebook</span
-                            >
-                            <div class="mt-1 text-600">Office</div>
-                        </div>
-                        <div
-                            class="mt-2 md:mt-0 ml-0 md:ml-8 flex align-items-center"
-                        >
-                            <div
-                                class="surface-300 border-round overflow-hidden w-10rem lg:w-6rem"
-                                [ngStyle]="{ height: '8px' }"
-                            >
-                                <div
-                                    class="bg-green-500 h-full"
-                                    [ngStyle]="{ width: '35%' }"
-                                ></div>
-                            </div>
-                            <span class="text-green-500 ml-3 font-medium"
-                                >%35</span
-                            >
-                        </div>
-                    </li>
-                    <li
-                        class="flex flex-column md:flex-row md:align-items-center md:justify-content-between mb-4"
-                    >
-                        <div>
-                            <span class="text-900 font-medium mr-2 mb-1 md:mb-0"
-                                >Mat Black Case</span
-                            >
-                            <div class="mt-1 text-600">Accessories</div>
-                        </div>
-                        <div
-                            class="mt-2 md:mt-0 ml-0 md:ml-8 flex align-items-center"
-                        >
-                            <div
-                                class="surface-300 border-round overflow-hidden w-10rem lg:w-6rem"
-                                [ngStyle]="{ height: '8px' }"
-                            >
-                                <div
-                                    class="bg-purple-500 h-full"
-                                    [ngStyle]="{ width: '75%' }"
-                                ></div>
-                            </div>
-                            <span class="text-purple-500 ml-3 font-medium"
-                                >%75</span
-                            >
-                        </div>
-                    </li>
-                    <li
-                        class="flex flex-column md:flex-row md:align-items-center md:justify-content-between mb-4"
-                    >
-                        <div>
-                            <span class="text-900 font-medium mr-2 mb-1 md:mb-0"
-                                >Robots T-Shirt</span
-                            >
-                            <div class="mt-1 text-600">Clothing</div>
-                        </div>
-                        <div
-                            class="mt-2 md:mt-0 ml-0 md:ml-8 flex align-items-center"
-                        >
-                            <div
-                                class="surface-300 border-round overflow-hidden w-10rem lg:w-6rem"
-                                [ngStyle]="{ height: '8px' }"
-                            >
-                                <div
-                                    class="bg-teal-500 h-full"
-                                    [ngStyle]="{ width: '40%' }"
-                                ></div>
-                            </div>
-                            <span class="text-teal-500 ml-3 font-medium"
-                                >%40</span
-                            >
-                        </div>
-                    </li>
-                </ul>
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>Data</th>
+                            <th pSortableColumn="method">Pagamento</th>
+                            <th pSortableColumn="gross_price">Valor Bruto</th>
+                            <th pSortableColumn="net_price">Valor Liquido</th>
+                            <th>View</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-latestSales>
+                        <tr>
+                            <td style="width: 20%; min-width: 7rem">
+                                {{ formatedDate(latestSales.sales_date) }}
+                            </td>
+                            <td style="width: 20%; min-width: 7rem">
+                                {{ latestSales.payment_method }}
+                            </td>
+                            <td style="width: 20%; min-width: 8rem">
+                                {{
+                                    latestSales.total_gross_value
+                                        | currency : "BRL"
+                                }}
+                            </td>
+                            <td style="width: 20%; min-width: 8rem">
+                                {{
+                                    latestSales.total_net_value
+                                        | currency : "BRL"
+                                }}
+                            </td>
+                            <td style="width: 15%">
+                                <button
+                                    pButton
+                                    pRipple
+                                    type="button"
+                                    icon="pi pi-search"
+                                    class="p-button p-component p-button-text p-button-icon-only"
+                                ></button>
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
             </div>
         </div>
+
+        <div class="col-12">
+            <div class="card border border-blue-200">
+                <h5>Faturamento diário</h5>
+                <p-chart
+                    type="line"
+                    [data]="chartData"
+                    [options]="chartOptions"
+                    width="300"
+                    height="300"
+                ></p-chart>
+            </div>
+        </div>
+
+        
     </div>
 </div>
