@@ -24,9 +24,11 @@ export class AuthInterceptor implements HttpInterceptor {
         next: HttpHandler
     ): Observable<HttpEvent<any>> {
         const token = localStorage.getItem('token');
-
         let authReq = req;
 
+        if (!token) {
+            this.router.navigate(['/auth/login']);
+        }
         if (token) {
             authReq = req.clone({
                 setHeaders: {
@@ -37,6 +39,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
         return next.handle(authReq).pipe(
             catchError((error) => {
+                console.log(error)
                 if (
                     error instanceof HttpErrorResponse &&
                     error.status === 401
