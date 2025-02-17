@@ -29,5 +29,7 @@ export class DashboardService {
         return this.http.get<any>(`${this.base_url}overview/revenue`)
     }
 
-
+    getDailyProfits(): Observable<any> {
+        return this.http.get<any>(`${this.base_url}overview/daily-profits`)
+    }
 }
