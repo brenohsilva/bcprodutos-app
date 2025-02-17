@@ -131,7 +131,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="card mb-0 col-6 border border-blue-200">
+                <div class="card mb-0 col border border-blue-200">
                     <div class="flex justify-content-between mb-3">
                         <div>
                             <span class="block text-500 font-medium mb-3"
@@ -153,23 +153,9 @@
                     </div>
                 </div>
             </div>
-            <div class="mt-4">
-                <div
-                    class="card flex flex-column align-items-center border border-blue-200"
-                >
-                    <h5 class="text-left w-full">Produtos em Estoque</h5>
-                    <ngx-charts-pie-chart
-                        [view]="view"
-                        [scheme]="colorScheme"
-                        [results]="single"
-                        [labels]="showLabels"
-                        [doughnut]="false"
-                        [gradient]="gradient"
-                        [explodeSlices]="false"
-                        [animations]="true"
-                    >
-                    </ngx-charts-pie-chart>
-                </div>
+            <div class="mt-4 card border border-blue-200">
+                <h5 class="text-left w-full">Lucro diário</h5>
+                <p-chart type="bar" [data]="barData" [options]="barOptions"></p-chart>
             </div>
         </div>
         <div class="col-12 xl:col-6">
@@ -222,6 +208,21 @@
                         </tr>
                     </ng-template>
                 </p-table>
+            </div>
+        </div>
+        <div class="col-12">
+            <div
+                class="card flex flex-column align-items-center border border-blue-200"
+            >
+                <h5 class="text-left w-full">Produtos em Estoque</h5>
+                <ngx-charts-pie-grid
+                    [view]="view"
+                    [scheme]="colorScheme"
+                    [results]="single"
+                    [animations]="true"
+
+                >
+                </ngx-charts-pie-grid>
             </div>
         </div>
 

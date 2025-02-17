@@ -38,7 +38,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     pieOptions: any;
 
     //chart
-    view: [number, number] = [700, 400]; // Tamanho do gráfico
+    view: [number, number] = [800, 500]; // Tamanho do gráfico
     // Dados para o Pie Chart
     single: any[] = []
     // Opções do gráfico
@@ -46,6 +46,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
     showLegend: boolean = true;
     gradient: boolean = true;
     colorScheme = 'natural';
+
+    barOptions: any;
+    barData: any;
+    
 
     constructor(
         public layoutService: LayoutService,
@@ -87,6 +91,73 @@ export class DashboardComponent implements OnInit, OnDestroy {
                     );
                 }
             });
+
+            this.dashboardService.getDailyProfits().subscribe((res)=> {
+                if (res.success) {
+                    const profitByDayMap = new Map<string, number>();
+                    res.data.forEach((item: { day: string; profit_day: string }) => {
+                        const day = item.day;
+                        const profit = parseFloat(item.profit_day);
+        
+                        if (profitByDayMap.has(day)) {
+                            profitByDayMap.set(day, profitByDayMap.get(day)! + profit);
+                        } else {
+                            profitByDayMap.set(day, profit);
+                        }
+                    });
+
+                    const labels = Array.from(profitByDayMap.keys());
+                    const data = Array.from(profitByDayMap.values());
+
+                    this.barData = {
+                        labels: labels,
+                        datasets: [
+                            {
+                                label: 'Lucro diário',
+                                backgroundColor: documentStyle.getPropertyValue('--primary-500'),
+                                borderColor: documentStyle.getPropertyValue('--primary-500'),
+                                data: data
+                            }
+                        ]
+                    };
+                    
+                }
+            });
+
+           
+
+            this.barOptions = {
+                plugins: {
+                    legend: {
+                        labels: {
+                            fontColor: textColor
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: {
+                            color: textColorSecondary,
+                            font: {
+                                weight: 500
+                            }
+                        },
+                        grid: {
+                            display: false,
+                            drawBorder: false
+                        }
+                    },
+                    y: {
+                        ticks: {
+                            color: textColorSecondary
+                        },
+                        grid: {
+                            color: surfaceBorder,
+                            drawBorder: false
+                        }
+                    },
+                }
+            };
     }
 
     ngOnDestroy() {
