@@ -32,6 +32,8 @@ export class SalesService {
         return this.http.get<any>(`${this.base_url}sales/last-sales`);
     }
 
-    
+    getDailySales():Observable<any> {
+        return this.http.get<any>(`${this.base_url}sales/daily-sales`);
+    }
     
 }
