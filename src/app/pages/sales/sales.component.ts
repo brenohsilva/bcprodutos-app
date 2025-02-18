@@ -54,10 +54,9 @@ export class SalesComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.getSalesData();
-        this.getLastProductsSold()
+        this.getLastProductsSold();
         this.getLatestSales();
         this.initChart();
-
     }
 
     initChart() {
@@ -69,30 +68,43 @@ export class SalesComponent implements OnInit, OnDestroy {
         const surfaceBorder =
             documentStyle.getPropertyValue('--surface-border');
 
-        this.chartData = {
-            labels: [
-                '01/02',
-                '02/02',
-                '03/02',
-                '04/02',
-                '05/02'
-            ],
-            datasets: [
-                {
-                    label: 'Faturamento Diário',
-                    data: [
-                        150, 80, 239, 81, 0
+        this.salesService.getDailySales().subscribe((res) => {
+            if (res.success) {
+                const salesByDayMap = new Map<string, number>();
+                res.data.forEach(
+                    (item: { day: string; total_gross_value: string }) => {
+                        const day = item.day;
+                        const sales = parseFloat(item.total_gross_value);
+
+                        if (salesByDayMap.has(day)) {
+                            salesByDayMap.set(
+                                day,
+                                salesByDayMap.get(day)! + sales
+                            );
+                        } else {
+                            salesByDayMap.set(day, sales);
+                        }
+                    }
+                );
+                const labels = Array.from(salesByDayMap.keys());
+                const data = Array.from(salesByDayMap.values());
+                this.chartData = {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Faturamento Diário',
+                            data:data,
+                            fill: false,
+                            backgroundColor:
+                                documentStyle.getPropertyValue('--bluegray-700'),
+                            borderColor:
+                                documentStyle.getPropertyValue('--bluegray-700'),
+                            tension: 0,
+                        },
                     ],
-                    fill: false,
-                    backgroundColor:
-                        documentStyle.getPropertyValue('--bluegray-700'),
-                    borderColor:
-                        documentStyle.getPropertyValue('--bluegray-700'),
-                    tension: 0,
-                },
-                
-            ],
-        };
+                };
+            }
+        });
 
         this.chartOptions = {
             plugins: {
@@ -111,7 +123,6 @@ export class SalesComponent implements OnInit, OnDestroy {
                         color: surfaceBorder,
                         drawBorder: false,
                     },
-                    
                 },
                 y: {
                     ticks: {
@@ -161,12 +172,14 @@ export class SalesComponent implements OnInit, OnDestroy {
                 res.valueSalesOfWeek?.data?.liquido || 0
             );
             this.salesData.valueSalesOfWeekGross = Number(
-                res.valueSalesOfWeek?.data?.bruto || 0  
+                res.valueSalesOfWeek?.data?.bruto || 0
             );
             this.salesData.valueSalesOfMonthNet = Number(
                 res.valueSalesOfMonth?.data?.liquido || 0
             );
-            this.salesData.valueSalesOfMonthGross = Number(res.valueSalesOfMonth.data.bruto || 0)
+            this.salesData.valueSalesOfMonthGross = Number(
+                res.valueSalesOfMonth.data.bruto || 0
+            );
             this.salesData.quantityOfSalesByWeek =
                 res.quantityOfSalesByWeek?.data || 0;
             this.salesData.quantityOfSalesByMonth =
@@ -182,14 +195,13 @@ export class SalesComponent implements OnInit, OnDestroy {
         this.salesService.getlatestSales().subscribe((res) => {
             if (res.success) {
                 this.latestSales = res.data;
-                console.log(res.data)
+                console.log(res.data);
             }
         });
     }
 
     getLastProductsSold() {
         this.productService.getLastProductsSold().subscribe((res) => {
-           
             if (res.success) {
                 this.products = res.data;
             }
