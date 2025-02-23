@@ -11,6 +11,7 @@ import { PanelMenuModule } from 'primeng/panelmenu';
 import { DashboardsRoutingModule } from './dashboard-routing.module';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { DashboardSkeletonModule } from 'src/app/layout/skeletons/dashboard-skeleton/dashboard-skeleton.module';
 
 @NgModule({
     imports: [
@@ -23,6 +24,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
         PanelMenuModule,
         ButtonModule,
         DashboardsRoutingModule,
+        DashboardSkeletonModule,
         NgxChartsModule,
     ],
     declarations: [DashboardComponent]

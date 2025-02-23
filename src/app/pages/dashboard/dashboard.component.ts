@@ -1,19 +1,20 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { Product } from '../../demo/api/product';
-import { ProductService } from '../../demo/service/product.service';
 import { Subscription, catchError, debounceTime, forkJoin, of } from 'rxjs';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
 import { DashboardService } from '../../demo/service/dashboard.service';
 import { SalesResponse } from '../../demo/api/productsSales';
 import { SalesService } from '../../demo/service/sales.service';
-import { DatePipe } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 
 @Component({
     templateUrl: './dashboard.component.html',
     providers: [DatePipe],
 })
 export class DashboardComponent implements OnInit, OnDestroy {
+    isloading = true;
+
     products!: Product[];
 
     dashboardData = {
@@ -37,11 +38,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     pieOptions: any;
 
-    //chart
-    view: [number, number] = [800, 500]; // Tamanho do gráfico
-    // Dados para o Pie Chart
-    single: any[] = []
-    // Opções do gráfico
+    view: [number, number] = [800, 500];
+    single: any[] = [];
     showLabels: boolean = true;
     showLegend: boolean = true;
     gradient: boolean = true;
@@ -49,7 +47,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     barOptions: any;
     barData: any;
-    
 
     constructor(
         public layoutService: LayoutService,
@@ -92,72 +89,76 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 }
             });
 
-            this.dashboardService.getDailyProfits().subscribe((res)=> {
-                if (res.success) {
-                    const profitByDayMap = new Map<string, number>();
-                    res.data.forEach((item: { day: string; profit_day: string }) => {
+        this.dashboardService.getDailyProfits().subscribe((res) => {
+            if (res.success) {
+                const profitByDayMap = new Map<string, number>();
+                res.data.forEach(
+                    (item: { day: string; profit_day: string }) => {
                         const day = item.day;
                         const profit = parseFloat(item.profit_day);
-        
+
                         if (profitByDayMap.has(day)) {
-                            profitByDayMap.set(day, profitByDayMap.get(day)! + profit);
+                            profitByDayMap.set(
+                                day,
+                                profitByDayMap.get(day)! + profit
+                            );
                         } else {
                             profitByDayMap.set(day, profit);
                         }
-                    });
-
-                    const labels = Array.from(profitByDayMap.keys());
-                    const data = Array.from(profitByDayMap.values());
-
-                    this.barData = {
-                        labels: labels,
-                        datasets: [
-                            {
-                                label: 'Lucro diário',
-                                backgroundColor: documentStyle.getPropertyValue('--primary-500'),
-                                borderColor: documentStyle.getPropertyValue('--primary-500'),
-                                data: data
-                            }
-                        ]
-                    };
-                    
-                }
-            });
-
-           
-
-            this.barOptions = {
-                plugins: {
-                    legend: {
-                        labels: {
-                            fontColor: textColor
-                        }
                     }
+                );
+
+                const labels = Array.from(profitByDayMap.keys());
+                const data = Array.from(profitByDayMap.values());
+
+                this.barData = {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Lucro diário',
+                            backgroundColor:
+                                documentStyle.getPropertyValue('--primary-500'),
+                            borderColor:
+                                documentStyle.getPropertyValue('--primary-500'),
+                            data: data,
+                        },
+                    ],
+                };
+            }
+        });
+
+        this.barOptions = {
+            plugins: {
+                legend: {
+                    labels: {
+                        fontColor: textColor,
+                    },
                 },
-                scales: {
-                    x: {
-                        ticks: {
-                            color: textColorSecondary,
-                            font: {
-                                weight: 500
-                            }
+            },
+            scales: {
+                x: {
+                    ticks: {
+                        color: textColorSecondary,
+                        font: {
+                            weight: 500,
                         },
-                        grid: {
-                            display: false,
-                            drawBorder: false
-                        }
                     },
-                    y: {
-                        ticks: {
-                            color: textColorSecondary
-                        },
-                        grid: {
-                            color: surfaceBorder,
-                            drawBorder: false
-                        }
+                    grid: {
+                        display: false,
+                        drawBorder: false,
                     },
-                }
-            };
+                },
+                y: {
+                    ticks: {
+                        color: textColorSecondary,
+                    },
+                    grid: {
+                        color: surfaceBorder,
+                        drawBorder: false,
+                    },
+                },
+            },
+        };
     }
 
     ngOnDestroy() {
@@ -193,6 +194,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                     res.monthlyTotalBalance?.data?.shopping_value || 0),
                 (this.dashboardData.totalStockProducts =
                     res.totalStockProducts?.total_stock || 0);
+            this.isloading = false;
         });
     }
 
@@ -207,5 +209,4 @@ export class DashboardComponent implements OnInit, OnDestroy {
     formatedDate(data: string): string | null {
         return this.datePipe.transform(data, 'dd-MM-yyyy');
     }
-    
 }

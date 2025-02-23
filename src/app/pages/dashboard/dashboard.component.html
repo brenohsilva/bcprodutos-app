@@ -1,5 +1,8 @@
 <div class="card border border-blue-200">
     <h5>Visão Geral</h5>
+    @if (isloading) {
+    <app-dashboard-skeleton></app-dashboard-skeleton>
+    } @else {
     <div class="grid">
         <div class="col-12 lg:col-6 xl:col-3">
             <div class="card mb-0 border border-blue-200">
@@ -230,14 +233,15 @@
         </div>
 
         <!-- <div class="col-12 xl:col-6">
-            <div class="card">
-                <h5>Vendas vs Estoque</h5>
-                <p-chart
-                    type="line"
-                    [data]="chartData"
-                    [options]="chartOptions"
-                ></p-chart>
-            </div>
-        </div> -->
+                <div class="card">
+                    <h5>Vendas vs Estoque</h5>
+                    <p-chart
+                        type="line"
+                        [data]="chartData"
+                        [options]="chartOptions"
+                    ></p-chart>
+                </div>
+            </div> -->
     </div>
+    }
 </div>
