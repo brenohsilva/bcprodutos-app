@@ -1,0 +1,34 @@
+/* Estilo para os placeholders */
+.skeleton-text, .skeleton-image, .skeleton-chart, .skeleton-cell {
+    background-color: #e0e0e0;
+    border-radius: 4px;
+    animation: shimmer 1.5s infinite linear;
+}
+
+.skeleton-image {
+    border-radius: 50%;
+}
+
+.skeleton-table {
+    width: 100%;
+}
+
+.skeleton-row {
+    display: flex;
+    margin-bottom: 8px;
+}
+
+.skeleton-cell {
+    height: 20px;
+    margin-right: 8px;
+}
+
+/* Animação de shimmer */
+@keyframes shimmer {
+    0% {
+        background-position: -200% 0;
+    }
+    100% {
+        background-position: 200% 0;
+    }
+}
