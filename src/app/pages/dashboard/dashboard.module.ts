@@ -12,6 +12,7 @@ import { DashboardsRoutingModule } from './dashboard-routing.module';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DashboardSkeletonModule } from 'src/app/layout/skeletons/dashboard-skeleton/dashboard-skeleton.module';
+import { NgChartsModule } from 'ng2-charts';
 
 @NgModule({
     imports: [
@@ -26,6 +27,7 @@ import { DashboardSkeletonModule } from 'src/app/layout/skeletons/dashboard-skel
         DashboardsRoutingModule,
         DashboardSkeletonModule,
         NgxChartsModule,
+        NgChartsModule
     ],
     declarations: [DashboardComponent]
 })
