@@ -145,7 +145,7 @@ export class NewSalesComponent implements OnInit {
                 if (res.success) {
                     this.showSuccessViaToast();
                     setTimeout(() => {
-                        this.router.navigate(['uikit/vendas']);
+                        this.router.navigate(['info/vendas']);
                     }, 2000);
                 }
             },
