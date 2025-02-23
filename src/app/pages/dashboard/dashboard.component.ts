@@ -8,6 +8,7 @@ import { SalesResponse } from '../../demo/api/productsSales';
 import { SalesService } from '../../demo/service/sales.service';
 import { CommonModule, DatePipe } from '@angular/common';
 
+
 @Component({
     templateUrl: './dashboard.component.html',
     providers: [DatePipe],
@@ -47,6 +48,58 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     barOptions: any;
     barData: any;
+
+    public chartLineData = {
+        labels: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho'],
+        datasets: [
+          {
+            label: 'Faturamento 2025',
+            data: [65, 59],
+            borderColor: 'rgba(75, 192, 192, 1)', // Cor da linha
+            backgroundColor: 'rgba(75, 192, 192, 0.2)', // Cor de fundo abaixo da linha
+            fill: false, // Preencher a área abaixo da linha
+            tension: 0 // Suavização da linha (0 = sem curvas, 1 = curvas máximas)
+          },
+          {
+            label: 'Lucro 2025',
+            data: [59, 48],
+            borderColor: 'rgba(255, 99, 132, 1)', // Cor da linha
+            backgroundColor: 'rgba(255, 99, 132, 0.2)', // Cor de fundo abaixo da linha
+            fill: true, // Preencher a área abaixo da linha
+            tension: 0 // Suavização da linha
+          },
+        ],
+      };
+    
+      public chartLineOptions = {
+        responsive: true,
+        plugins: {
+          legend: {
+            display: true,
+            position: 'top',
+          },
+          tooltip: {
+            enabled: true,
+          },
+        },
+        scales: {
+          x: {
+            display: true,
+            title: {
+              display: true,
+              text: 'Meses',
+            },
+          },
+          y: {
+            display: true,
+            title: {
+              display: true,
+              text: 'Vendas',
+            },
+            beginAtZero: true,
+          },
+        },
+      };
 
     constructor(
         public layoutService: LayoutService,
