@@ -106,7 +106,7 @@
             </div>
         </div>
         <div class="col-12 lg:col-6 xl:col-6">
-            <div class="flex gap-4">
+            <div class="flex flex-column sm:flex-column lg:flex-row gap-4">
                 <div class="card mb-0 col border border-blue-200">
                     <div class="flex justify-content-between mb-3">
                         <div>
@@ -155,7 +155,11 @@
             </div>
             <div class="mt-4 card border border-blue-200">
                 <h5 class="text-left w-full">Lucro diário</h5>
-                <p-chart type="bar" [data]="barData" [options]="barOptions"></p-chart>
+                <p-chart
+                    type="bar"
+                    [data]="barData"
+                    [options]="barOptions"
+                ></p-chart>
             </div>
         </div>
         <div class="col-12 xl:col-6">
@@ -220,7 +224,6 @@
                     [scheme]="colorScheme"
                     [results]="single"
                     [animations]="true"
-
                 >
                 </ngx-charts-pie-grid>
             </div>
