@@ -1,5 +1,4 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { MenuItem } from 'primeng/api';
 import { Product } from '../../demo/api/product';
 import { Subscription, catchError, debounceTime, forkJoin, of } from 'rxjs';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
@@ -7,7 +6,7 @@ import { DashboardService } from '../../demo/service/dashboard.service';
 import { SalesResponse } from '../../demo/api/productsSales';
 import { SalesService } from '../../demo/service/sales.service';
 import { CommonModule, DatePipe } from '@angular/common';
-
+import { ShoppingService } from 'src/app/demo/service/shopping.service';
 
 @Component({
     templateUrl: './dashboard.component.html',
@@ -20,10 +19,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     dashboardData = {
         estimatedStockValue: 0,
-        montlySales: 0,
-        montlyShopping: 0,
-        monthlyBalance: 0,
-        monthlyProfit: 0,
+        currentMonthlySales: 0,
+        previousMonthlySales: 0,
+        currentMonthlyShopping: 0,
+        previousMonthlyShopping: 0,
+        currentMonthlyBalance: 0,
+        currentMonthlyProfit: 0,
+        previousMonthlyProfit: 0,
         totalStockProducts: 0,
     };
 
@@ -50,61 +52,70 @@ export class DashboardComponent implements OnInit, OnDestroy {
     barData: any;
 
     public chartLineData = {
-        labels: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho'],
-        datasets: [
-          {
-            label: 'Faturamento 2025',
-            data: [65, 59],
-            borderColor: 'rgba(75, 192, 192, 1)', // Cor da linha
-            backgroundColor: 'rgba(75, 192, 192, 0.2)', // Cor de fundo abaixo da linha
-            fill: false, // Preencher a área abaixo da linha
-            tension: 0 // Suavização da linha (0 = sem curvas, 1 = curvas máximas)
-          },
-          {
-            label: 'Lucro 2025',
-            data: [59, 48],
-            borderColor: 'rgba(255, 99, 132, 1)', // Cor da linha
-            backgroundColor: 'rgba(255, 99, 132, 0.2)', // Cor de fundo abaixo da linha
-            fill: true, // Preencher a área abaixo da linha
-            tension: 0 // Suavização da linha
-          },
+        labels: [
+            'Janeiro',
+            'Fevereiro',
+            'Março',
+            'Abril',
+            'Maio',
+            'Junho',
+            'Julho',
         ],
-      };
-    
-      public chartLineOptions = {
+        datasets: [
+            {
+                label: 'Faturamento 2025',
+                data: [65, 59],
+                borderColor: 'rgba(75, 192, 192, 1)', // Cor da linha
+                backgroundColor: 'rgba(75, 192, 192, 0.2)', // Cor de fundo abaixo da linha
+                fill: false, // Preencher a área abaixo da linha
+                tension: 0, // Suavização da linha (0 = sem curvas, 1 = curvas máximas)
+            },
+            {
+                label: 'Lucro 2025',
+                data: [59, 48],
+                borderColor: 'rgba(255, 99, 132, 1)', // Cor da linha
+                backgroundColor: 'rgba(255, 99, 132, 0.2)', // Cor de fundo abaixo da linha
+                fill: true, // Preencher a área abaixo da linha
+                tension: 0, // Suavização da linha
+            },
+        ],
+    };
+
+    public chartLineOptions = {
         responsive: true,
         plugins: {
-          legend: {
-            display: true,
-            position: 'top',
-          },
-          tooltip: {
-            enabled: true,
-          },
+            legend: {
+                display: true,
+                position: 'top',
+            },
+            tooltip: {
+                enabled: true,
+            },
         },
         scales: {
-          x: {
-            display: true,
-            title: {
-              display: true,
-              text: 'Meses',
+            x: {
+                display: true,
+                title: {
+                    display: true,
+                    text: 'Meses',
+                },
             },
-          },
-          y: {
-            display: true,
-            title: {
-              display: true,
-              text: 'Vendas',
+            y: {
+                display: true,
+                title: {
+                    display: true,
+                    text: 'Vendas',
+                },
+                beginAtZero: true,
             },
-            beginAtZero: true,
-          },
         },
-      };
+    };
 
     constructor(
         public layoutService: LayoutService,
         private dashboardService: DashboardService,
         private salesService: SalesService,
+        private shoppingService: ShoppingService,
         private datePipe: DatePipe
     ) {
         this.subscription = this.layoutService.configUpdate$
@@ -142,7 +153,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 }
             });
 
-        this.dashboardService.getDailyProfits().subscribe((res) => {
+        this.dashboardService.getDailyProfits(2).subscribe((res) => {
             if (res.success) {
                 const profitByDayMap = new Map<string, number>();
                 res.data.forEach(
@@ -226,33 +237,45 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 .getStockRevenue()
                 .pipe(catchError(() => of(null))),
             monthlyTotalBalance: this.dashboardService
-                .getMontlyBalance()
+                .getMontlyBalance(2)
                 .pipe(catchError(() => of(null))),
             totalStockProducts: this.dashboardService
                 .getProductsStockQuantity()
                 .pipe(catchError(() => of(null))),
-            monthlyProfit: this.dashboardService
-                .getMontlyProfit()
+            currentMonthlyProfit: this.dashboardService
+                .getMontlyProfit(2)
                 .pipe(catchError(() => of(null))),
+                salesValues: this.salesService.getValueSalesByPeriod('month', 2).pipe(catchError(() => of(null))),
+                shoppingValues: this.shoppingService.getValueShoppingByPeriod('month', 2).pipe(catchError(() => of(null))),
         }).subscribe((res) => {
-            (this.dashboardData.estimatedStockValue =
-                res.estimatedStockValue?.revenue_amount || 0),
-                (this.dashboardData.monthlyBalance =
-                    res.monthlyTotalBalance?.data?.balance || 0),
-                (this.dashboardData.monthlyProfit =
-                    res.monthlyProfit.data || 0),
-                (this.dashboardData.montlySales =
-                    res.monthlyTotalBalance?.data?.sales_value || 0),
-                (this.dashboardData.montlyShopping =
-                    res.monthlyTotalBalance?.data?.shopping_value || 0),
-                (this.dashboardData.totalStockProducts =
-                    res.totalStockProducts?.total_stock || 0);
+            (this.dashboardData.estimatedStockValue = res.estimatedStockValue?.revenue_amount || 0),
+
+            (this.dashboardData.totalStockProducts = res.totalStockProducts?.total_stock || 0);
+                
+            (this.dashboardData.currentMonthlyBalance = res.monthlyTotalBalance?.data?.balance || 0),
+                
+            (this.dashboardData.currentMonthlyProfit = res.currentMonthlyProfit.data.currentMonthTotal || 0),
+                
+            (this.dashboardData.previousMonthlyProfit = res.currentMonthlyProfit.data.previousMonthTotal || 0),
+            
+            (this.dashboardData.currentMonthlySales = res.salesValues?.data?.currentPeriod.liquido || 0),
+
+            (this.dashboardData.previousMonthlySales = res.salesValues?.data?.previousPeriod.liquido || 0),
+
+                
+            (this.dashboardData.currentMonthlyShopping = res.shoppingValues?.data?.currentPeriod || 0),
+
+            (this.dashboardData.previousMonthlyShopping = res.shoppingValues?.data?.previousPeriod || 0),
+
+            
+           
+            
             this.isloading = false;
         });
     }
 
     getLatestSales() {
-        this.salesService.getlatestSales().subscribe((res) => {
+        this.salesService.getlatestSales(2).subscribe((res) => {
             if (res.success) {
                 this.latestSales = res.data;
             }

@@ -5,14 +5,20 @@
     } @else {
     <div class="grid">
         <div class="col-12 lg:col-6 xl:col-3">
-            <div class="card mb-0 border border-blue-200">
+            <div
+                style="min-height: 140px; max-height: 160px"
+                class="card mb-0 border border-blue-200"
+            >
                 <div class="flex justify-content-between mb-3">
                     <div>
                         <span class="block text-500 font-medium mb-3"
                             >Lucro mensal (R$)</span
                         >
                         <div class="text-900 font-medium text-xl">
-                            {{ dashboardData.monthlyProfit | currency : "BRL" }}
+                            {{
+                                dashboardData.currentMonthlyProfit
+                                    | currency : "BRL"
+                            }}
                         </div>
                     </div>
                     <div
@@ -25,7 +31,11 @@
                         />
                     </div>
                 </div>
-                <span class="text-red-500 font-medium">-24,00 </span>
+                <span class="text-red-500 font-medium"
+                    >{{
+                        dashboardData.previousMonthlyProfit | currency : "BRL"
+                    }}
+                </span>
                 <span class="text-500">no mesmo periodo</span>
             </div>
         </div>
@@ -37,7 +47,10 @@
                             >Vendas Mensais</span
                         >
                         <div class="text-900 font-medium text-xl">
-                            {{ dashboardData.montlySales | currency : "BRL" }}
+                            {{
+                                dashboardData.currentMonthlySales
+                                    | currency : "BRL"
+                            }}
                         </div>
                     </div>
                     <div
@@ -50,7 +63,9 @@
                         />
                     </div>
                 </div>
-                <span class="text-green-500 font-medium">+520,00 </span>
+                <span class="text-green-500 font-medium"
+                    >{{ dashboardData.previousMonthlySales | currency : "BRL" }}
+                </span>
                 <span class="text-500">no mesmo periodo</span>
             </div>
         </div>
@@ -63,7 +78,8 @@
                         >
                         <div class="text-900 font-medium text-xl">
                             {{
-                                dashboardData.montlyShopping | currency : "BRL"
+                                dashboardData.currentMonthlyShopping
+                                    | currency : "BRL"
                             }}
                         </div>
                     </div>
@@ -77,12 +93,19 @@
                         />
                     </div>
                 </div>
-                <span class="text-red-500 font-medium">-789,00 </span>
+                <span class="text-red-500 font-medium"
+                    >{{
+                        dashboardData.previousMonthlyShopping | currency : "BRL"
+                    }}
+                </span>
                 <span class="text-500">no mesmo periodo</span>
             </div>
         </div>
         <div class="col-12 lg:col-6 xl:col-3">
-            <div class="card mb-0 border border-blue-200">
+            <div
+                style="min-height: 140px"
+                class="card mb-0 border border-blue-200"
+            >
                 <div class="flex justify-content-between mb-3">
                     <div>
                         <span class="block text-500 font-medium mb-3"
@@ -90,7 +113,8 @@
                         >
                         <div class="text-900 font-medium text-xl">
                             {{
-                                dashboardData.monthlyBalance | currency : "BRL"
+                                dashboardData.currentMonthlyBalance
+                                    | currency : "BRL"
                             }}
                         </div>
                     </div>
@@ -104,8 +128,9 @@
                         />
                     </div>
                 </div>
-                <span class="text-green-500 font-medium">%52+ </span>
-                <span class="text-500">no mesmo periodo</span>
+                <span class="text-blue-500 font-medium">
+                Diferença entre compras e vendas
+                </span>
             </div>
         </div>
         <div class="col-12 lg:col-6 xl:col-6">
@@ -233,15 +258,15 @@
         </div>
 
         <div class="col-12 flex justify-content-center p-4">
-                <div class="card col-8 border border-blue-200">
-                    <h5>Faturamento e Lucro Anual</h5>
-                    <p-chart
-                        type="line"
-                        [data]="chartLineData"
-                        [options]="chartLineOptions"
-                    ></p-chart>
-                </div>
+            <div class="card col-8 border border-blue-200">
+                <h5>Faturamento e Lucro Anual</h5>
+                <p-chart
+                    type="line"
+                    [data]="chartLineData"
+                    [options]="chartLineOptions"
+                ></p-chart>
             </div>
+        </div>
     </div>
     }
 </div>
