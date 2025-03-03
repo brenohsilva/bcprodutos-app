@@ -33,9 +33,11 @@ export class SalesComponent implements OnInit, OnDestroy {
         valueSalesOfMonthNet: 0,
         valueSalesOfMonthGross: 0,
         quantityOfSalesByWeek: 0,
+        previousQuantityOfSalesByMonth: 0,
         quantityOfSalesByMonth: 0,
         quantityOfProductSoldByWeek: 0,
         quantityOfProductSoldByMonth: 0,
+        previousQuantityOfProductSoldByMonth: 0,
     };
 
     constructor(
@@ -72,9 +74,9 @@ export class SalesComponent implements OnInit, OnDestroy {
             if (res.success) {
                 const salesByDayMap = new Map<string, number>();
                 res.data.forEach(
-                    (item: { day: string; total_gross_value: string }) => {
+                    (item: { day: string; profit_day: string }) => {
                         const day = item.day;
-                        const sales = parseFloat(item.total_gross_value);
+                        const sales = parseFloat(item.profit_day);
 
                         if (salesByDayMap.has(day)) {
                             salesByDayMap.set(
@@ -88,17 +90,22 @@ export class SalesComponent implements OnInit, OnDestroy {
                 );
                 const labels = Array.from(salesByDayMap.keys());
                 const data = Array.from(salesByDayMap.values());
+
                 this.chartData = {
                     labels: labels,
                     datasets: [
                         {
                             label: 'Faturamento Diário',
-                            data:data,
+                            data: data,
                             fill: false,
                             backgroundColor:
-                                documentStyle.getPropertyValue('--bluegray-700'),
+                                documentStyle.getPropertyValue(
+                                    '--bluegray-700'
+                                ),
                             borderColor:
-                                documentStyle.getPropertyValue('--bluegray-700'),
+                                documentStyle.getPropertyValue(
+                                    '--bluegray-700'
+                                ),
                             tension: 0,
                         },
                     ],
@@ -150,52 +157,53 @@ export class SalesComponent implements OnInit, OnDestroy {
     getSalesData() {
         forkJoin({
             valueSalesOfWeek: this.salesService
-                .getValueSalesByPeriod('week')
+                .getValueSalesByPeriod('week', 2)
                 .pipe(catchError(() => of(null))),
             valueSalesOfMonth: this.salesService
-                .getValueSalesByPeriod('month')
+                .getValueSalesByPeriod('month', 2)
                 .pipe(catchError(() => of(null))),
             quantityOfSalesByWeek: this.salesService
-                .getQuantityOfSalesByPeriod('week')
+                .getQuantityOfSalesByPeriod('week', 2)
                 .pipe(catchError(() => of(null))),
             quantityOfSalesByMonth: this.salesService
-                .getQuantityOfSalesByPeriod('month')
+                .getQuantityOfSalesByPeriod('month', 2)
                 .pipe(catchError(() => of(null))),
             quantityOfProductSoldByWeek: this.salesService
-                .getQuantityOfProductSoldByPeriod('week')
+                .getQuantityOfProductSoldByPeriod('week', 2)
                 .pipe(catchError(() => of(null))),
             quantityOfProductSoldByMonth: this.salesService
-                .getQuantityOfProductSoldByPeriod('month')
+                .getQuantityOfProductSoldByPeriod('month', 2)
                 .pipe(catchError(() => of(null))),
         }).subscribe((res) => {
             this.salesData.valueSalesOfWeekNet = Number(
-                res.valueSalesOfWeek?.data?.liquido || 0
+                res.valueSalesOfWeek?.data?.currentPeriod.liquido || 0
             );
             this.salesData.valueSalesOfWeekGross = Number(
-                res.valueSalesOfWeek?.data?.bruto || 0
+                res.valueSalesOfWeek?.data?.currentPeriod.bruto || 0
             );
             this.salesData.valueSalesOfMonthNet = Number(
-                res.valueSalesOfMonth?.data?.liquido || 0
+                res.valueSalesOfMonth?.data?.currentPeriod.liquido || 0
             );
             this.salesData.valueSalesOfMonthGross = Number(
-                res.valueSalesOfMonth.data.bruto || 0
+                res.valueSalesOfMonth.data.currentPeriod.bruto || 0
             );
             this.salesData.quantityOfSalesByWeek =
-                res.quantityOfSalesByWeek?.data || 0;
+                res.quantityOfSalesByWeek?.data.currentPeriod || 0;
+                this.salesData.previousQuantityOfSalesByMonth = res.quantityOfSalesByMonth.data.previousPeriod || 0,
             this.salesData.quantityOfSalesByMonth =
-                res.quantityOfSalesByMonth?.data || 0;
+                res.quantityOfSalesByMonth?.data.currentPeriod || 0;
             this.salesData.quantityOfProductSoldByWeek =
-                res.quantityOfProductSoldByWeek?.data || 0;
+                res.quantityOfProductSoldByWeek?.data.currentPeriod || 0;
             this.salesData.quantityOfProductSoldByMonth =
-                res.quantityOfProductSoldByMonth?.data || 0;
+                res.quantityOfProductSoldByMonth?.data.currentPeriod || 0;
+                this.salesData.previousQuantityOfProductSoldByMonth = res.quantityOfProductSoldByMonth.data.previousPeriod || 0
         });
     }
 
     getLatestSales() {
-        this.salesService.getlatestSales().subscribe((res) => {
+        this.salesService.getlatestSales(2).subscribe((res) => {
             if (res.success) {
                 this.latestSales = res.data;
-                console.log(res.data);
             }
         });
     }

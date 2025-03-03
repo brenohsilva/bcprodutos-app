@@ -9,27 +9,38 @@ export class DashboardService {
 
     private readonly base_url = environment.BASE_URL;
 
-    getProductsStockQuantity() : Observable<any>{
-        return this.http.get<any>(`${this.base_url}products/stocks/quantity`)
+    getProductsStockQuantity(): Observable<any> {
+        return this.http.get<any>(`${this.base_url}products/stocks/quantity`);
     }
 
-    getIndividualProductStockQuantity() : Observable<any>{
-        return this.http.get<any>(`${this.base_url}products/stocks/quantity-by-name`)
+    getIndividualProductStockQuantity(): Observable<any> {
+        return this.http.get<any>(
+            `${this.base_url}products/stocks/quantity-by-name`
+        );
     }
 
-    getMontlyBalance() : Observable<any>{
-        return this.http.get<any>(`${this.base_url}overview/balance`)
+    getMontlyBalance(month: number): Observable<any> {
+        const params = new HttpParams().set('month', month.toString());
+        return this.http.get<any>(`${this.base_url}overview/balance`, {
+            params,
+        });
     }
 
-    getMontlyProfit() : Observable<any>{
-        return this.http.get<any>(`${this.base_url}overview/profits`)
+    getMontlyProfit(month: number): Observable<any> {
+        const params = new HttpParams().set('month', month.toString());
+        return this.http.get<any>(`${this.base_url}overview/profits`, {
+            params,
+        });
     }
 
     getStockRevenue(): Observable<any> {
-        return this.http.get<any>(`${this.base_url}overview/revenue`)
+        return this.http.get<any>(`${this.base_url}overview/revenue`);
     }
 
-    getDailyProfits(): Observable<any> {
-        return this.http.get<any>(`${this.base_url}overview/daily-profits`)
+    getDailyProfits(month: number): Observable<any> {
+        const params = new HttpParams().set('month', month.toString());
+        return this.http.get<any>(`${this.base_url}overview/daily-profits`, {
+            params,
+        });
     }
 }

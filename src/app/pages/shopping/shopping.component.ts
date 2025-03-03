@@ -21,11 +21,15 @@ export class ShoppingComponent implements OnInit, OnDestroy {
 
     shoppingData = {
         valueShoppingOfWeek: 0,
+        previousValueShoppingOfweek: 0,
         valueShoppingOfMonth: 0,
+        previousValueShoppingOfMonth: 0,
         amountShoppingOnWeek: 0,
         amountShoppingOnMonth: 0,
+        previousAmountShoppingOfMonth: 0,
         amountOfProductsPurchasedOnWeek: 0,
         amountOfProductsPurchasedOnMonth: 0,
+        previousAmountOfProductPurchasedOfMonth: 0
     };
 
     latestShopping: ShoppingResponse[];
@@ -144,42 +148,46 @@ export class ShoppingComponent implements OnInit, OnDestroy {
     getShoppingData() {
         forkJoin({
             valueShoppingOfWeek: this.shoppingService
-                .getValueShoppingByPeriod('week')
+                .getValueShoppingByPeriod('week', 2)
                 .pipe(catchError(() => of(null))),
             valueShoppingOfMonth: this.shoppingService
-                .getValueShoppingByPeriod('month')
+                .getValueShoppingByPeriod('month', 2)
                 .pipe(catchError(() => of(null))),
             amountShoppingOnWeek: this.shoppingService
-                .getQuantityOfShoppingByPeriod('week')
+                .getQuantityOfShoppingByPeriod('week', 2)
                 .pipe(catchError(() => of(null))),
             amountShoppingOnMonth: this.shoppingService
-                .getQuantityOfShoppingByPeriod('month')
+                .getQuantityOfShoppingByPeriod('month', 2)
                 .pipe(catchError(() => of(null))),
             amountOfProductsPurchasedOnWeek: this.shoppingService
-                .getQuantityOfProductPurchasedByPeriod('week')
+                .getQuantityOfProductPurchasedByPeriod('week', 2)
                 .pipe(catchError(() => of(null))),
             amountOfProductsPurchasedOnMonth: this.shoppingService
-                .getQuantityOfProductPurchasedByPeriod('month')
+                .getQuantityOfProductPurchasedByPeriod('month', 2)
                 .pipe(catchError(() => of(null))),
         }).subscribe((res) => {
             this.shoppingData.valueShoppingOfWeek = Number(
-                res.valueShoppingOfWeek.data || 0
+                res.valueShoppingOfWeek.data.currentPeriod || 0
             );
+            this.shoppingData.previousValueShoppingOfweek = Number(res.valueShoppingOfWeek.data.previousPeriod || 0)
             this.shoppingData.valueShoppingOfMonth = Number(
-                res.valueShoppingOfMonth.data || 0
+                res.valueShoppingOfMonth.data.currentPeriod || 0
             );
+            this.shoppingData.previousValueShoppingOfMonth = Number(res.valueShoppingOfMonth.data.previousPeriod || 0)
             this.shoppingData.amountShoppingOnWeek = Number(
-                res.amountShoppingOnWeek.data || 0
+                res.amountShoppingOnWeek.data.currentPeriod || 0
             );
             this.shoppingData.amountShoppingOnMonth = Number(
-                res.amountShoppingOnMonth.data || 0
+                res.amountShoppingOnMonth.data.currentPeriod || 0
             );
+            this.shoppingData.previousAmountShoppingOfMonth = Number(res.amountOfProductsPurchasedOnMonth.data.previousPeriod || 0)
             this.shoppingData.amountOfProductsPurchasedOnWeek = Number(
-                res.amountOfProductsPurchasedOnWeek.data || 0
+                res.amountOfProductsPurchasedOnWeek.data.currentPeriod || 0
             );
             this.shoppingData.amountOfProductsPurchasedOnMonth = Number(
-                res.amountOfProductsPurchasedOnMonth.data || 0
+                res.amountOfProductsPurchasedOnMonth.data.currentPeriod || 0
             );
+            this.shoppingData.previousAmountOfProductPurchasedOfMonth = Number(res.amountOfProductsPurchasedOnMonth.data.previousPeriod || 0)
         });
     }
 

@@ -13,25 +13,41 @@ export class ShoppingService {
         return this.http.post<any>(`${this.base_url}shopping`, body);
     }
 
-    getValueShoppingByPeriod(period: string): Observable<any> {
-        const params = new HttpParams().set('range', period);
-        return this.http.get<any>(`${this.base_url}shopping/values`, { params });
+    getValueShoppingByPeriod(period: string, month: number): Observable<any> {
+        const params = new HttpParams()
+            .set('range', period)
+            .set('month', month.toString());
+        return this.http.get<any>(`${this.base_url}shopping/values`, {
+            params,
+        });
     }
 
-    getQuantityOfProductPurchasedByPeriod(period: string): Observable<any> {
-        const params = new HttpParams().set('range', period);
+    getQuantityOfProductPurchasedByPeriod(
+        period: string,
+        month: number
+    ): Observable<any> {
+        const params = new HttpParams()
+            .set('range', period)
+            .set('month', month.toString());
         return this.http.get<any>(
             `${this.base_url}shopping/quantity-of-products-purchased`,
             { params }
         );
     }
 
-    getQuantityOfShoppingByPeriod(period: string): Observable<any> {
-        const params = new HttpParams().set('range', period);
-        return this.http.get<any>(`${this.base_url}shopping/amount`, { params });
+    getQuantityOfShoppingByPeriod(
+        period: string,
+        month: number
+    ): Observable<any> {
+        const params = new HttpParams()
+            .set('range', period)
+            .set('month', month.toString());
+        return this.http.get<any>(`${this.base_url}shopping/amount`, {
+            params,
+        });
     }
 
-    getLatestShopping(): Observable<any>{
-        return this.http.get<any>(`${this.base_url}shopping/latest`)
+    getLatestShopping(): Observable<any> {
+        return this.http.get<any>(`${this.base_url}shopping/latest`);
     }
 }

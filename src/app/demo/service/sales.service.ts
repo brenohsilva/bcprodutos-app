@@ -10,30 +10,44 @@ export class SalesService {
     private readonly base_url = environment.BASE_URL;
 
     registerSale(body: any): Observable<any> {
-        return this.http.post<any>(`${this.base_url}sales`, body)   
+        return this.http.post<any>(`${this.base_url}sales`, body);
     }
 
-    getValueSalesByPeriod(period: string): Observable<any> {
-        const params = new HttpParams().set('range', period);
+    getValueSalesByPeriod(period: string, month: number): Observable<any> {
+        const params = new HttpParams()
+            .set('range', period)
+            .set('month', month.toString());
         return this.http.get<any>(`${this.base_url}sales/values`, { params });
     }
 
-    getQuantityOfProductSoldByPeriod(period: string):Observable<any>{
-        const params = new HttpParams().set('range', period);
-        return this.http.get<any>(`${this.base_url}sales/quantity-of-products-sold`, { params });
+    getQuantityOfProductSoldByPeriod(
+        period: string,
+        month: number
+    ): Observable<any> {
+        const params = new HttpParams()
+            .set('range', period)
+            .set('month', month.toString());
+        return this.http.get<any>(
+            `${this.base_url}sales/quantity-of-products-sold`,
+            { params }
+        );
     }
 
-    getQuantityOfSalesByPeriod(period: string): Observable<any>{
-        const params = new HttpParams().set('range', period);
+    getQuantityOfSalesByPeriod(period: string, month: number): Observable<any> {
+        const params = new HttpParams()
+            .set('range', period)
+            .set('month', month.toString());
         return this.http.get<any>(`${this.base_url}sales/amount`, { params });
     }
 
-    getlatestSales(): Observable<any>{
-        return this.http.get<any>(`${this.base_url}sales/last-sales`);
+    getlatestSales(month: number): Observable<any> {
+        const params = new HttpParams().set('month', month.toString());
+        return this.http.get<any>(`${this.base_url}sales/last-sales`, {
+            params,
+        });
     }
 
-    getDailySales():Observable<any> {
+    getDailySales(): Observable<any> {
         return this.http.get<any>(`${this.base_url}sales/daily-sales`);
     }
-    
 }
