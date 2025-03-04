@@ -43,4 +43,15 @@ export class DashboardService {
             params,
         });
     }
+
+    getItensSoldByMonth(month: number): Observable<any> {
+        const params = new HttpParams().set('month', month.toString());
+        return this.http.get<any>(`${this.base_url}overview/itens-sold`, {
+            params,
+        });
+    }
+
+    getYearSummary(): Observable<any> {
+        return this.http.get<any>(`${this.base_url}overview/summary`);
+    }
 }

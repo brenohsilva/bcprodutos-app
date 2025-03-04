@@ -25,8 +25,12 @@
                         />
                     </div>
                 </div>
-                <span class="text-red-500 font-medium">-24,00 </span>
-                <span class="text-500">no mesmo periodo</span>
+                <span class="text-red-500 font-medium"
+                    >{{
+                        dashboardData.previousMonthlyProfit | currency : "BRL"
+                    }}
+                </span>
+                <span class="text-500">no mês anterior</span>
             </div>
         </div>
 
@@ -51,8 +55,10 @@
                         />
                     </div>
                 </div>
-                <span class="text-green-500 font-medium">+520,00 </span>
-                <span class="text-500">no mesmo periodo</span>
+                <span class="text-green-500 font-medium"
+                    >{{ dashboardData.previousMonthlySales | currency : "BRL" }}
+                </span>
+                <span class="text-500">no mês anterior</span>
             </div>
         </div>
 
@@ -79,13 +85,20 @@
                         />
                     </div>
                 </div>
-                <span class="text-red-500 font-medium">-789,00 </span>
-                <span class="text-500">no mesmo periodo</span>
+                <span class="text-red-500 font-medium"
+                    >{{
+                        dashboardData.previousMonthlyShopping | currency : "BRL"
+                    }}
+                </span>
+                <span class="text-500">no mês anterior</span>
             </div>
         </div>
 
         <div class="col-12 lg:col-6 xl:col-3">
-            <div class="card mb-0 border border-blue-200">
+            <div
+                style="min-height: 140px"
+                class="card mb-0 border border-blue-200"
+            >
                 <div class="flex justify-content-between mb-3">
                     <div>
                         <span class="block text-500 font-medium mb-3"
@@ -107,8 +120,6 @@
                         />
                     </div>
                 </div>
-                <span class="text-green-500 font-medium">%52+ </span>
-                <span class="text-500">no mesmo periodo</span>
             </div>
         </div>
 
@@ -121,10 +132,7 @@
                                 >Vendas Realizadas no mês</span
                             >
                             <div class="text-900 font-medium text-xl">
-                                {{
-                                    dashboardData.estimatedStockValue
-                                        | currency : "BRL"
-                                }}
+                                {{ dashboardData.monthlySalesAmount }}
                             </div>
                         </div>
                         <div
@@ -137,6 +145,10 @@
                             />
                         </div>
                     </div>
+                    <span class="text-red-500 font-medium"
+                        >{{ this.dashboardData.previousMonthlySalesAmount }}
+                    </span>
+                    <span class="text-500">no mês anterior</span>
                 </div>
                 <div class="card mb-0 col border border-blue-200">
                     <div class="flex justify-content-between mb-3">
@@ -145,7 +157,7 @@
                                 >Compras realizadas no mês</span
                             >
                             <div class="text-900 font-medium text-xl">
-                                {{ dashboardData.totalStockProducts }}
+                                {{ dashboardData.monthlyShoppingAmount }}
                             </div>
                         </div>
                         <div
@@ -158,6 +170,10 @@
                             />
                         </div>
                     </div>
+                    <span class="text-red-500 font-medium"
+                        >{{ dashboardData.previousMonthlyShoppingAmount }}
+                    </span>
+                    <span class="text-500">no mês anterior</span>
                 </div>
                 <div class="card mb-0 col border border-blue-200">
                     <div class="flex justify-content-between mb-3">
@@ -166,10 +182,7 @@
                                 >Total de produtos vendidos</span
                             >
                             <div class="text-900 font-medium text-xl">
-                                {{
-                                    dashboardData.estimatedStockValue
-                                        | currency : "BRL"
-                                }}
+                                {{ dashboardData.totalProductSold }}
                             </div>
                         </div>
                         <div
@@ -182,6 +195,10 @@
                             />
                         </div>
                     </div>
+                    <span class="text-red-500 font-medium"
+                        >{{ dashboardData.previousTotalProductSold }}
+                    </span>
+                    <span class="text-500">no mês anterior</span>
                 </div>
                 <div class="card mb-0 col border border-blue-200">
                     <div class="flex justify-content-between mb-3">
@@ -190,7 +207,7 @@
                                 >Total de Produtos Comprados</span
                             >
                             <div class="text-900 font-medium text-xl">
-                                {{ dashboardData.totalStockProducts }}
+                                {{ dashboardData.totalProductPushased }}
                             </div>
                         </div>
                         <div
@@ -203,6 +220,10 @@
                             />
                         </div>
                     </div>
+                    <span class="text-red-500 font-medium"
+                        >{{ dashboardData.previousTotalProductPushased }}
+                    </span>
+                    <span class="text-500">no mês anterior</span>
                 </div>
             </div>
         </div>
@@ -217,7 +238,6 @@
             </div>
         </div>
         <div class="col-12 flex">
-
             <div class="col-3">
                 <div class="card mb-0 border border-blue-200">
                     <div class="flex justify-content-between mb-3">
@@ -227,7 +247,8 @@
                             >
                             <div class="text-900 font-medium text-xl">
                                 {{
-                                    dashboardData.montlySales | currency : "BRL"
+                                    dashboardData.monthlyBestSales.value
+                                        | currency : "BRL"
                                 }}
                             </div>
                         </div>
@@ -241,8 +262,9 @@
                             />
                         </div>
                     </div>
-                    <span class="text-green-500 font-medium">Segunda feira </span>
-                    <span class="text-500">17 de Janeiro</span>
+                    <span class="text-green-500 font-medium"
+                        >{{ dashboardData.monthlyBestSales.date }}
+                    </span>
                 </div>
             </div>
 
@@ -255,7 +277,7 @@
                             >
                             <div class="text-900 font-medium text-xl">
                                 {{
-                                    dashboardData.montlySales | currency : "BRL"
+                                    dashboardData.monthlyBestProfit.value | currency : "BRL"
                                 }}
                             </div>
                         </div>
@@ -269,8 +291,7 @@
                             />
                         </div>
                     </div>
-                    <span class="text-blue-500 font-medium">Terça feira </span>
-                    <span class="text-500"> 18 de Janeiro</span>
+                    <span class="text-blue-500 font-medium">{{dashboardData.monthlyBestProfit.date}} </span>
                 </div>
             </div>
 
@@ -324,7 +345,6 @@
                     </ng-template>
                 </p-table>
             </div>
-            
         </div>
         <div class="col-12">
             <div

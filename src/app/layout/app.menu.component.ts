@@ -57,11 +57,8 @@ export class AppMenuComponent implements OnInit {
                                     {
                                         label: 'Geral',
                                         icon: 'pi pi-fw pi-bookmark',
-                                    },
-                                    {
-                                        label: 'Vendas',
-                                        icon: 'pi pi-fw pi-bookmark',
-                                    },
+                                        routerLink: ['/review', '2024', '12', 'general'],
+                                    }
                                 ],
                             },
                         ],
@@ -77,15 +74,9 @@ export class AppMenuComponent implements OnInit {
                                     {
                                         label: 'Geral',
                                         icon: 'pi pi-fw pi-bookmark',
+                                        routerLink: ['/review', '2025', '01', 'general'], 
                                     },
-                                    {
-                                        label: 'Vendas',
-                                        icon: 'pi pi-fw pi-bookmark',
-                                    },
-                                    {
-                                        label: 'Compras',
-                                        icon: 'pi pi-fw pi-bookmark',
-                                    },
+                                   
                                 ],
                             },
                             {
@@ -95,14 +86,7 @@ export class AppMenuComponent implements OnInit {
                                     {
                                         label: 'Geral',
                                         icon: 'pi pi-fw pi-bookmark',
-                                    },
-                                    {
-                                        label: 'Vendas',
-                                        icon: 'pi pi-fw pi-bookmark',
-                                    },
-                                    {
-                                        label: 'Compras',
-                                        icon: 'pi pi-fw pi-bookmark',
+                                        routerLink: ['/review', '2025', '02', 'general'], 
                                     },
                                 ],
                             },

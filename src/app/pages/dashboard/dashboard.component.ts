@@ -96,7 +96,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
             x: {
                 display: true,
                 title: {
-                    display: true,
+                    display: false,
                     text: 'Meses',
                 },
             },
@@ -129,6 +129,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.getDashboardData();
         this.initChart();
         this.getLatestSales();
+        this.loadChartData()
     }
 
     initChart() {
@@ -225,6 +226,24 @@ export class DashboardComponent implements OnInit, OnDestroy {
         };
     }
 
+    loadChartData() {
+        this.dashboardService.getYearSummary().subscribe((res) => {
+            if (res.success) {
+                const salesData = res.data.sales;
+                const profitData = res.data.profits;
+    
+                // Garantindo que os meses sejam adicionados na ordem correta
+                const months = [
+                    'janeiro', 'fevereiro'
+                ];
+    
+                this.chartLineData.labels = months.map(m => m.charAt(0).toUpperCase() + m.slice(1)); // Capitalizando os meses
+                this.chartLineData.datasets[0].data = months.map(m => salesData[m] || 0); // Faturamento
+                this.chartLineData.datasets[1].data = months.map(m => profitData[m] || 0); // Lucro
+            }
+        });
+    }
+
     ngOnDestroy() {
         if (this.subscription) {
             this.subscription.unsubscribe();
@@ -237,16 +256,16 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 .getStockRevenue()
                 .pipe(catchError(() => of(null))),
             monthlyTotalBalance: this.dashboardService
-                .getMontlyBalance(2)
+                .getMontlyBalance(3)
                 .pipe(catchError(() => of(null))),
             totalStockProducts: this.dashboardService
                 .getProductsStockQuantity()
                 .pipe(catchError(() => of(null))),
             currentMonthlyProfit: this.dashboardService
-                .getMontlyProfit(2)
+                .getMontlyProfit(3)
                 .pipe(catchError(() => of(null))),
-                salesValues: this.salesService.getValueSalesByPeriod('month', 2).pipe(catchError(() => of(null))),
-                shoppingValues: this.shoppingService.getValueShoppingByPeriod('month', 2).pipe(catchError(() => of(null))),
+                salesValues: this.salesService.getValueSalesByPeriod('month', 3).pipe(catchError(() => of(null))),
+                shoppingValues: this.shoppingService.getValueShoppingByPeriod('month', 3).pipe(catchError(() => of(null))),
         }).subscribe((res) => {
             (this.dashboardData.estimatedStockValue = res.estimatedStockValue?.revenue_amount || 0),
 

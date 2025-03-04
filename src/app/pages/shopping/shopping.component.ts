@@ -148,22 +148,22 @@ export class ShoppingComponent implements OnInit, OnDestroy {
     getShoppingData() {
         forkJoin({
             valueShoppingOfWeek: this.shoppingService
-                .getValueShoppingByPeriod('week', 2)
+                .getValueShoppingByPeriod('week', 3)
                 .pipe(catchError(() => of(null))),
             valueShoppingOfMonth: this.shoppingService
-                .getValueShoppingByPeriod('month', 2)
+                .getValueShoppingByPeriod('month', 3)
                 .pipe(catchError(() => of(null))),
             amountShoppingOnWeek: this.shoppingService
-                .getQuantityOfShoppingByPeriod('week', 2)
+                .getQuantityOfShoppingByPeriod('week', 3)
                 .pipe(catchError(() => of(null))),
             amountShoppingOnMonth: this.shoppingService
-                .getQuantityOfShoppingByPeriod('month', 2)
+                .getQuantityOfShoppingByPeriod('month', 3)
                 .pipe(catchError(() => of(null))),
             amountOfProductsPurchasedOnWeek: this.shoppingService
-                .getQuantityOfProductPurchasedByPeriod('week', 2)
+                .getQuantityOfProductPurchasedByPeriod('week', 3)
                 .pipe(catchError(() => of(null))),
             amountOfProductsPurchasedOnMonth: this.shoppingService
-                .getQuantityOfProductPurchasedByPeriod('month', 2)
+                .getQuantityOfProductPurchasedByPeriod('month', 3)
                 .pipe(catchError(() => of(null))),
         }).subscribe((res) => {
             this.shoppingData.valueShoppingOfWeek = Number(
