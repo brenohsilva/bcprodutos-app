@@ -8,7 +8,7 @@ import { RouterModule } from '@angular/router';
         {path: 'registrar-venda', data: { breadcrumb: 'Novas Vendas' }, loadChildren: () => import('../../../pages/sales/components/newSales/newsales.module').then(m => m.NewSalesModule) },
         {path: 'registrar-compra', data: { breadcrumb: 'Novas Compras' }, loadChildren: () => import('../../../pages/shopping/components/newShopping/new-shopping.module').then(m => m.NewShoppingModule) },
         { path: 'estoque', data: { breadcrumb: 'Estoque' }, loadChildren: () => import('../../../pages/stocks/stocks.module').then(m => m.StocksModule) },
-        { path: 'general', data: { breadcrumb: 'Geral Mensal' }, loadChildren: () => import('../month-general/month-general.module').then(m => m.MonthGeneralModule) },
+      
         { path: '**', redirectTo: '/notfound' }
     ])],
     exports: [RouterModule]

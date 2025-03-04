@@ -6,24 +6,46 @@ import { SalesResponse } from '../../api/productsSales';
 import { DashboardService } from '../../service/dashboard.service';
 import { SalesService } from '../../service/sales.service';
 import { DatePipe } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
+import { ShoppingService } from '../../service/shopping.service';
 
 @Component({
-  templateUrl: './month-general.component.html',
-  styleUrl: './month-general.component.scss',
-  providers: [DatePipe],
+    templateUrl: './month-general.component.html',
+    styleUrl: './month-general.component.scss',
+    providers: [DatePipe],
 })
 export class MonthGeneralComponent implements OnInit, OnDestroy {
- isloading = true;
+    isloading = true;
 
     products!: Product[];
 
+    year!: string;
+    month!: string;
+
     dashboardData = {
-        estimatedStockValue: 0,
-        montlySales: 0,
-        montlyShopping: 0,
-        monthlyBalance: 0,
         monthlyProfit: 0,
-        totalStockProducts: 0,
+        previousMonthlyProfit: 0,
+        montlySales: 0,
+        previousMonthlySales: 0,
+        montlyShopping: 0,
+        previousMonthlyShopping: 0,
+        monthlyBalance: 0,
+        monthlySalesAmount: 0,
+        previousMonthlySalesAmount: 0,
+        monthlyShoppingAmount: 0,
+        previousMonthlyShoppingAmount: 0,
+        totalProductSold: 0,
+        previousTotalProductSold: 0,
+        totalProductPushased:0,
+        previousTotalProductPushased: 0,
+        monthlyBestSales: {
+            date: '',
+            value: 0
+        },
+        monthlyBestProfit: {
+            date: '',
+            value: 0
+        }
     };
 
     latestSales: SalesResponse[];
@@ -48,12 +70,13 @@ export class MonthGeneralComponent implements OnInit, OnDestroy {
     barOptions: any;
     barData: any;
 
-
     constructor(
         public layoutService: LayoutService,
         private dashboardService: DashboardService,
         private salesService: SalesService,
-        private datePipe: DatePipe
+        private shoppingService: ShoppingService,
+        private datePipe: DatePipe,
+        private route: ActivatedRoute
     ) {
         this.subscription = this.layoutService.configUpdate$
             .pipe(debounceTime(25))
@@ -63,9 +86,14 @@ export class MonthGeneralComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.getDashboardData();
-        this.initChart();
-        this.getLatestSales();
+        this.route.params.subscribe((params) => {
+            this.year = params['year'];
+            this.month = params['month'];
+
+            this.getDashboardData();
+            this.initChart();
+            this.getLatestSales();
+        });
     }
 
     initChart() {
@@ -78,16 +106,16 @@ export class MonthGeneralComponent implements OnInit, OnDestroy {
             documentStyle.getPropertyValue('--surface-border');
 
         this.dashboardService
-            .getIndividualProductStockQuantity()
+            .getItensSoldByMonth(Number(this.month))
             .subscribe((res) => {
-                if (res.success) {
-                    this.single = Object.entries(res.data).map(
+                
+                    this.single = Object.entries(res).map(
                         ([key, value]) => ({
                             name: key,
                             value: value,
                         })
                     );
-                }
+                
             });
 
         this.dashboardService.getDailyProfits(2).subscribe((res) => {
@@ -148,7 +176,6 @@ export class MonthGeneralComponent implements OnInit, OnDestroy {
                         display: false,
                         drawBorder: false,
                     },
-
                 },
                 y: {
                     ticks: {
@@ -160,7 +187,7 @@ export class MonthGeneralComponent implements OnInit, OnDestroy {
                     },
                 },
             },
-            aspectRatio: 5
+            aspectRatio: 5,
         };
     }
 
@@ -172,37 +199,58 @@ export class MonthGeneralComponent implements OnInit, OnDestroy {
 
     getDashboardData() {
         forkJoin({
-            estimatedStockValue: this.dashboardService
-                .getStockRevenue()
-                .pipe(catchError(() => of(null))),
-            monthlyTotalBalance: this.dashboardService
-                .getMontlyBalance(2)
-                .pipe(catchError(() => of(null))),
-            totalStockProducts: this.dashboardService
-                .getProductsStockQuantity()
-                .pipe(catchError(() => of(null))),
-            monthlyProfit: this.dashboardService
-                .getMontlyProfit(2)
-                .pipe(catchError(() => of(null))),
+            monthlyProfit: this.dashboardService.getMontlyProfit(Number(this.month)).pipe(catchError(() => of(null))),
+
+            monthlySales: this.salesService.getValueSalesByPeriod('month',Number(this.month)).pipe(catchError(() => of(null))),
+            monthlyShopping: this.shoppingService.getValueShoppingByPeriod('month',Number(this.month)).pipe(catchError(() => of(null))),
+
+            monthlyTotalBalance: this.dashboardService.getMontlyBalance(Number(this.month)).pipe(catchError(() => of(null))),
+            
+            salesMadeByMonth: this.salesService.getQuantityOfSalesByPeriod('month', Number(this.month)).pipe(catchError(() => of(null))),
+            shoppingMadeByMonth: this.shoppingService.getQuantityOfShoppingByPeriod('month', Number(this.month)).pipe(catchError(() => of(null))),
+
+            totalProductSold: this.salesService.getQuantityOfProductSoldByPeriod('month', Number(this.month)).pipe(catchError(() => of(null))),
+            totalProductPurchased: this.shoppingService.getQuantityOfProductPurchasedByPeriod('month', Number(this.month)).pipe(catchError(() => of(null))),
+
+            bestSales: this.salesService.getBestSales( Number(this.month)).pipe(catchError(() => of(null))),
+            bestProfit: this.salesService.getBestProfit(Number(this.month)).pipe(catchError(() => of(null))),
+            
         }).subscribe((res) => {
-            (this.dashboardData.estimatedStockValue =
-                res.estimatedStockValue?.revenue_amount || 0),
-                (this.dashboardData.monthlyBalance =
-                    res.monthlyTotalBalance?.data?.balance || 0),
-                (this.dashboardData.monthlyProfit =
-                    res.monthlyProfit.data || 0),
-                (this.dashboardData.montlySales =
-                    res.monthlyTotalBalance?.data?.sales_value || 0),
-                (this.dashboardData.montlyShopping =
-                    res.monthlyTotalBalance?.data?.shopping_value || 0),
-                (this.dashboardData.totalStockProducts =
-                    res.totalStockProducts?.total_stock || 0);
+            (this.dashboardData.monthlyProfit = res.monthlyProfit.data.currentMonthTotal || 0),
+            (this.dashboardData.previousMonthlyProfit = res.monthlyProfit.data.previousMonthTotal || 0),
+
+            (this.dashboardData.montlySales = res.monthlySales?.data?.currentPeriod.liquido || 0),
+            (this.dashboardData.previousMonthlySales = res.monthlySales?.data?.previousPeriod.liquido || 0),
+            
+            (this.dashboardData.montlyShopping = res.monthlyShopping?.data?.currentPeriod || 0),
+            (this.dashboardData.previousMonthlyShopping = res.monthlyShopping?.data?.previousPeriod || 0),
+            
+            (this.dashboardData.monthlyBalance = res.monthlyTotalBalance?.data?.balance || 0),
+            
+            (this.dashboardData.monthlySalesAmount = res.salesMadeByMonth.data.currentPeriod || 0),
+            (this.dashboardData.previousMonthlySalesAmount = res.salesMadeByMonth?.data.previousPeriod || 0);
+            debugger
+            (this.dashboardData.monthlyShoppingAmount = res.shoppingMadeByMonth?.data.currentPeriod || 0),
+            (this.dashboardData.previousMonthlyShoppingAmount = res.shoppingMadeByMonth?.data.previousPeriod || 0);
+
+            (this.dashboardData.totalProductSold = res.totalProductSold?.data.currentPeriod || 0),
+            (this.dashboardData.previousTotalProductSold = res.totalProductSold?.data.previousPeriod || 0),
+
+            (this.dashboardData.totalProductPushased = res.totalProductPurchased?.data.currentPeriod || 0),
+            (this.dashboardData.previousTotalProductPushased = res.totalProductPurchased?.data.previousPeriod || 0);
+
+            (this.dashboardData.monthlyBestSales.date = this.formatedDate(res.bestSales.best_sales_day));
+            (this.dashboardData.monthlyBestSales.value = res.bestSales.total_net_value || 0);
+
+            (this.dashboardData.monthlyBestProfit.date =this.formatedDate(res.bestProfit.best_profit_day));
+            (this.dashboardData.monthlyBestProfit.value = res.bestProfit.total_profit || 0);
+            
             this.isloading = false;
         });
     }
 
     getLatestSales() {
-        this.salesService.getlatestSales(2).subscribe((res) => {
+        this.salesService.getlatestSales(Number(this.month)).subscribe((res) => {
             if (res.success) {
                 this.latestSales = res.data;
             }

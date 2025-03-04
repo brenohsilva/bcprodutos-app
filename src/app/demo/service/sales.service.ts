@@ -47,6 +47,20 @@ export class SalesService {
         });
     }
 
+    getBestSales(month: number): Observable<any> {
+        const params = new HttpParams().set('month', month.toString());
+        return this.http.get<any>(`${this.base_url}sales/best-sales`, {
+            params,
+        });
+    }
+
+    getBestProfit(month: number): Observable<any> {
+        const params = new HttpParams().set('month', month.toString());
+        return this.http.get<any>(`${this.base_url}overview/best-profits`, {
+            params,
+        });
+    }
+
     getDailySales(): Observable<any> {
         return this.http.get<any>(`${this.base_url}sales/daily-sales`);
     }

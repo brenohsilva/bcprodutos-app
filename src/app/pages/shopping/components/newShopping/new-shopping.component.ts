@@ -27,9 +27,9 @@ export class NewShoppingComponent implements OnInit {
     shoppingProducts: ProductShopping[] = [];
     Methods = [
         { label: 'Pix', value: { name: 'Pix' } },
-        { label: 'Cartão de Credito', value: { name: 'Credito' } },
-        { label: 'Cartão de Debito', value: { name: 'Debito' } },
-        { label: 'Dinheiro', value: { name: 'Dinheiro' } },
+        { label: 'Cartão Nubank', value: { name: 'Cartão Nubank' } },
+        { label: 'Cartão Mercado Pago', value: { name: 'Cartão Mercado Pago' } },
+
     ];
     installments = [
         { label: 'A vista', value: 'A vista' },
@@ -39,6 +39,9 @@ export class NewShoppingComponent implements OnInit {
         { label: 'Parcelado em 4x', value: 4 },
         { label: 'Parcelado em 5x', value: 5 },
         { label: 'Parcelado em 6x', value: 6 },
+        { label: 'Parcelado em 7x', value: 7 },
+        { label: 'Parcelado em 8x', value: 8 },
+        { label: 'Parcelado em 9x', value: 9 },
     ];
     selectedMethod: any = null;
     installment: number = 1
