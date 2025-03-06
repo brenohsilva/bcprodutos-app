@@ -157,22 +157,22 @@ export class SalesComponent implements OnInit, OnDestroy {
     getSalesData() {
         forkJoin({
             valueSalesOfWeek: this.salesService
-                .getValueSalesByPeriod('week', 2)
+                .getValueSalesByPeriod('week', 3)
                 .pipe(catchError(() => of(null))),
             valueSalesOfMonth: this.salesService
-                .getValueSalesByPeriod('month', 2)
+                .getValueSalesByPeriod('month', 3)
                 .pipe(catchError(() => of(null))),
             quantityOfSalesByWeek: this.salesService
-                .getQuantityOfSalesByPeriod('week', 2)
+                .getQuantityOfSalesByPeriod('week', 3)
                 .pipe(catchError(() => of(null))),
             quantityOfSalesByMonth: this.salesService
-                .getQuantityOfSalesByPeriod('month', 2)
+                .getQuantityOfSalesByPeriod('month', 3)
                 .pipe(catchError(() => of(null))),
             quantityOfProductSoldByWeek: this.salesService
-                .getQuantityOfProductSoldByPeriod('week', 2)
+                .getQuantityOfProductSoldByPeriod('week', 3)
                 .pipe(catchError(() => of(null))),
             quantityOfProductSoldByMonth: this.salesService
-                .getQuantityOfProductSoldByPeriod('month', 2)
+                .getQuantityOfProductSoldByPeriod('month', 3)
                 .pipe(catchError(() => of(null))),
         }).subscribe((res) => {
             this.salesData.valueSalesOfWeekNet = Number(

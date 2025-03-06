@@ -154,7 +154,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 }
             });
 
-        this.dashboardService.getDailyProfits(2).subscribe((res) => {
+        this.dashboardService.getDailyProfits(3).subscribe((res) => {
             if (res.success) {
                 const profitByDayMap = new Map<string, number>();
                 res.data.forEach(
