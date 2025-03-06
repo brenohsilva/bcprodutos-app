@@ -118,7 +118,7 @@ export class MonthGeneralComponent implements OnInit, OnDestroy {
                 
             });
 
-        this.dashboardService.getDailyProfits(2).subscribe((res) => {
+        this.dashboardService.getDailyProfits(Number(this.month)).subscribe((res) => {
             if (res.success) {
                 const profitByDayMap = new Map<string, number>();
                 res.data.forEach(

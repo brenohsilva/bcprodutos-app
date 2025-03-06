@@ -59,7 +59,7 @@ export class NewSalesComponent implements OnInit {
             key: 'tst',
             severity: 'success',
             summary: 'Sucesso!',
-            detail: 'Compra registrada com sucesso!',
+            detail: 'Venda registrada com sucesso!',
         });
     }
 
