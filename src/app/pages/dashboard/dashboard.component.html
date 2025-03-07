@@ -1,5 +1,8 @@
 <div class="card border border-blue-200">
-    <h5>Visão Geral</h5>
+    <div class="flex justify-content-between">
+        <h5>Visão Geral</h5>
+        <span>{{ currentDateTime }}</span>
+    </div>
     @if (isloading) {
     <app-dashboard-skeleton></app-dashboard-skeleton>
     } @else {
@@ -33,10 +36,10 @@
                 </div>
                 <span class="text-red-500 font-medium"
                     >{{
-                        dashboardData.previousMonthlyProfit | currency : "BRL"
+                         dashboardData.currentMonthlyProfit - dashboardData.previousMonthlyProfit | currency : "BRL"
                     }}
                 </span>
-                <span class="text-500">no mesmo periodo</span>
+                <span class="text-500">no mês anterior</span>
             </div>
         </div>
         <div class="col-12 lg:col-6 xl:col-3">
@@ -63,10 +66,10 @@
                         />
                     </div>
                 </div>
-                <span class="text-green-500 font-medium"
-                    >{{ dashboardData.previousMonthlySales | currency : "BRL" }}
+                <span class="text-red-500 font-medium"
+                    >{{  dashboardData.currentMonthlySales - dashboardData.previousMonthlySales | currency : "BRL" }}
                 </span>
-                <span class="text-500">no mesmo periodo</span>
+                <span class="text-500">no mês anterior</span>
             </div>
         </div>
         <div class="col-12 lg:col-6 xl:col-3">
@@ -95,7 +98,7 @@
                 </div>
                 <span class="text-red-500 font-medium"
                     >{{
-                        dashboardData.previousMonthlyShopping | currency : "BRL"
+                        dashboardData.currentMonthlyShopping - dashboardData.previousMonthlyShopping | currency : "BRL"
                     }}
                 </span>
                 <span class="text-500">no mesmo periodo</span>
@@ -129,7 +132,7 @@
                     </div>
                 </div>
                 <span class="text-blue-500 font-medium">
-                Diferença entre compras e vendas
+                    Diferença entre compras e vendas
                 </span>
             </div>
         </div>
@@ -181,12 +184,12 @@
                     </div>
                 </div>
             </div>
-            <div class="mt-4 card border border-blue-200">
+            <div class="mt-4 md:block hidden card border border-blue-200">
                 <h5 class="text-left w-full">Lucro diário</h5>
                 <p-chart
                     type="bar"
-                    [data]="barData"
-                    [options]="barOptions"
+                    [data]="profitData"
+                    [options]="profitOption"
                 ></p-chart>
             </div>
         </div>
@@ -242,7 +245,7 @@
                 </p-table>
             </div>
         </div>
-        <div class="col-12">
+        <div class="col-12 md:block hidden">
             <div
                 class="card flex flex-column align-items-center border border-blue-200"
             >
@@ -257,13 +260,13 @@
             </div>
         </div>
 
-        <div class="col-12 flex justify-content-center p-4">
+        <div class="col-12 md:flex hidden justify-content-center p-4">
             <div class="card col-8 border border-blue-200">
                 <h5>Faturamento e Lucro Anual</h5>
                 <p-chart
                     type="line"
-                    [data]="chartLineData"
-                    [options]="chartLineOptions"
+                    [data]="summaryData"
+                    [options]="summaryOption"
                 ></p-chart>
             </div>
         </div>

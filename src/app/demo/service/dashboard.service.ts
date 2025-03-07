@@ -19,15 +19,25 @@ export class DashboardService {
         );
     }
 
-    getMontlyBalance(month: number): Observable<any> {
-        const params = new HttpParams().set('month', month.toString());
+    getMontlyBalance(month?: number): Observable<any> {
+        let params = new HttpParams();
+
+        if (month !== undefined) {
+            params = params.set('month', month.toString());
+        }
+
         return this.http.get<any>(`${this.base_url}overview/balance`, {
             params,
         });
     }
 
-    getMontlyProfit(month: number): Observable<any> {
-        const params = new HttpParams().set('month', month.toString());
+    getMontlyProfit(month?: number): Observable<any> {
+        let params = new HttpParams();
+
+        if (month !== undefined) {
+            params = params.set('month', month.toString());
+        }
+
         return this.http.get<any>(`${this.base_url}overview/profits`, {
             params,
         });
@@ -37,8 +47,13 @@ export class DashboardService {
         return this.http.get<any>(`${this.base_url}overview/revenue`);
     }
 
-    getDailyProfits(month: number): Observable<any> {
-        const params = new HttpParams().set('month', month.toString());
+    getDailyProfits(month?: number): Observable<any> {
+        let params = new HttpParams();
+
+        if (month !== undefined) {
+            params = params.set('month', month.toString());
+        }
+
         return this.http.get<any>(`${this.base_url}overview/daily-profits`, {
             params,
         });
