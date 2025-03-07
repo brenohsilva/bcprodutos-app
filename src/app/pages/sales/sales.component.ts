@@ -74,9 +74,9 @@ export class SalesComponent implements OnInit, OnDestroy {
             if (res.success) {
                 const salesByDayMap = new Map<string, number>();
                 res.data.forEach(
-                    (item: { day: string; profit_day: string }) => {
+                    (item: { day: string; total_gross_value: string }) => {
                         const day = item.day;
-                        const sales = parseFloat(item.profit_day);
+                        const sales = parseFloat(item.total_gross_value);
 
                         if (salesByDayMap.has(day)) {
                             salesByDayMap.set(
