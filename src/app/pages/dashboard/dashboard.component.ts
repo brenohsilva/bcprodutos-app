@@ -13,6 +13,9 @@ import { ShoppingService } from 'src/app/demo/service/shopping.service';
     providers: [DatePipe],
 })
 export class DashboardComponent implements OnInit, OnDestroy {
+
+    currentDateTime: string = '';
+
     isloading = true;
 
     products!: Product[];
@@ -31,40 +34,20 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     latestSales: SalesResponse[];
 
-    chartData: any;
-
-    chartOptions: any;
-
     subscription!: Subscription;
-
-    pieData: any;
-
-    pieOptions: any;
 
     view: [number, number] = [800, 500];
     single: any[] = [];
-    showLabels: boolean = true;
-    showLegend: boolean = true;
-    gradient: boolean = true;
     colorScheme = 'natural';
+    profitOption: any;
+    profitData: any;
 
-    barOptions: any;
-    barData: any;
-
-    public chartLineData = {
-        labels: [
-            'Janeiro',
-            'Fevereiro',
-            'Março',
-            'Abril',
-            'Maio',
-            'Junho',
-            'Julho',
-        ],
+    public summaryData = {
+        labels: [],
         datasets: [
             {
                 label: 'Faturamento 2025',
-                data: [65, 59],
+                data: [],
                 borderColor: 'rgba(75, 192, 192, 1)', // Cor da linha
                 backgroundColor: 'rgba(75, 192, 192, 0.2)', // Cor de fundo abaixo da linha
                 fill: false, // Preencher a área abaixo da linha
@@ -72,7 +55,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
             },
             {
                 label: 'Lucro 2025',
-                data: [59, 48],
+                data: [],
                 borderColor: 'rgba(255, 99, 132, 1)', // Cor da linha
                 backgroundColor: 'rgba(255, 99, 132, 0.2)', // Cor de fundo abaixo da linha
                 fill: true, // Preencher a área abaixo da linha
@@ -81,7 +64,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         ],
     };
 
-    public chartLineOptions = {
+    public summaryOption = {
         responsive: true,
         plugins: {
             legend: {
@@ -121,6 +104,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.subscription = this.layoutService.configUpdate$
             .pipe(debounceTime(25))
             .subscribe((config) => {
+                console.log(config)
                 this.initChart();
             });
     }
@@ -130,6 +114,51 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.initChart();
         this.getLatestSales();
         this.loadChartData()
+
+        setInterval(() => this.updateDateTime(), 1000);
+    }
+
+    getDashboardData() {
+        forkJoin({
+            estimatedStockValue: this.dashboardService
+                .getStockRevenue()
+                .pipe(catchError(() => of(null))),
+            monthlyTotalBalance: this.dashboardService
+                .getMontlyBalance()
+                .pipe(catchError(() => of(null))),
+            totalStockProducts: this.dashboardService
+                .getProductsStockQuantity()
+                .pipe(catchError(() => of(null))),
+            currentMonthlyProfit: this.dashboardService
+                .getMontlyProfit()
+                .pipe(catchError(() => of(null))),
+                salesValues: this.salesService.getValueSalesByPeriod('month').pipe(catchError(() => of(null))),
+                shoppingValues: this.shoppingService.getValueShoppingByPeriod('month').pipe(catchError(() => of(null))),
+        }).subscribe((res) => {
+            (this.dashboardData.estimatedStockValue = res.estimatedStockValue?.revenue_amount || 0),
+
+            (this.dashboardData.totalStockProducts = res.totalStockProducts?.total_stock || 0);
+                
+            (this.dashboardData.currentMonthlyBalance = res.monthlyTotalBalance?.data?.balance || 0),
+                
+            (this.dashboardData.currentMonthlyProfit = res.currentMonthlyProfit.data.currentMonthTotal || 0),
+                
+            (this.dashboardData.previousMonthlyProfit = res.currentMonthlyProfit.data.previousMonthTotal || 0),
+            
+            (this.dashboardData.currentMonthlySales = res.salesValues?.data?.currentPeriod.liquido || 0),
+
+            (this.dashboardData.previousMonthlySales = res.salesValues?.data?.previousPeriod.liquido || 0),
+
+                
+            (this.dashboardData.currentMonthlyShopping = res.shoppingValues?.data?.currentPeriod || 0),
+
+            (this.dashboardData.previousMonthlyShopping = res.shoppingValues?.data?.previousPeriod || 0),
+
+            
+           
+            
+            this.isloading = false;
+        });
     }
 
     initChart() {
@@ -154,7 +183,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 }
             });
 
-        this.dashboardService.getDailyProfits(3).subscribe((res) => {
+        this.dashboardService.getDailyProfits().subscribe((res) => {
             if (res.success) {
                 const profitByDayMap = new Map<string, number>();
                 res.data.forEach(
@@ -176,7 +205,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 const labels = Array.from(profitByDayMap.keys());
                 const data = Array.from(profitByDayMap.values());
 
-                this.barData = {
+                this.profitData = {
                     labels: labels,
                     datasets: [
                         {
@@ -192,7 +221,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
             }
         });
 
-        this.barOptions = {
+        this.profitOption = {
             plugins: {
                 legend: {
                     labels: {
@@ -237,9 +266,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
                     'janeiro', 'fevereiro'
                 ];
     
-                this.chartLineData.labels = months.map(m => m.charAt(0).toUpperCase() + m.slice(1)); // Capitalizando os meses
-                this.chartLineData.datasets[0].data = months.map(m => salesData[m] || 0); // Faturamento
-                this.chartLineData.datasets[1].data = months.map(m => profitData[m] || 0); // Lucro
+                this.summaryData.labels = months.map(m => m.charAt(0).toUpperCase() + m.slice(1)); // Capitalizando os meses
+                this.summaryData.datasets[0].data = months.map(m => salesData[m] || 0); // Faturamento
+                this.summaryData.datasets[1].data = months.map(m => profitData[m] || 0); // Lucro
             }
         });
     }
@@ -249,52 +278,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
             this.subscription.unsubscribe();
         }
     }
-
-    getDashboardData() {
-        forkJoin({
-            estimatedStockValue: this.dashboardService
-                .getStockRevenue()
-                .pipe(catchError(() => of(null))),
-            monthlyTotalBalance: this.dashboardService
-                .getMontlyBalance(3)
-                .pipe(catchError(() => of(null))),
-            totalStockProducts: this.dashboardService
-                .getProductsStockQuantity()
-                .pipe(catchError(() => of(null))),
-            currentMonthlyProfit: this.dashboardService
-                .getMontlyProfit(3)
-                .pipe(catchError(() => of(null))),
-                salesValues: this.salesService.getValueSalesByPeriod('month', 3).pipe(catchError(() => of(null))),
-                shoppingValues: this.shoppingService.getValueShoppingByPeriod('month', 3).pipe(catchError(() => of(null))),
-        }).subscribe((res) => {
-            (this.dashboardData.estimatedStockValue = res.estimatedStockValue?.revenue_amount || 0),
-
-            (this.dashboardData.totalStockProducts = res.totalStockProducts?.total_stock || 0);
-                
-            (this.dashboardData.currentMonthlyBalance = res.monthlyTotalBalance?.data?.balance || 0),
-                
-            (this.dashboardData.currentMonthlyProfit = res.currentMonthlyProfit.data.currentMonthTotal || 0),
-                
-            (this.dashboardData.previousMonthlyProfit = res.currentMonthlyProfit.data.previousMonthTotal || 0),
-            
-            (this.dashboardData.currentMonthlySales = res.salesValues?.data?.currentPeriod.liquido || 0),
-
-            (this.dashboardData.previousMonthlySales = res.salesValues?.data?.previousPeriod.liquido || 0),
-
-                
-            (this.dashboardData.currentMonthlyShopping = res.shoppingValues?.data?.currentPeriod || 0),
-
-            (this.dashboardData.previousMonthlyShopping = res.shoppingValues?.data?.previousPeriod || 0),
-
-            
-           
-            
-            this.isloading = false;
-        });
-    }
-
+ 
     getLatestSales() {
-        this.salesService.getlatestSales(2).subscribe((res) => {
+        this.salesService.getlatestSales().subscribe((res) => {
             if (res.success) {
                 this.latestSales = res.data;
             }
@@ -304,4 +290,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
     formatedDate(data: string): string | null {
         return this.datePipe.transform(data, 'dd-MM-yyyy');
     }
+
+    updateDateTime(): void {
+        const now = new Date();
+        this.currentDateTime = now.toLocaleString();
+      }
 }

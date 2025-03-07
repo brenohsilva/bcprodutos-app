@@ -13,10 +13,13 @@ export class ShoppingService {
         return this.http.post<any>(`${this.base_url}shopping`, body);
     }
 
-    getValueShoppingByPeriod(period: string, month: number): Observable<any> {
-        const params = new HttpParams()
-            .set('range', period)
-            .set('month', month.toString());
+    getValueShoppingByPeriod(period: string, month?: number): Observable<any> {
+        let params = new HttpParams().set('range', period);
+
+        if (month !== undefined) {
+            params = params.set('month', month.toString());
+        }
+
         return this.http.get<any>(`${this.base_url}shopping/values`, {
             params,
         });
