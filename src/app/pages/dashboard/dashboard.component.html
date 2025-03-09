@@ -34,12 +34,12 @@
                         />
                     </div>
                 </div>
-                <span class="text-red-500 font-medium"
+                <span class="text-green-500 font-medium"
                     >{{
-                         dashboardData.currentMonthlyProfit - dashboardData.previousMonthlyProfit | currency : "BRL"
+                         dashboardData.previousMonthlyProfit | currency : "BRL"
                     }}
                 </span>
-                <span class="text-500">no mês anterior</span>
+                <span class="text-500">no mesmo período</span>
             </div>
         </div>
         <div class="col-12 lg:col-6 xl:col-3">
@@ -66,10 +66,10 @@
                         />
                     </div>
                 </div>
-                <span class="text-red-500 font-medium"
-                    >{{  dashboardData.currentMonthlySales - dashboardData.previousMonthlySales | currency : "BRL" }}
+                <span class="text-green-500 font-medium"
+                    >{{dashboardData.previousMonthlySales | currency : "BRL" }}
                 </span>
-                <span class="text-500">no mês anterior</span>
+                <span class="text-500">no mesmo período</span>
             </div>
         </div>
         <div class="col-12 lg:col-6 xl:col-3">
@@ -101,7 +101,7 @@
                         dashboardData.currentMonthlyShopping - dashboardData.previousMonthlyShopping | currency : "BRL"
                     }}
                 </span>
-                <span class="text-500">no mês anterior</span>
+                <span class="text-500">no mesmo período</span>
             </div>
         </div>
         <div class="col-12 lg:col-6 xl:col-3">
