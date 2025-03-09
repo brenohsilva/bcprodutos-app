@@ -25,21 +25,26 @@ export class SalesService {
 
     getQuantityOfProductSoldByPeriod(
         period: string,
-        month: number
+        month?: number
     ): Observable<any> {
-        const params = new HttpParams()
-            .set('range', period)
-            .set('month', month.toString());
+        let params = new HttpParams().set('range', period);
+
+        if (month !== undefined) {
+            params = params.set('month', month.toString());
+        }
         return this.http.get<any>(
             `${this.base_url}sales/quantity-of-products-sold`,
             { params }
         );
     }
 
-    getQuantityOfSalesByPeriod(period: string, month: number): Observable<any> {
-        const params = new HttpParams()
-            .set('range', period)
-            .set('month', month.toString());
+    getQuantityOfSalesByPeriod(period: string, month?: number): Observable<any> {
+
+        let params = new HttpParams().set('range', period);
+
+        if (month !== undefined) {
+            params = params.set('month', month.toString());
+        }
         return this.http.get<any>(`${this.base_url}sales/amount`, { params });
     }
 
