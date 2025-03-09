@@ -145,9 +145,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 
             (this.dashboardData.previousMonthlyProfit = res.currentMonthlyProfit.data.previousMonthTotal || 0),
             
-            (this.dashboardData.currentMonthlySales = res.salesValues?.data?.currentPeriod.liquido || 0),
+            (this.dashboardData.currentMonthlySales = res.salesValues?.data?.currentPeriod.bruto || 0),
 
-            (this.dashboardData.previousMonthlySales = res.salesValues?.data?.previousPeriod.liquido || 0),
+            (this.dashboardData.previousMonthlySales = res.salesValues?.data?.previousPeriod.bruto || 0),
 
                 
             (this.dashboardData.currentMonthlyShopping = res.shoppingValues?.data?.currentPeriod || 0),
