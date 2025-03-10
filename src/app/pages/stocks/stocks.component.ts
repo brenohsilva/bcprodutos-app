@@ -4,7 +4,7 @@ import { DataView } from 'primeng/dataview';
 import { Table } from 'primeng/table';
 import { Product } from 'src/app/demo/api/product';
 import { Sales } from 'src/app/demo/api/productsSales';
-import {Shopping } from 'src/app/demo/api/productsShopping';
+import { Shopping } from 'src/app/demo/api/productsShopping';
 import { ProductService } from 'src/app/demo/service/product.service';
 
 @Component({
@@ -61,8 +61,8 @@ export class StocksComponent implements OnInit {
         });
 
         this.sortOptions = [
-            { label: 'Maior Preço', value: '!price' },
-            { label: 'Menor Preço', value: 'price' },
+            { label: 'Maior Quantidade', value: '!amount' },
+            { label: 'Menor Quantidade', value: 'amount' },
         ];
 
         this.paymentMethods = [
@@ -169,5 +169,4 @@ export class StocksComponent implements OnInit {
             'contains'
         );
     }
-
 }
