@@ -201,7 +201,7 @@ export class MonthGeneralComponent implements OnInit, OnDestroy {
         forkJoin({
             monthlyProfit: this.dashboardService.getMontlyProfit(Number(this.month)).pipe(catchError(() => of(null))),
 
-            monthlySales: this.salesService.getValueSalesByPeriod('month',Number(this.month)).pipe(catchError(() => of(null))),
+            monthlySales: this.salesService.getValueSalesByPeriodFromGeneral(Number(this.month)).pipe(catchError(() => of(null))),
             monthlyShopping: this.shoppingService.getValueShoppingByPeriod('month',Number(this.month)).pipe(catchError(() => of(null))),
 
             monthlyTotalBalance: this.dashboardService.getMontlyBalance(Number(this.month)).pipe(catchError(() => of(null))),
@@ -219,8 +219,8 @@ export class MonthGeneralComponent implements OnInit, OnDestroy {
             (this.dashboardData.monthlyProfit = res.monthlyProfit.data.currentMonthTotal || 0),
             (this.dashboardData.previousMonthlyProfit = res.monthlyProfit.data.previousMonthTotal || 0),
 
-            (this.dashboardData.montlySales = res.monthlySales?.data?.currentPeriod.liquido || 0),
-            (this.dashboardData.previousMonthlySales = res.monthlySales?.data?.previousPeriod.liquido || 0),
+            (this.dashboardData.montlySales = res.monthlySales?.currentMonthSales.liquido || 0),
+            (this.dashboardData.previousMonthlySales = res.monthlySales?.previousMonthSales.liquido || 0),
             
             (this.dashboardData.montlyShopping = res.monthlyShopping?.data?.currentPeriod || 0),
             (this.dashboardData.previousMonthlyShopping = res.monthlyShopping?.data?.previousPeriod || 0),
@@ -229,7 +229,6 @@ export class MonthGeneralComponent implements OnInit, OnDestroy {
             
             (this.dashboardData.monthlySalesAmount = res.salesMadeByMonth.data.currentPeriod || 0),
             (this.dashboardData.previousMonthlySalesAmount = res.salesMadeByMonth?.data.previousPeriod || 0);
-            debugger
             (this.dashboardData.monthlyShoppingAmount = res.shoppingMadeByMonth?.data.currentPeriod || 0),
             (this.dashboardData.previousMonthlyShoppingAmount = res.shoppingMadeByMonth?.data.previousPeriod || 0);
 

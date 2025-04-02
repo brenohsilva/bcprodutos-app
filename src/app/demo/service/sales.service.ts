@@ -23,6 +23,12 @@ export class SalesService {
         return this.http.get<any>(`${this.base_url}sales/values`, { params });
     }
 
+    getValueSalesByPeriodFromGeneral(month?: number): Observable<any> {
+        let params = new HttpParams().set('month', month.toString());
+
+        return this.http.get<any>(`${this.base_url}sales/values/general`, { params });
+    }
+
     getQuantityOfProductSoldByPeriod(
         period: string,
         month?: number
