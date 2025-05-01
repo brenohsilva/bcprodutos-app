@@ -219,8 +219,8 @@ export class MonthGeneralComponent implements OnInit, OnDestroy {
             (this.dashboardData.monthlyProfit = res.monthlyProfit.data.currentMonthTotal || 0),
             (this.dashboardData.previousMonthlyProfit = res.monthlyProfit.data.previousMonthTotal || 0),
 
-            (this.dashboardData.montlySales = res.monthlySales?.currentMonthSales.liquido || 0),
-            (this.dashboardData.previousMonthlySales = res.monthlySales?.previousMonthSales.liquido || 0),
+            (this.dashboardData.montlySales = res.monthlySales?.currentMonthSales.bruto|| 0),
+            (this.dashboardData.previousMonthlySales = res.monthlySales?.previousMonthSales.bruto || 0),
             
             (this.dashboardData.montlyShopping = res.monthlyShopping?.data?.currentPeriod || 0),
             (this.dashboardData.previousMonthlyShopping = res.monthlyShopping?.data?.previousPeriod || 0),

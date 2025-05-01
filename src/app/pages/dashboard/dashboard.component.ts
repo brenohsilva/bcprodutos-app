@@ -263,7 +263,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     
                 // Garantindo que os meses sejam adicionados na ordem correta
                 const months = [
-                    'janeiro', 'fevereiro', 'março'
+                    'janeiro', 'fevereiro', 'março', "abril"
                 ];
     
                 this.summaryData.labels = months.map(m => m.charAt(0).toUpperCase() + m.slice(1)); // Capitalizando os meses
